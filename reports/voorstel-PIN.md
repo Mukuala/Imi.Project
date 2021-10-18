@@ -5,8 +5,15 @@ Er kan ook gezocht worden naar movies/actors/users a.d.h.v. hun naam.
 
 # CRUD
 
-Ik zal 1 of meerdere movie pagina's met crud functionaliteit voorzien.
+Movie: 
+- string name
+- string description
+- int durationInMinutes
+- datetime releaseDate
+- IEnumerable actors
+- IEnumerable genres
+- double averageRating
 
 # Concept
 
-?
+Voor concept zal ik een puzzel maken van een foto van een acteur.
