@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.AllUsersPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar Placeholder="Search..."></SearchBar>
+            <CollectionView x:Name="UsersList" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="0"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="0.5" BackgroundColor="Wheat" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="200" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" />
+                            <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="LightBlue">
+                                <Label Text="{Binding UserName}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

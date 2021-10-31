@@ -86,13 +86,25 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <AndroidResource Include="Resources\drawable\Christian_Bale.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Imi.Project.Mobile\Imi.Project.Mobile.csproj">
       <Project>{DF2BCC13-CCEE-4582-B7DA-C6EB55D333DB}</Project>
       <Name>Imi.Project.Mobile</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Batman_Begins.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\The_Dark_Knight.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\The_Dark_Knight_Rises.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Tom_Hardy.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.AllGenresPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="GenreList" SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label WidthRequest="100" Text="{Binding Name}" Margin="10"/>
+                                <Button FontSize="Micro" BackgroundColor="LightGoldenrodYellow" Text="Edit" HorizontalOptions="EndAndExpand" Margin="5"></Button>
+                                <Button FontSize="Micro" BackgroundColor="Red" Text="Delete" HorizontalOptions="StartAndExpand" Margin="5"></Button>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

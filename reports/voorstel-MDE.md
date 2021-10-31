@@ -1,6 +1,6 @@
 # Beschrijving
 
-Ik zal een applicatie maken in verband met films. In de applicatie kan de user de filmen aanvinken die hij al heeft bekeken of wilt bekijken. Ook kan hij een review plaatsen en score achterlaten voor de flims die hij al heeft bekeken.
+Mijn applicatie gaat een soort van imdb zijn. De gebruikers kunnen zoeken naar films en ze toevoegen als favoriet of in hun watchlist. 
 Er kan ook gezocht worden naar movies/actors/users a.d.h.v. hun naam.
 
 # Entities

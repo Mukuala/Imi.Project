@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Imi.Project.Mobile.MovieDetailPage"
+             Title="{Binding Name}">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid Padding="0.5" BackgroundColor="Wheat" x:Name="tie">
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" />
+                    <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                    <Label x:Name="GenresLabel" Text="{Binding Genres}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                    <Label x:Name="ActorsLabel" Text="{Binding Actors}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                    <Label Text="{Binding ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" TextColor="Black"  LineBreakMode="TailTruncation"/>
+                    
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
