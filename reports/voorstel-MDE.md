@@ -1,7 +1,8 @@
 # Beschrijving
 
 Mijn applicatie gaat een soort van imdb zijn. De gebruikers kunnen zoeken naar films en ze toevoegen als favoriet of in hun watchlist. 
-Er kan ook gezocht worden naar movies/actors/users a.d.h.v. hun naam.
+Er kan ook gezocht worden naar movies/actors/users a.d.h.v. hun naam. Een user met Admin role kan users, movies, actors en genres verwijderen, toevoegen, aanpassen of annmaken.
+
 
 # Entities
 
