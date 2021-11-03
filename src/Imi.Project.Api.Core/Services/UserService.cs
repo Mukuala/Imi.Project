@@ -6,7 +6,6 @@ using Imi.Project.Api.Core.Interfaces.Service;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Services
@@ -14,23 +13,25 @@ namespace Imi.Project.Api.Core.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepo, IMapper mapper)
+        public UserService(IUserRepository userRepo, IMapper mapper, IImageService imageService)
         {
             _userRepo = userRepo;
             _mapper = mapper;
-
+            _imageService = imageService;
         }
 
         public async Task<UserResponseDto> AddAsync(UserRequestDto userRequestDto)
         {
             var entity = _mapper.Map<ApplicationUser>(userRequestDto);
-
+            entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, null, entity, userRequestDto.Image);
             var result = await _userRepo.AddAsync(entity);
             var dto = _mapper.Map<UserResponseDto>(result);
             return dto;
         }
+
 
         public async Task DeleteAsync(string id)
         {
@@ -39,9 +40,7 @@ namespace Imi.Project.Api.Core.Services
 
         public async Task<UserResponseDto> GetByIdAsync(string id)
         {
-            var result = await _userRepo.GetAllAsync()
-                .SingleOrDefaultAsync(u => u.Id.Equals(id));
-
+            var result = await _userRepo.GetByIdAsync(id);
             var dto = _mapper.Map<UserResponseDto>(result);
             return dto;
         }
@@ -62,7 +61,15 @@ namespace Imi.Project.Api.Core.Services
 
         public async Task<UserResponseDto> UpdateAsync(UserRequestDto userRequestDto)
         {
+
             var entity = _mapper.Map<ApplicationUser>(userRequestDto);
+            if (userRequestDto.Image != null)
+            {
+                entity.Image = await _imageService.AddOrUpdateImageAsync<ApplicationUser>(null, null, entity, userRequestDto.Image);
+            }
+            else
+                entity.Image = _userRepo.GetByIdAsync(userRequestDto.Id).Result.Image;
+
             var result = await _userRepo.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);
 

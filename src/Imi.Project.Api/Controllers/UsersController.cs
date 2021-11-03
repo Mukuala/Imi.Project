@@ -1,8 +1,6 @@
 ﻿using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,10 +11,14 @@ namespace Imi.Project.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IWatchlistService _watchlistService;
+        private readonly IFavoriteService _favoriteService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IWatchlistService watchlistService, IFavoriteService favoriteService)
         {
             _userService = userService;
+            _favoriteService = favoriteService;
+            _watchlistService = watchlistService;
         }
 
         [HttpGet]
@@ -50,6 +52,20 @@ namespace Imi.Project.Api.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpGet("{id}/favorites")]
+        public async Task<IActionResult> GetFavoritesByUserId(string id)
+        {
+            var favorites = await _favoriteService.GetFavoritesByUserId(id);
+            return Ok(favorites);
+        }
+
+        [HttpGet("{id}/watchlists")]
+        public async Task<IActionResult> GetWatchlistsByUserId(string id)
+        {
+            var watchlists = await _watchlistService.GetWatchlistsByUserId(id);
+            return Ok(watchlists);
         }
 
         [HttpPost]
@@ -88,6 +104,5 @@ namespace Imi.Project.Api.Controllers
             await _userService.DeleteAsync(id);
             return Ok();
         }
-
     }
 }

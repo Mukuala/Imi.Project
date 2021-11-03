@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +13,53 @@ namespace Imi.Project.Api.Core.Mapping
     {
         public AutoMapperProfiles()
         {
+            #region ApplicationUser
+
             CreateMap<ApplicationUser, UserResponseDto>()
                 .ForMember(dest => dest.FavoritesMovies,
                  opt => opt.MapFrom(src => src.FavoriteMovies
-                 .Select(f => new MovieResponseDto
+                 .Select(f => new FavoriteResponseDto
                  {
-                     Id = f.Movie.Id
+                     Id = f.MovieId,
+                     Movie = new MovieResponseDto
+                     {
+                         Id = f.MovieId,
+                         Image = GetFullImageUrl(f.Movie.Image),
+                         Name = f.Movie.Name,
+                         AverageRating = f.Movie.AverageRating,
+                         ReleaseDate = f.Movie.ReleaseDate,
+                     }
                  }
                 )))
 
                 .ForMember(dest => dest.WatchlistMovies,
                 opt => opt.MapFrom(src => src.WatchlistMovies
-                  .Select(w => new MovieResponseDto
+                  .Select(f => new WatchlistResponseDto
                   {
-                      Id = w.Movie.Id
+                      Id = f.MovieId,
+                      Movie = new MovieResponseDto
+                      {
+                          Id = f.MovieId,
+                          Image = GetFullImageUrl(f.Movie.Image),
+                          Name = f.Movie.Name,
+                          AverageRating = f.Movie.AverageRating,
+                          ReleaseDate = f.Movie.ReleaseDate
+                      }
                   })));
 
             CreateMap<UserRequestDto, ApplicationUser>();
+            #endregion
 
+
+            CreateMap<Favorite, FavoriteResponseDto>();
+
+            CreateMap<FavoriteRequestDto, Favorite>();
+
+            CreateMap<Watchlist, WatchlistResponseDto>();
+
+            CreateMap<WatchlistRequestDto, Watchlist>();
+
+            #region Genre
             CreateMap<Genre, GenreResponseDto>()
                 .ForMember(dest => dest.Movies,
                 opt => opt.MapFrom(src => src.Movies
@@ -41,7 +71,7 @@ namespace Imi.Project.Api.Core.Mapping
                     Description = mg.Movie.Description,
                     Duration = mg.Movie.Duration,
                     EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
-                    Image = mg.Movie.Image,
+                    Image = GetFullImageUrl(mg.Movie.Image),
                     ReleaseDate = mg.Movie.ReleaseDate,
                     //Genres = mg.Movie.Genres.Select(m => new GenreResponseDto
                     //{
@@ -59,6 +89,9 @@ namespace Imi.Project.Api.Core.Mapping
                 })));
 
             CreateMap<GenreRequestDto, Genre>();
+            #endregion
+
+            #region Actor
 
             CreateMap<Actor, ActorResponseDto>()
                 .ForMember(dest => dest.Movies,
@@ -72,7 +105,7 @@ namespace Imi.Project.Api.Core.Mapping
                      Description = m.Movie.Description,
                      Duration = m.Movie.Duration,
                      EmbeddedTrailerUrl = m.Movie.EmbeddedTrailerUrl,
-                     Image = m.Movie.Image,
+                     Image = GetFullImageUrl(m.Movie.Image),
                      ReleaseDate = m.Movie.ReleaseDate,
                      //Genres = m.Movie.Genres.Select(mg => new GenreResponseDto
                      //{
@@ -90,7 +123,9 @@ namespace Imi.Project.Api.Core.Mapping
                  })));
 
             CreateMap<ActorRequestDto, Actor>();
+            #endregion
 
+            #region Movie
             CreateMap<Movie, MovieResponseDto>()
                 .ForMember(dest => dest.Actors,
                 opt => opt.MapFrom(src => src.Actors
@@ -99,7 +134,7 @@ namespace Imi.Project.Api.Core.Mapping
                     Id = a.ActorId,
                     Biography = a.Actor.Biography,
                     DateOfBirth = a.Actor.DateOfBirth,
-                    Image = a.Actor.Image,
+                    Image = GetFullImageUrl(a.Actor.Image),
                     Name = a.Actor.Name,
                     //Movies = a.Actor.Movies.Select(m => new MovieResponseDto
                     //{
@@ -137,7 +172,26 @@ namespace Imi.Project.Api.Core.Mapping
                   })));
 
             CreateMap<MovieRequestDto, Movie>();
+            #endregion
 
         }
+        string GetFullImageUrl(string image)
+        {
+            if (string.IsNullOrEmpty(image))
+            {
+                return null;
+            }
+
+            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+
+            var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
+            var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
+
+            var fullImageUrl = $"{scheme}://{url}/{image}";
+
+            return fullImageUrl;
+        }
+
+
     }
 }

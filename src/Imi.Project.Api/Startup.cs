@@ -36,6 +36,10 @@ namespace Imi.Project.Api
             });
 
             services.AddScoped<IRepository<Genre>, GenreRepository>();
+            services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+            services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+            services.AddScoped<IRepository<MovieGenre>, MovieGenreRepository>();
+            services.AddScoped<IRepository<MovieActor>, MovieActorRepository>();
             services.AddScoped<IActorRepository, ActorRepository>();
             services.AddScoped<IUserRepository, ApplicationUserRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();
@@ -44,9 +48,13 @@ namespace Imi.Project.Api
             services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFavoriteService, FavoriteService>();
+            services.AddScoped<IWatchlistService, WatchlistService>();
+            services.AddScoped<IImageService, ImageService>();
 
             services.AddControllers();
             services.AddCors();
+            services.AddHttpContextAccessor();
 
             services.AddControllersWithViews()
             .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

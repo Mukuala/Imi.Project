@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Interfaces.Service
 {
-   public  interface IMovieService:IService<MovieResponseDto,MovieRequestDto>
+    public interface IMovieService : IService<MovieResponseDto, MovieRequestDto>
     {
         Task<IEnumerable<MovieResponseDto>> SearchByNameAsync(string userName);
         Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(long id);

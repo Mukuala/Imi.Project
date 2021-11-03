@@ -13,10 +13,12 @@ namespace Imi.Project.Api.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IActorService _actorService;
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, IActorService actorService)
         {
             _movieService = movieService;
+            _actorService = actorService;
         }
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string name)
@@ -51,14 +53,14 @@ namespace Imi.Project.Api.Controllers
             return Ok(movie);
         }
         [HttpGet("{id}/actors")]
-        public async Task<IActionResult>GetByActorId(long id)
+        public async Task<IActionResult>GetActorsByMovieId(long id)
         {
-            var movies = await _movieService.GetMoviesByActorId(id);
-            if (!movies.Any())
+            var actors = await _actorService.GetActorsFromMovieId(id);
+            if (!actors.Any())
             {
-                return NotFound($"There were no movies found with actor id {id}");
+                return NotFound();
             }
-            return Ok(movies);
+            return Ok(actors);
 
         }
 

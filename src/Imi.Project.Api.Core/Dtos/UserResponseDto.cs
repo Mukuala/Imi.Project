@@ -12,7 +12,7 @@ namespace Imi.Project.Api.Core.Dtos
         public string Image { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
-        public IEnumerable<MovieResponseDto> FavoritesMovies { get; set; }
-        public IEnumerable<MovieResponseDto> WatchlistMovies { get; set; }
+        public IEnumerable<FavoriteResponseDto> FavoritesMovies { get; set; }
+        public IEnumerable<WatchlistResponseDto> WatchlistMovies { get; set; }
     }
 }

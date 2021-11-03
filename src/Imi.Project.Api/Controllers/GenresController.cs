@@ -38,6 +38,7 @@ namespace Imi.Project.Api.Controllers
             }
             return Ok(genre);
         }
+
         [HttpPost]
         public async Task<IActionResult> Post(GenreRequestDto genreRequestDto)
         {

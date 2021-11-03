@@ -6,6 +6,6 @@ namespace Imi.Project.Api.Core.Dtos.Base
 {
     public class BaseDto
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
     }
 }

@@ -13,10 +13,13 @@ namespace Imi.Project.Api.Controllers
     public class ActorsController : ControllerBase
     {
         private readonly IActorService _actorService;
+        private readonly IMovieService _movieService;
 
-        public ActorsController(IActorService actorService)
+
+        public ActorsController(IActorService actorService, IMovieService movieService)
         {
             _actorService = actorService;
+            _movieService = movieService;
         }
 
         [HttpGet]
@@ -50,6 +53,16 @@ namespace Imi.Project.Api.Controllers
             }
 
             return Ok(actor);
+        }
+        [HttpGet("{id}/movies")]
+        public async Task<IActionResult> GetMoviesByActorId(long id)
+        {
+            var movies = await _movieService.GetMoviesByActorId(id);
+            if (movies == null)
+            {
+                return NotFound();
+            }
+            return Ok(movies);
         }
 
         [HttpPost]

@@ -14,18 +14,19 @@ namespace Imi.Project.Api.Core.Services
     {
         private readonly IActorRepository _actorRepo;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public ActorService(IActorRepository actorRepo, IMapper mapper)
+        public ActorService(IActorRepository actorRepo, IMapper mapper, IImageService imageService)
         {
             _actorRepo = actorRepo;
             _mapper = mapper;
-
+            _imageService = imageService;
         }
 
         public async Task<ActorResponseDto> AddAsync(ActorRequestDto RequestDto)
         {
             var entity = _mapper.Map<Actor>(RequestDto);
-
+            entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
             var result = await _actorRepo.AddAsync(entity);
             var dto = _mapper.Map<ActorResponseDto>(result);
             return dto;
@@ -56,9 +57,9 @@ namespace Imi.Project.Api.Core.Services
         }
 
 
-        public async Task<IEnumerable<ActorResponseDto>> SearchByNameAsync(string userName)
+        public async Task<IEnumerable<ActorResponseDto>> SearchByNameAsync(string name)
         {
-            var users = await _actorRepo.SearchByNameAsync(userName);
+            var users = await _actorRepo.SearchByNameAsync(name);
             var dto = _mapper.Map<IEnumerable<ActorResponseDto>>(users);
             return dto;
         }
@@ -66,6 +67,12 @@ namespace Imi.Project.Api.Core.Services
         public async Task<ActorResponseDto> UpdateAsync(ActorRequestDto RequestDto)
         {
             var entity = _mapper.Map<Actor>(RequestDto);
+            if (RequestDto.Image != null)
+            {
+                entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
+            }
+            else
+                entity.Image = _actorRepo.GetByIdAsync(RequestDto.Id.Value).Result.Image;
             var result = await _actorRepo.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);
         }

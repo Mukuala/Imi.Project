@@ -23,16 +23,28 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             .Include(m => m.UsersFavorite).ThenInclude(f => f.ApplicationUser)
             .Include(m => m.UsersWatchlist).ThenInclude(w => w.ApplicationUser);
         }
-        public async Task<IEnumerable<Movie>> GetByActorId(long id)
+        public async Task<IEnumerable<Movie>> GetByActorId(long actorId)
         {
             return await GetAllAsync()
-                .Where(m => m.Actors.Any(ma => ma.ActorId.Equals(id))).ToListAsync();
+                .Where(m => m.Actors.Any(ma => ma.ActorId.Equals(actorId))).ToListAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetByGenreId(long id)
+        public async Task<IEnumerable<Movie>> GetByGenreId(long genreId)
         {
             return await GetAllAsync()
-                .Where(m => m.Genres.Any(mg => mg.GenreId.Equals(id))).ToListAsync();
+                .Where(m => m.Genres.Any(mg => mg.GenreId.Equals(genreId))).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Movie>> GetFavoriteMoviesByUserId(string userId)
+        {
+            return await GetAllAsync()
+                .Where(m => m.UsersFavorite.Any(f => f.ApplicationUserId.Equals(userId))).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Movie>> GetMovieWatchlistByUserId(string userId)
+        {
+            return await GetAllAsync()
+                .Where(m => m.UsersWatchlist.Any(f => f.ApplicationUserId.Equals(userId))).ToListAsync();
         }
 
         public async Task<IEnumerable<Movie>> SearchByNameAsync(string name)
