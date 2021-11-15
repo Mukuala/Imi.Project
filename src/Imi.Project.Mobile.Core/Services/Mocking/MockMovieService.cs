@@ -21,6 +21,20 @@ namespace Imi.Project.Mobile.Core.Services.Mocking
                     Duration = 140,
                     EmbeddedTrailerUrl = "https://www.youtube.com/embed/qHhHIbNuok8",
                     Image ="Batman_Begins.jpg",
+                    Genres =  new List<Genre>{
+                                new Genre{ Id = 1, Name = "Action" },
+                                new Genre{ Id = 2, Name = "Adventure"},
+                                new Genre{ Id = 3, Name = "Crime"},
+                             },
+                    Actors= new List<Actor>{
+                               new Actor{
+                                    Id = 1,
+                                    Name = "Christian Bale",
+                                    Biography = "Christian Charles Philip Bale was born in Pembrokeshire, Wales, UK on January 30, 1974, to English parents Jennifer Jenny (James) and David Bale. His mother was a circus performer and his father, who was born in South Africa, was a commercial pilot. The family lived in different countries throughout Bale's childhood, including England, Portugal, and the United States. Bale acknowledges the constant change was one of the influences on his career choice.",
+                                    Image = "Christian_Bale.jpg",
+                                    DateOfBirth= DateTime.ParseExact( "30/01/1974" , "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                         },
+                             }
 
                 },
 

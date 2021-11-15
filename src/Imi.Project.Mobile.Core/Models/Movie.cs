@@ -13,8 +13,8 @@ namespace Imi.Project.Mobile.Core.Models
         public string EmbeddedTrailerUrl { get; set; }
         public DateTime ReleaseDate { get; set; }
         public double AverageRating { get; set; }
-        public IEnumerable<Actor> Actors { get; set; }
-        public IEnumerable<Genre> Genres { get; set; }
+        public ICollection<Actor> Actors { get; set; }
+        public ICollection<Genre> Genres { get; set; }
 
     }
 }
