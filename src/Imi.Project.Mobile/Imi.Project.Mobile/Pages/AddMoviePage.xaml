@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:autocomplete="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
+             x:Class="Imi.Project.Mobile.Pages.AddMoviePage">
+    <ContentPage.Content>
+        <ScrollView>
+                <StackLayout Padding="20" >
+                    <Label Padding="10" Text="Genre(s)"/>
+                    <autocomplete:SfAutoComplete 
+                        HeightRequest="60" 
+                        EnableAutoSize="True"
+                        x:Name="GenreCmb" 
+                        MultiSelectMode="Token" 
+                        TokensWrapMode="None" 
+                        IsSelectedItemsVisibleInDropDown="False"
+                        DropDownItemHeight="50"
+                        DisplayMemberPath="Name" 
+                        SuggestionMode="Contains"
+                                     />
+                    
+                    <Label Padding="10" Text="Actors(s)"/>
+                    <autocomplete:SfAutoComplete
+                        EnableAutoSize="True"
+                        HeightRequest="60"
+                        SuggestionMode="Contains"
+                        x:Name="ActorCmb" 
+                        MultiSelectMode="Token"
+                        TokensWrapMode="None" 
+                        IsSelectedItemsVisibleInDropDown="False"
+                        DropDownItemHeight="50"
+                        DisplayMemberPath="Name"
+                        ImageMemberPath="Image"/>
+
+
+                    <Label Padding="10" VerticalOptions="Center" Text="Name"/>
+                    <Entry/>
+                    <Label Padding="10" VerticalOptions="Center" Text="Duration"/>
+                    <Entry Keyboard="Numeric"  />
+                    <Label Padding="10" VerticalOptions="Center" Text="Description"/>
+                    <Editor HeightRequest="100"/>
+                    <Label Padding="10" VerticalOptions="Center" Text="Trailer URL"/>
+                    <Entry />
+                    <Label Padding="10" VerticalOptions="Center" Text="Rating"/>
+                    <Entry Keyboard="Numeric"/>
+                    <Label Text="Release Date" VerticalOptions="Center" Padding="10"/>
+                    <DatePicker/>
+                    <Button Text="Add Movie"></Button>
+                </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

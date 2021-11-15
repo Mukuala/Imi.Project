@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             x:Class="Imi.Project.Mobile.Pages.MovieDetailPage"
+             Title="{Binding Name}">
+    <ContentPage.Content>
+
+        <StackLayout>
+            <ScrollView>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Padding="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="50" IsClippedToBounds="True"> <Image  Aspect="AspectFill" Source="{Binding Image}"  />
+</Frame>
+                    <StackLayout Grid.Row="1" Grid.Column="0" Padding="10">
+                        <Label  x:Name="GenresLbl"  />
+                        <Label  x:Name="ActorsLbl"  />
+                        <Label x:Name="ReleaseDateLbl" />
+                    </StackLayout>
+                    <StackLayout Padding="10"  Grid.Row="1" Grid.Column="1">
+                        <Button HeightRequest="40" x:Name="FavoriteBtn"
+                                FontSize="Body"
+                                BackgroundColor="DarkGoldenrod"
+                                Text="{x:Static fontawesome:FontAwesomeIcons.Heart}"  
+                                FontFamily="{StaticResource FontAwesomeRegular}"/>
+
+                        <Button HeightRequest="40" x:Name="WatchlistBtn"  
+                                FontSize="Body" 
+                                BackgroundColor="DarkGoldenrod"
+                                Text="{x:Static fontawesome:FontAwesomeIcons.Bookmark}"  
+                                FontFamily="{StaticResource FontAwesomeRegular}" />
+                    </StackLayout>
+                    <Frame BackgroundColor="DarkGoldenrod" CornerRadius="20" Grid.Row="2" Grid.ColumnSpan="2">
+                        <Label Text="{Binding Description}"></Label>
+                    </Frame>
+                    <Frame Padding="0" CornerRadius="20" Grid.Row="3" Grid.ColumnSpan="2">
+                        <WebView Source="{Binding EmbeddedTrailerUrl}"
+                                 WidthRequest="400"
+                                 HeightRequest="400"
+                                 IsVisible="true"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="FillAndExpand"></WebView>
+                    </Frame>
+                </Grid>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
