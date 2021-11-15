@@ -10,6 +10,7 @@ namespace Imi.Project.Api.Core.Interfaces.Service
     {
         Task<IEnumerable<MovieResponseDto>> SearchByNameAsync(string userName);
         Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(long id);
+        Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(long id);
 
     }
 }

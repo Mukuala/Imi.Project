@@ -40,7 +40,6 @@ namespace Imi.Project.Api.Controllers
             }
 
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -52,18 +51,6 @@ namespace Imi.Project.Api.Controllers
 
             return Ok(movie);
         }
-        [HttpGet("{id}/actors")]
-        public async Task<IActionResult>GetActorsByMovieId(long id)
-        {
-            var actors = await _actorService.GetActorsFromMovieId(id);
-            if (!actors.Any())
-            {
-                return NotFound();
-            }
-            return Ok(actors);
-
-        }
-
         [HttpPost]
         public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)
         {

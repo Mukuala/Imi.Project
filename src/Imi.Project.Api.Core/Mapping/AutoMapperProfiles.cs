@@ -73,19 +73,6 @@ namespace Imi.Project.Api.Core.Mapping
                     EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
                     Image = GetFullImageUrl(mg.Movie.Image),
                     ReleaseDate = mg.Movie.ReleaseDate,
-                    //Genres = mg.Movie.Genres.Select(m => new GenreResponseDto
-                    //{
-                    //    Name = m.Genre.Name,
-                    //    Id = m.Genre.Id
-                    //}),
-                    //Actors = mg.Movie.Actors.Select(ma => new ActorResponseDto
-                    //{
-                    //    Name = ma.Actor.Name,
-                    //    Id = ma.Actor.Id,
-                    //    //Biography = ma.Actor.Biography,
-                    //    //DateOfBirth = ma.Actor.DateOfBirth,
-                    //    //Image = 
-                    //})
                 })));
 
             CreateMap<GenreRequestDto, Genre>();
@@ -98,7 +85,6 @@ namespace Imi.Project.Api.Core.Mapping
                 opt => opt.MapFrom(src => src.Movies
                  .Select(m => new MovieResponseDto
                  {
-
                      Id = m.MovieId,
                      Name = m.Movie.Name,
                      AverageRating = m.Movie.AverageRating,
@@ -107,19 +93,6 @@ namespace Imi.Project.Api.Core.Mapping
                      EmbeddedTrailerUrl = m.Movie.EmbeddedTrailerUrl,
                      Image = GetFullImageUrl(m.Movie.Image),
                      ReleaseDate = m.Movie.ReleaseDate,
-                     //Genres = m.Movie.Genres.Select(mg => new GenreResponseDto
-                     //{
-                     //    Name = mg.Genre.Name,
-                     //    Id = mg.Genre.Id
-                     //}),
-                     //Actors = m.Movie.Actors.Select(ma => new ActorResponseDto
-                     //{
-                     //    Name = ma.Actor.Name,
-                     //    Id = ma.Actor.Id,
-                     //    //Biography = ma.Actor.Biography,
-                     //    //DateOfBirth = ma.Actor.DateOfBirth,
-                     //    //Image = 
-                     //})
                  })));
 
             CreateMap<ActorRequestDto, Actor>();
@@ -136,31 +109,6 @@ namespace Imi.Project.Api.Core.Mapping
                     DateOfBirth = a.Actor.DateOfBirth,
                     Image = GetFullImageUrl(a.Actor.Image),
                     Name = a.Actor.Name,
-                    //Movies = a.Actor.Movies.Select(m => new MovieResponseDto
-                    //{
-
-                    //    Id = m.MovieId,
-                    //    Name = m.Movie.Name,
-                    //    AverageRating = m.Movie.AverageRating,
-                    //    Description = m.Movie.Description,
-                    //    Duration = m.Movie.Duration,
-                    //    EmbeddedTrailerUrl = m.Movie.EmbeddedTrailerUrl,
-                    //    Image = m.Movie.Image,
-                    //    ReleaseDate = m.Movie.ReleaseDate,
-                    //    Genres = m.Movie.Genres.Select(mg => new GenreResponseDto
-                    //    {
-                    //        Name = mg.Genre.Name,
-                    //        Id = mg.Genre.Id
-                    //    }),
-                    //    Actors = m.Movie.Actors.Select(ma => new ActorResponseDto
-                    //    {
-                    //        Name = ma.Actor.Name,
-                    //        Id = ma.Actor.Id,
-                    //        //Biography = ma.Actor.Biography,
-                    //        //DateOfBirth = ma.Actor.DateOfBirth,
-                    //        //Image = 
-                    //    })
-                    //})
                 })))
 
                 .ForMember(dest => dest.Genres,

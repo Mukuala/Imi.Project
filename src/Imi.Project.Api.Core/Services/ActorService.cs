@@ -13,14 +13,16 @@ namespace Imi.Project.Api.Core.Services
     public class ActorService : IActorService
     {
         private readonly IActorRepository _actorRepo;
+        private readonly IMovieRepository _movieRepo;
         private readonly IMapper _mapper;
         private readonly IImageService _imageService;
 
-        public ActorService(IActorRepository actorRepo, IMapper mapper, IImageService imageService)
+        public ActorService(IActorRepository actorRepo, IMapper mapper, IImageService imageService, IMovieRepository movieRepo)
         {
             _actorRepo = actorRepo;
             _mapper = mapper;
             _imageService = imageService;
+            _movieRepo = movieRepo;
         }
 
         public async Task<ActorResponseDto> AddAsync(ActorRequestDto RequestDto)
@@ -35,11 +37,6 @@ namespace Imi.Project.Api.Core.Services
         public async Task DeleteAsync(long id)
         {
             await _actorRepo.DeleteAsync(id);
-        }
-
-        public Task<IEnumerable<ActorResponseDto>> GetActorsFromMovieId(long id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<ActorResponseDto> GetByIdAsync(long id)

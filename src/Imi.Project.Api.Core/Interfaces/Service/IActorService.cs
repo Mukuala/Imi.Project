@@ -9,6 +9,5 @@ namespace Imi.Project.Api.Core.Interfaces.Service
     public interface IActorService:IService<ActorResponseDto,ActorRequestDto>
     {
         Task<IEnumerable<ActorResponseDto>> SearchByNameAsync(string userName);
-        Task<IEnumerable<ActorResponseDto>> GetActorsFromMovieId(long id);
     }
 }

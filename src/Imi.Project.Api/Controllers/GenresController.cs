@@ -15,10 +15,12 @@ namespace Imi.Project.Api.Controllers
     public class GenresController : ControllerBase
     {
         private readonly IService<GenreResponseDto,GenreRequestDto> _genreService;
+        private readonly IMovieService _movieService;
 
-        public GenresController(IService<GenreResponseDto,GenreRequestDto> genreService)
+        public GenresController(IService<GenreResponseDto,GenreRequestDto> genreService, IMovieService movieService)
         {
             _genreService = genreService;
+            _movieService = movieService;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -38,7 +40,16 @@ namespace Imi.Project.Api.Controllers
             }
             return Ok(genre);
         }
-
+        [HttpGet("{id}/movies")]
+        public async Task<IActionResult> GetMoviesByGenreId(long id)
+        {
+            var movies = await _movieService.GetMoviesByGenreId(id);
+            if (movies==null)
+            {
+                return NotFound();
+            }
+            return Ok(movies);
+        }
         [HttpPost]
         public async Task<IActionResult> Post(GenreRequestDto genreRequestDto)
         {

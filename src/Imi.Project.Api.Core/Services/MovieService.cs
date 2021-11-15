@@ -51,6 +51,13 @@ namespace Imi.Project.Api.Core.Services
             return dto;
         }
 
+        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(long id)
+        {
+            var result = await _movieRepo.GetByGenreId(id);
+            var dto = _mapper.Map<IEnumerable<MovieResponseDto>>(result);
+            return dto;
+        }
+
         public async Task<IEnumerable<MovieResponseDto>> ListAllAsync()
         {
             var result = await _movieRepo.ListAllAsync();

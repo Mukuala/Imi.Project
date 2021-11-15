@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Imi.Project.Api.Core.Entities
 {
-    public class Watchlist:BaseEntity
+    public class Watchlist : BaseEntity
     {
         [ForeignKey(nameof(Movie))]
         public long MovieId { get; set; }
