@@ -1,7 +1,5 @@
-﻿using Imi.Project.Api.Core.Dtos.Base;
-using System;
+﻿using Imi.Project.Common.Dtos.Base;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Interfaces.Service

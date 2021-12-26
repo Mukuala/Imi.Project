@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Entities;
 using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Api.Core.Interfaces.Service;
-using System;
+using Imi.Project.Common.Dtos;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Services
@@ -14,7 +12,7 @@ namespace Imi.Project.Api.Core.Services
     {
         private readonly IRepository<Genre> _genreRepo;
         private readonly IMapper _mapper;
-        public GenreService(IRepository<Genre>genreRepo,IMapper mapper)
+        public GenreService(IRepository<Genre> genreRepo, IMapper mapper)
         {
             _genreRepo = genreRepo;
             _mapper = mapper;

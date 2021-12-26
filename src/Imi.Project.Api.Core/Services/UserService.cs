@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Entities;
 using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Api.Core.Interfaces.Service;
-using Microsoft.EntityFrameworkCore;
-using System;
+using Imi.Project.Common.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

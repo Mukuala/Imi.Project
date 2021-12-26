@@ -56,15 +56,54 @@ namespace Imi.Project.Api.Infrastructure.Data.Seeding
                     new ApplicationUser { Id = "f8e204c0-5642-481f-995d-cab4cb457e1f", FirstName = "Shae", LastName = "Friskey", Email = "sfriskey13@xrea.com", UserName = "sfriskey13", Image = "https://robohash.org/areprehenderitrepudiandae.png?size=200x200&set=set1" }
             };
 
-            //foreach (var user in users)
-            //{
-            //    user.PasswordHash = passwordHasher.HashPassword(user, "WKlYnFhm0ikG");
-            //    user.NormalizedEmail = user.Email.ToUpper();
-            //    user.NormalizedUserName = user.UserName.ToUpper();
-            //    user.EmailConfirmed = true;
-            //}
+            Random gen = new Random();
+            DateTime RandomDay()
+            {
+                DateTime start = new DateTime(1950, 1, 1);
+                int range = (DateTime.Today - start).Days;
+                return start.AddDays(gen.Next(range));
+            }
+
+            foreach (var user in users)
+            {
+                user.PasswordHash = passwordHasher.HashPassword(user, "WKlYnFhm0ikG");
+                user.NormalizedEmail = user.Email.ToUpper();
+                user.NormalizedUserName = user.UserName.ToUpper();
+                user.EmailConfirmed = true;
+                user.Birthday = RandomDay();
+            }
 
             modelBuilder.Entity<ApplicationUser>().HasData(users);
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "C11D2B23-5AB0-48B2-BE9E-C7E082ECF755",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "53a61ad7-806c-4107-b051-574846f37501",
+                    Name = "Moderator",
+                    NormalizedName = "MODERATOR"
+                });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    //Admin
+                    RoleId = "C11D2B23-5AB0-48B2-BE9E-C7E082ECF755",
+                    UserId = "f8e204c0-5642-481f-995d-cab4cb457e1f"
+                    //username: sfriskey13
+                },
+
+                new IdentityUserRole<string>
+                {
+                    //Moderator
+                    RoleId = "53a61ad7-806c-4107-b051-574846f37501",
+                    UserId = "bd24214f-91d0-4ed4-8dcf-f8d75ff64cab"
+                    //username: rreihm7
+                });
         }
     }
 }

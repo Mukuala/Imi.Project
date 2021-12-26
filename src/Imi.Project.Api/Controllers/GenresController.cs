@@ -1,33 +1,34 @@
-﻿using Imi.Project.Api.Core.Dtos;
-using Imi.Project.Api.Core.Entities;
-using Imi.Project.Api.Core.Interfaces.Service;
-using Imi.Project.Api.Core.Services;
+﻿using Imi.Project.Api.Core.Interfaces.Service;
+using Imi.Project.Common.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Controllers
 {
+    [Authorize(Policy = "CanDoCrud")]
     [Route("api/[controller]")]
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly IService<GenreResponseDto,GenreRequestDto> _genreService;
+        private readonly IService<GenreResponseDto, GenreRequestDto> _genreService;
         private readonly IMovieService _movieService;
 
-        public GenresController(IService<GenreResponseDto,GenreRequestDto> genreService, IMovieService movieService)
+        public GenresController(IService<GenreResponseDto, GenreRequestDto> genreService, IMovieService movieService)
         {
             _genreService = genreService;
             _movieService = movieService;
         }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var genres = await _genreService.ListAllAsync();
             return Ok(genres);
         }
+
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -40,16 +41,18 @@ namespace Imi.Project.Api.Controllers
             }
             return Ok(genre);
         }
+
         [HttpGet("{id}/movies")]
         public async Task<IActionResult> GetMoviesByGenreId(long id)
         {
             var movies = await _movieService.GetMoviesByGenreId(id);
-            if (movies==null)
+            if (movies == null)
             {
                 return NotFound();
             }
             return Ok(movies);
         }
+
         [HttpPost]
         public async Task<IActionResult> Post(GenreRequestDto genreRequestDto)
         {
@@ -60,6 +63,7 @@ namespace Imi.Project.Api.Controllers
             var genreResponseDto = await _genreService.AddAsync(genreRequestDto);
             return CreatedAtAction(nameof(Get), new { id = genreResponseDto.Id }, genreResponseDto);
         }
+
         [HttpPut]
         public async Task<IActionResult> Put(GenreRequestDto genreRequestDto)
         {
@@ -71,6 +75,7 @@ namespace Imi.Project.Api.Controllers
             return Ok(genreResponseDto);
 
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {

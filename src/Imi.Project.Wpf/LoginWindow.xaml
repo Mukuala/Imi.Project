@@ -1,0 +1,22 @@
+﻿<Window x:Class="Imi.Project.Wpf.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        xmlns:Notification="clr-namespace:Syncfusion.Windows.Controls.Notification;assembly=Syncfusion.SfBusyIndicator.WPF"
+        mc:Ignorable="d"
+        Title="Login" Height="350" Width="500" Loaded="Window_Loaded">
+    <Grid>
+        <Label Height="23" HorizontalAlignment="Left" Margin="58,115,0,0" x:Name="lblUsername" VerticalAlignment="Top" Width="67" >
+            <Run Language="nl-be" Text="Username"/>
+        </Label>
+        <Label Height="23" HorizontalAlignment="Left" Margin="58,168,0,0" Name="lblPassword"  VerticalAlignment="Top" Width="77" Content="Password" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="142,115,0,0" Name="txtUsername" VerticalAlignment="Top" Width="247" IsEnabled="False" />
+        <PasswordBox Height="23" HorizontalAlignment="Left" Margin="142,168,0,0" Name="PasswordBox" VerticalAlignment="Top" Width="247" IsEnabled="False" />
+        <Button Content="Login" Height="23" HorizontalAlignment="Left" Margin="142,210,0,0" Name="btnLogin" VerticalAlignment="Top" Width="104" Click="btnLogin_Click"  />
+        <TextBlock Height="23" HorizontalAlignment="Left" x:Name ="errormessage" VerticalAlignment="Top" Width="247" Margin="118,253,0,0"  OpacityMask="Crimson" Foreground="#FFE5572C"  />
+        <Label Content="Login" HorizontalAlignment="Left" Margin="196,41,0,0" VerticalAlignment="Top" Width="90" HorizontalContentAlignment="Center" FontWeight="Bold" FontStyle="Italic" FontSize="16"/>
+        <Notification:SfBusyIndicator x:Name="sfBusy" IsBusy="False"/>
+    </Grid>
+</Window>

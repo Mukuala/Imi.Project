@@ -1,6 +1,7 @@
 ﻿using Imi.Project.Api.Core.Entities.Base;
 using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Api.Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,5 +80,23 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             await DeleteAsync(entity);
             return entity;
         }
+        public string GetFullImageUrl(string image)
+        {
+            if (string.IsNullOrEmpty(image))
+            {
+                return null;
+            }
+
+            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
+
+            var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
+            var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
+
+            var fullImageUrl = $"{scheme}://{url}/{image}";
+
+            return fullImageUrl;
+        }
+
+
     }
 }

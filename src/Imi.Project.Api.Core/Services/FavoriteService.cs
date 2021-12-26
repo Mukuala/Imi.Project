@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Entities;
 using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Api.Core.Interfaces.Service;
-using System;
+using Imi.Project.Common.Dtos;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Services
@@ -13,7 +11,7 @@ namespace Imi.Project.Api.Core.Services
     public class FavoriteService : IFavoriteService
     {
         private readonly IFavoriteRepository _favoriteRepo;
-        private readonly IUserRepository _userRepo;      
+        private readonly IUserRepository _userRepo;
         private readonly IMapper _mapper;
         public FavoriteService(IFavoriteRepository favoriteRepo, IMapper mapper, IUserRepository userRepo)
         {
@@ -46,7 +44,7 @@ namespace Imi.Project.Api.Core.Services
 
         public async Task<FavoriteResponseDto> GetByUserIdAndMovieId(string userId, long movieId)
         {
-            var result = await _favoriteRepo.GetByUserIdAndMovieIdAsync(userId,movieId);
+            var result = await _favoriteRepo.GetByUserIdAndMovieIdAsync(userId, movieId);
             var dto = _mapper.Map<FavoriteResponseDto>(result);
             return dto;
         }

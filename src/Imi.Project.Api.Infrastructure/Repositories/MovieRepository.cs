@@ -17,11 +17,25 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         }
         public override IQueryable<Movie> GetAllAsync()
         {
-            return _dbContext.Movies
+            var entities = _dbContext.Movies
             .Include(m => m.Actors).ThenInclude(ma => ma.Actor)
             .Include(m => m.Genres).ThenInclude(mg => mg.Genre)
             .Include(m => m.UsersFavorite).ThenInclude(f => f.ApplicationUser)
             .Include(m => m.UsersWatchlist).ThenInclude(w => w.ApplicationUser);
+
+            foreach (var item in entities)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Image))
+                {
+                    item.Image = GetFullImageUrl(item.Image);
+                }
+            }
+
+            return entities;
+        }
+        public async override Task<Movie> GetByIdAsync(long id)
+        {
+            return await GetAllAsync().FirstOrDefaultAsync(m=>m.Id.Equals(id));
         }
         public async Task<IEnumerable<Movie>> GetByActorId(long actorId)
         {

@@ -1,9 +1,6 @@
-﻿using Imi.Project.Api.Core.Dtos;
-using Imi.Project.Api.Core.Interfaces.Service;
+﻿using Imi.Project.Api.Core.Interfaces.Service;
+using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Controllers
@@ -19,9 +16,9 @@ namespace Imi.Project.Api.Controllers
             _watchlistService = watchlistService;
         }
         [HttpGet("id")]
-        public async Task<IActionResult>GetByUserAndMovieId(string userId,long movieId)
+        public async Task<IActionResult> GetByUserAndMovieId(string userId, long movieId)
         {
-            var watchlist = await _watchlistService.GetByUserIdAndMovieId(userId,movieId);
+            var watchlist = await _watchlistService.GetByUserIdAndMovieId(userId, movieId);
             if (watchlist == null)
             {
                 return NotFound();

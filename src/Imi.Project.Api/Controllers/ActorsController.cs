@@ -1,13 +1,13 @@
-﻿using Imi.Project.Api.Core.Dtos;
-using Imi.Project.Api.Core.Interfaces.Service;
+﻿using Imi.Project.Api.Core.Interfaces.Service;
+using Imi.Project.Common.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Controllers
 {
+    [Authorize(Policy = "CanDoCrud")]
     [Route("api/[controller]")]
     [ApiController]
     public class ActorsController : ControllerBase
@@ -22,6 +22,7 @@ namespace Imi.Project.Api.Controllers
             _movieService = movieService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string name)
         {
@@ -43,6 +44,7 @@ namespace Imi.Project.Api.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long id)
         {
@@ -54,6 +56,7 @@ namespace Imi.Project.Api.Controllers
 
             return Ok(actor);
         }
+        [AllowAnonymous]
         [HttpGet("{id}/movies")]
         public async Task<IActionResult> GetMoviesByActorId(long id)
         {

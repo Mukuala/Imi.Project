@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using Imi.Project.Api.Core.Dtos;
 using Imi.Project.Api.Core.Entities;
+using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Imi.Project.Api.Core.Mapping
 {
@@ -20,7 +17,9 @@ namespace Imi.Project.Api.Core.Mapping
                  opt => opt.MapFrom(src => src.FavoriteMovies
                  .Select(f => new FavoriteResponseDto
                  {
-                     Id = f.MovieId,
+                     MovieId = f.MovieId,
+                     ApplicationUserId = f.ApplicationUserId,
+                     Id = f.Id,
                      Movie = new MovieResponseDto
                      {
                          Id = f.MovieId,
@@ -36,6 +35,8 @@ namespace Imi.Project.Api.Core.Mapping
                 opt => opt.MapFrom(src => src.WatchlistMovies
                   .Select(f => new WatchlistResponseDto
                   {
+                      MovieId = f.MovieId,
+                      ApplicationUserId = f.ApplicationUserId,
                       Id = f.MovieId,
                       Movie = new MovieResponseDto
                       {

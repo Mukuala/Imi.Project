@@ -1,11 +1,13 @@
-﻿using Imi.Project.Api.Core.Dtos;
-using Imi.Project.Api.Core.Interfaces.Service;
+﻿using Imi.Project.Api.Core.Interfaces.Service;
+using Imi.Project.Common.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Controllers
 {
+    [Authorize(Policy = "CanAccessUsers")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase

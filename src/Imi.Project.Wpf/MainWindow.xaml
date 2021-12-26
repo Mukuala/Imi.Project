@@ -1,0 +1,125 @@
+﻿<Window x:Class="Imi.Project.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imi.Project.Wpf"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:Notification="clr-namespace:Syncfusion.Windows.Controls.Notification;assembly=Syncfusion.SfBusyIndicator.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ListBox x:Name="lstMovies" Grid.Column="0" Margin="10,30,0,10" SelectionChanged="lstMovies_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <Grid Grid.Column="1" x:Name="movieDetailsGrid" Margin="10" ShowGridLines="True">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label x:Name="lblId" Visibility="Hidden"></Label>
+                <Label Content="Name: " Grid.Row="1" Grid.Column="0"/>
+                <Label Content="Description: " Grid.Row="2" Grid.Column="0"/>
+                <Label Content="Rating: " Grid.Row="3" Grid.Column="0"/>
+                <Label Content="Duration: " Grid.Row="4" Grid.Column="0"/>
+                <Label Content="Release Date: " Grid.Row="5" Grid.Column="0"/>
+                <Label Content="Actor(s): " Grid.Row="6" Grid.Column="0"/>
+                <Label Content="Genre(s): " Grid.Row="7" Grid.Column="0"/>
+                <Label Content="Image: " Grid.Row="8" Grid.Column="0"/>
+                <Label Content="Embedded Trailer: " Grid.Row="9" Grid.Column="0"/>
+
+                <Label Grid.Row="1" Grid.Column="1" x:Name="lblName"/>
+                <TextBlock Margin="5" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1" x:Name="txbDescription"></TextBlock>
+                <Label Grid.Row="3" Grid.Column="1" x:Name="lblRating"/>
+                <Label Grid.Row="4" Grid.Column="1" x:Name="lblDuration"/>
+                <Label Grid.Row="5" Grid.Column="1" x:Name="lblReleaseDate"/>
+                <Label Grid.Row="6" Grid.Column="1" x:Name="lblActors"/>
+                <Label Grid.Row="7" Grid.Column="1" x:Name="lblGenres"/>
+                <Image Margin="0,10,0,10" Grid.Row="8" Grid.Column="1" x:Name="imgImage" MaxWidth="150"/>
+                <WebBrowser Margin="0,0,0,0" Grid.Row="9" Grid.Column="1" MaxHeight="100" MaxWidth="200" Name="webEmbbedTrailer"/>
+                <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left"   Width="43" Grid.Column="1"  Grid.Row="0" Click="btnEdit_Click"/>
+                <Button x:Name="btnDeleteMovie" Content="Delete" HorizontalAlignment="Left"  Width="42" Grid.Column="1"  Grid.Row="0" Margin="64,0,0,26" Grid.RowSpan="2" Click="btnDeleteMovie_Click"/>
+
+            </Grid>
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <Grid Grid.Column="2" x:Name="addOrEditGrid" Margin="10">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition MaxWidth="300" Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="txbAddedImgPath" Visibility="Hidden"></TextBlock>
+                <Label Content="Name: " Grid.Row="1" Grid.Column="0"/>
+                <Label Content="Description: " Grid.Row="2" Grid.Column="0"/>
+                <Label Content="Rating: " Grid.Row="3" Grid.Column="0"/>
+                <Label Content="Duration: " Grid.Row="4" Grid.Column="0"/>
+                <Label Content="Release Date: " Grid.Row="5" Grid.Column="0"/>
+                <Label Content="Actor(s): " Grid.Row="6" Grid.Column="0"/>
+                <Label Content="Genre(s): " Grid.Row="7" Grid.Column="0"/>
+                <Label Content="Image: " Grid.Row="8" Grid.Column="0"/>
+                <Label Content="Embed url: " Grid.Row="9" Grid.Column="0"/>
+
+                <Button Width="50" x:Name="btnCancel" Grid.Row="0" Grid.Column="1" Content="Cancel" Click="btnCancel_Click"/>
+                <TextBox x:Name="txtName" Grid.Row="1" Grid.Column="1"/>
+                <TextBox x:Name="txtDescription" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1"/>
+                <syncfusion:DoubleTextBox x:Name="txtRating" Grid.Row="3" Grid.Column="1" MinValue="0" MaxValue="10" MinimumNumberDecimalDigits="1" MaximumNumberDecimalDigits="1" TextSelectionOnFocus="True"/>
+                <syncfusion:IntegerTextBox x:Name="txtDuration" Grid.Row="4" Grid.Column="1" MinValue="0"/>
+                <syncfusion:DateTimeEdit x:Name="dateReleaseDate" Grid.Row="5" Grid.Column="1"/>
+                <syncfusion:ComboBoxAdv x:Name="cmbActors" DisplayMemberPath="Name" EnableToken="True" IsEditable="True" AutoCompleteMode="Suggest" AllowMultiSelect="True" Width="auto" Grid.Row="6" Grid.Column="1" />
+                <syncfusion:ComboBoxAdv x:Name="cmbGenres" DisplayMemberPath="Name" EnableToken="True" IsEditable="True" AutoCompleteMode="Suggest" AllowMultiSelect="True" Width="auto" Grid.Row="7" Grid.Column="1" />
+                <Button Margin="10" HorizontalAlignment="Right" Content="Add image file" x:Name="btnAddImage" Grid.Row="8" Grid.Column="1" Height="50" Click="btnAddImage_Click"/>
+                <Image Margin="0,10,0,10" HorizontalAlignment="Left" x:Name="imgFileImage" Grid.Row="8" Grid.Column="1" MaxWidth="100"/>
+                <TextBox x:Name="txtEmbedUrl" Grid.Row="9" Grid.Column="1"/>
+                <Button Margin="20" x:Name="btnAddMovie" Content="Add" HorizontalAlignment="Left" Width="38" Grid.Column="1" Grid.Row="10" Click="btnAddMovie_Click"/>
+                <Button Margin="20" x:Name="btnEditMovie" Content="Edit" HorizontalAlignment="Center" Width="44" Grid.Column="1" Grid.Row="10" Click="btnEditMovie_Click"/>
+            </Grid>
+        </ScrollViewer>
+        <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="38" Click="btnAdd_Click"/>
+        <Notification:SfBusyIndicator x:Name="sfBusy" IsBusy="False"/>
+
+    </Grid>
+</Window>

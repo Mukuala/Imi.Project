@@ -1,12 +1,8 @@
-﻿using DLToolkit.Forms.Controls;
-using FreshMvvm;
-using Imi.Project.Api.Core.Services;
+﻿using FreshMvvm;
 using Imi.Project.Mobile.Infrastructure.Services;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using Imi.Project.Mobile.Pages;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Imi.Project.Mobile
 {
@@ -24,7 +20,7 @@ namespace Imi.Project.Mobile
             FreshIOC.Container.Register<IMovieService>(new ApiMovieService());
 
             MainPage = new MainPage();
-            
+
         }
 
         protected override void OnStart()
