@@ -80,23 +80,5 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             await DeleteAsync(entity);
             return entity;
         }
-        public string GetFullImageUrl(string image)
-        {
-            if (string.IsNullOrEmpty(image))
-            {
-                return null;
-            }
-
-            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
-
-            var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
-            var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
-
-            var fullImageUrl = $"{scheme}://{url}/{image}";
-
-            return fullImageUrl;
-        }
-
-
     }
 }

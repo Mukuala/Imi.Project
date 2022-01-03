@@ -1,5 +1,6 @@
 ﻿using Imi.Project.Api.Core.Entities;
 using Imi.Project.Api.Core.Interfaces.Service;
+using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -74,5 +75,9 @@ namespace Imi.Project.Api.Core.Services
 
             return filePathForDatabase.Replace("\\", "/");
         }
+        //public void DeleteImage<T>(T dto)
+        //{
+
+        //}
     }
 }

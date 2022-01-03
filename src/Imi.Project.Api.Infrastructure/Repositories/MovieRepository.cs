@@ -23,19 +23,11 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             .Include(m => m.UsersFavorite).ThenInclude(f => f.ApplicationUser)
             .Include(m => m.UsersWatchlist).ThenInclude(w => w.ApplicationUser);
 
-            foreach (var item in entities)
-            {
-                if (!string.IsNullOrWhiteSpace(item.Image))
-                {
-                    item.Image = GetFullImageUrl(item.Image);
-                }
-            }
-
             return entities;
         }
         public async override Task<Movie> GetByIdAsync(long id)
         {
-            return await GetAllAsync().FirstOrDefaultAsync(m=>m.Id.Equals(id));
+            return await GetAllAsync().FirstOrDefaultAsync(m => m.Id.Equals(id));
         }
         public async Task<IEnumerable<Movie>> GetByActorId(long actorId)
         {
@@ -63,9 +55,9 @@ namespace Imi.Project.Api.Infrastructure.Repositories
 
         public async Task<IEnumerable<Movie>> SearchByNameAsync(string name)
         {
-               return await GetAllAsync()
-                .Where(g => g.Name.ToUpper().Contains(name.ToUpper()))
-                .ToListAsync();
+            return await GetAllAsync()
+             .Where(g => g.Name.ToUpper().Contains(name.ToUpper()))
+             .ToListAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,11 +15,13 @@ namespace Imi.Project.Api.Controllers
     {
         private readonly IMovieService _movieService;
         private readonly IActorService _actorService;
+        private readonly IImageService _imageService;
 
-        public MoviesController(IMovieService movieService, IActorService actorService)
+        public MoviesController(IMovieService movieService, IActorService actorService, IImageService imageService)
         {
             _movieService = movieService;
             _actorService = actorService;
+            _imageService = imageService;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -54,27 +57,27 @@ namespace Imi.Project.Api.Controllers
             return Ok(movie);
         }
         [HttpPost]
-        public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)
+        public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)//, IFormFile image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var gameResponseDto = await _movieService.AddAsync(movieRequestDto);
-            return CreatedAtAction(nameof(Get), new { id = gameResponseDto.Id }, gameResponseDto);
+            var movieResponseDto = await _movieService.AddAsync(movieRequestDto);
+            
+            return CreatedAtAction(nameof(Get), new { id = movieResponseDto.Id }, movieResponseDto);
         }
-
         [HttpPut]
-        public async Task<IActionResult> Put(MovieRequestDto movieRequestDto)
+        public async Task<IActionResult> Put(MovieRequestDto movieRequestDto)//, IFormFile image)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var gameResponseDto = await _movieService.UpdateAsync(movieRequestDto);
-            return Ok(gameResponseDto);
+            var movieResponseDto = await _movieService.UpdateAsync(movieRequestDto);
+            return Ok(movieResponseDto);
         }
 
         [HttpDelete("{id}")]

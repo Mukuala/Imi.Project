@@ -10,7 +10,7 @@ namespace Imi.Project.Common.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public int Duration { get; set; }
-        public IFormFile Image { get; set; }
+        //public IFormFile Image { get; set; }
         public string EmbeddedTrailerUrl { get; set; }
         public DateTime ReleaseDate { get; set; }
         public double AverageRating { get; set; }
