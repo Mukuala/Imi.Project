@@ -167,8 +167,6 @@ namespace Imi.Project.Wpf.Infrastructure
 
         private async Task CallApi(string id, MovieRequestDto entity, HttpMethod httpMethod, string jwtToken)
         {
-            MovieResponseDto result;
-
             HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://localhost:5001/api/Movies/");
             httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -190,8 +188,6 @@ namespace Imi.Project.Wpf.Infrastructure
                 {
                     response = await httpClient.DeleteAsync(id);
                 }
-                result = await response.Content.ReadAsAsync<MovieResponseDto>();
-                var status = response.StatusCode;
             }
         }
     }

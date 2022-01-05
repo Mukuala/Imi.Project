@@ -67,6 +67,7 @@ namespace Imi.Project.Wpf
             {
                 await webApiClient.DeleteMovieAsync((long)movie.Id);
                 CLearMovieDetailsGrid();
+                ClearEditOrAddGrid();
                 PopulateMoviesListBox();
             }
         }
@@ -147,6 +148,7 @@ namespace Imi.Project.Wpf
         }
         private void PopulateEditMovieGrid()
         {
+            var t = cmbActors.SelectedItems;
             var movie = (MovieResponseDto)lstMovies.SelectedItem;
 
             foreach (var item in cmbActors.Items)
