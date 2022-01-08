@@ -1,15 +1,13 @@
-using Imi.Project.Blazor.Data;
+using Blazored.LocalStorage;
+using Imi.Project.Blazor.Services;
+using Imi.Project.Blazor.Services.Api;
+using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Syncfusion.Blazor;
 
 namespace Imi.Project.Blazor
 {
@@ -28,7 +26,11 @@ namespace Imi.Project.Blazor
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<IApiService<MovieResponseDto, MovieRequestDto>, ApiService<MovieResponseDto, MovieRequestDto>>();
+            services.AddScoped<IApiService<ActorResponseDto, ActorRequestDto>, ApiService<ActorResponseDto, ActorRequestDto>>();
+            services.AddScoped<IApiService<GenreResponseDto, GenreRequestDto>, ApiService<GenreResponseDto, GenreRequestDto>>();
+            services.AddBlazoredLocalStorage();
+            services.AddSyncfusionBlazor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

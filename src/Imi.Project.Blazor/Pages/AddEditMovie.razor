@@ -1,0 +1,13 @@
+﻿@page "/EditOrAdd"
+@inherits Movies
+<h3>AddEditMovie</h3>
+
+<EditForm Model="@movieRequest" OnValidSubmit="SaveMovie">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+</EditForm>
+
+@code {
+
+}
