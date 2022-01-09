@@ -1,13 +1,14 @@
-# Naam van jouw project
+# Mini IMDB
 
 ## Project
-Beschrijf hier je project
+Een mini versie van imdb waar je films kan opzoeken.
 
 ## Extra info
 Plaats hier de nodig informatie om het
 project te kunnen uitvoeren:
 
-- API keys of nodige secrets
-- Logingegevens
-- Database configuraties
-- ...
+
+#### Logingegevens
+-  paswoord: WKlYnFhm0ikG (Alle users hebben zelfde paswoord)
+-  gebruikersnaam: sfriskey13
+
