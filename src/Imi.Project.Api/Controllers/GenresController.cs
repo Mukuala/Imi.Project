@@ -30,7 +30,7 @@ namespace Imi.Project.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> Get(int id)
         {
 
             var genre = await _genreService.GetByIdAsync(id);
@@ -43,7 +43,7 @@ namespace Imi.Project.Api.Controllers
         }
 
         [HttpGet("{id}/movies")]
-        public async Task<IActionResult> GetMoviesByGenreId(long id)
+        public async Task<IActionResult> GetMoviesByGenreId(int id)
         {
             var movies = await _movieService.GetMoviesByGenreId(id);
             if (movies == null)
@@ -77,7 +77,7 @@ namespace Imi.Project.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(int id)
         {
             var genre = await _genreService.GetByIdAsync(id);
             if (genre == null)

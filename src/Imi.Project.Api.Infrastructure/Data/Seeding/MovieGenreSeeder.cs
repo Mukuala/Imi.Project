@@ -130,10 +130,10 @@ namespace Imi.Project.Api.Infrastructure.Data.Seeding
                 //new MovieGenre { MovieId = 0, GenreId = 0 },
                 //new MovieGenre { MovieId = 0, GenreId = 0 },
         };
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Id = i + 1;
-            }
+            //for (int i = 0; i < list.Count; i++)
+            //{
+            //    list[i].Id = i + 1;
+            //}
 
             modelBuilder.Entity<MovieGenre>().HasData(list);
         }

@@ -46,7 +46,7 @@ namespace Imi.Project.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> Get(int id)
         {
             var actor = await _actorService.GetByIdAsync(id);
             if (actor == null)
@@ -58,7 +58,7 @@ namespace Imi.Project.Api.Controllers
         }
         [AllowAnonymous]
         [HttpGet("{id}/movies")]
-        public async Task<IActionResult> GetMoviesByActorId(long id)
+        public async Task<IActionResult> GetMoviesByActorId(int id)
         {
             var movies = await _movieService.GetMoviesByActorId(id);
             if (movies == null)
@@ -93,7 +93,7 @@ namespace Imi.Project.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(int id)
         {
             var actor = await _actorService.GetByIdAsync(id);
             if (actor == null)

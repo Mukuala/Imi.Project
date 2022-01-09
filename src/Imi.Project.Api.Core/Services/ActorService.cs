@@ -32,12 +32,12 @@ namespace Imi.Project.Api.Core.Services
             return dto;
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(int id)
         {
             await _actorRepo.DeleteAsync(id);
         }
 
-        public async Task<ActorResponseDto> GetByIdAsync(long id)
+        public async Task<ActorResponseDto> GetByIdAsync(int id)
         {
             var result = await _actorRepo.GetByIdAsync(id);
             var dto = _mapper.Map<ActorResponseDto>(result);
@@ -62,12 +62,12 @@ namespace Imi.Project.Api.Core.Services
         public async Task<ActorResponseDto> UpdateAsync(ActorRequestDto RequestDto)
         {
             var entity = _mapper.Map<Actor>(RequestDto);
-            if (RequestDto.Image != null)
-            {
-                entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
-            }
-            else
-                entity.Image = _actorRepo.GetByIdAsync(RequestDto.Id.Value).Result.Image;
+            //if (RequestDto.Image != null)
+            //{
+            //    entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
+            //}
+            //else
+            //    entity.Image = _actorRepo.GetByIdAsync(RequestDto.Id).Result.Image;
             var result = await _actorRepo.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);
         }

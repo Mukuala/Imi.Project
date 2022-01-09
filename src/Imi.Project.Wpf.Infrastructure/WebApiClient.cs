@@ -61,7 +61,7 @@ namespace Imi.Project.Wpf.Infrastructure
             };
         }
 
-        public async Task<MovieResponseDto> GetByIdAsync(long id)
+        public async Task<MovieResponseDto> GetByIdAsync(int id)
         {
             MovieResponseDto movie = null;
             using (HttpResponseMessage response = await Client.GetAsync("Movies/" + id))
@@ -93,7 +93,7 @@ namespace Imi.Project.Wpf.Infrastructure
                 return editedMovie;
             }
         }
-        public async Task<MovieResponseDto> DeleteMovieAsync(long id)
+        public async Task<MovieResponseDto> DeleteMovieAsync(int id)
         {
             using (HttpResponseMessage response = await Client.DeleteAsync("Movies/" + id))
             {
@@ -182,7 +182,7 @@ namespace Imi.Project.Wpf.Infrastructure
                 }
                 else if (httpMethod == HttpMethod.Put)
                 {
-                    response = await httpClient.PutAsync(id, entity, GetJsonFormatter());
+                    response = await httpClient.PutAsJsonAsync("", entity);
                 }
                 else
                 {

@@ -46,7 +46,7 @@ namespace Imi.Project.Api.Controllers
         }
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> Get(int id)
         {
             var movie = await _movieService.GetByIdAsync(id);
             if (movie == null)
@@ -81,7 +81,7 @@ namespace Imi.Project.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(int id)
         {
             var movie = await _movieService.GetByIdAsync(id);
             if (movie == null)

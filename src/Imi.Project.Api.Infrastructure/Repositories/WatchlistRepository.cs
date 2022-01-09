@@ -14,13 +14,13 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         {
         }
 
-        public async Task<Watchlist> AddByUserIdAndMovieIdAsync(string userId, long movieId)
+        public async Task<Watchlist> AddByUserIdAndMovieIdAsync(string userId, int movieId)
         {
             var entity = new Watchlist { ApplicationUserId = userId, MovieId = movieId };
             return await AddAsync(entity);
         }
 
-        public async Task<Watchlist> GetByUserIdAndMovieIdAsync(string userId, long movieId)
+        public async Task<Watchlist> GetByUserIdAndMovieIdAsync(string userId, int movieId)
         {
             return await GetAllAsync().FirstOrDefaultAsync(f => f.ApplicationUserId.Equals(userId) && f.MovieId.Equals(movieId));
         }

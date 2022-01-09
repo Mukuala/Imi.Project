@@ -39,9 +39,9 @@ namespace Imi.Project.Wpf
         {
             if (lstMovies.SelectedItem != null)
             {
-                PopulateMovieDetail();
+                PopulateMovieDetail();            
+                movieDetailsGrid.IsEnabled = true;
             }
-            movieDetailsGrid.IsEnabled = true;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -65,7 +65,7 @@ namespace Imi.Project.Wpf
             MessageBoxResult result = MessageBox.Show("Are you sure?", $"Delete {movie.Name}", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                await webApiClient.DeleteMovieAsync((long)movie.Id);
+                await webApiClient.DeleteMovieAsync((int)movie.Id);
                 CLearMovieDetailsGrid();
                 ClearEditOrAddGrid();
                 PopulateMoviesListBox();
@@ -75,14 +75,17 @@ namespace Imi.Project.Wpf
         private async void btnAddMovie_Click(object sender, RoutedEventArgs e)
         {
             await AddOrEditMovie(null);
+            CLearMovieDetailsGrid();
+            ClearEditOrAddGrid();
             PopulateMoviesListBox();
         }
 
         private async void btnEditMovie_Click(object sender, RoutedEventArgs e)
         {
             await AddOrEditMovie(lblId.Content.ToString());
+            CLearMovieDetailsGrid();
+            ClearEditOrAddGrid();
             PopulateMoviesListBox();
-            lstMovies.IsEnabled = true;
 
         }
 
@@ -108,6 +111,7 @@ namespace Imi.Project.Wpf
             lstMovies.ItemsSource = null;
             var movies = await webApiClient.GetAllAsync();
             lstMovies.ItemsSource = movies;
+            lstMovies.IsEnabled = true;
         }
         private async void PopulateMovieDetail()
         {
@@ -115,7 +119,7 @@ namespace Imi.Project.Wpf
             string genres = "";
             var m = (MovieResponseDto)lstMovies.SelectedItem;
 
-            var movie = await webApiClient.GetByIdAsync((long)m.Id);
+            var movie = await webApiClient.GetByIdAsync((int)m.Id);
 
             foreach (ActorResponseDto actor in movie.Actors)
             {
@@ -199,6 +203,7 @@ namespace Imi.Project.Wpf
             txtEmbedUrl.Text = "";
             btnAddMovie.Visibility = Visibility.Hidden;
             btnEditMovie.Visibility = Visibility.Hidden;
+            addOrEditGrid.IsEnabled = false;
         }
         private void CLearMovieDetailsGrid()
         {
@@ -211,6 +216,7 @@ namespace Imi.Project.Wpf
             lblGenres.Content = "";
             imgImage.Source = null;
             webEmbbedTrailer.Source = null;
+            movieDetailsGrid.IsEnabled = false;
         }
         private void EmbedYoutubeTrailer(string embedUrl)
         {
@@ -227,18 +233,23 @@ namespace Imi.Project.Wpf
         {
             var actors = cmbActors.SelectedItems;
             var genres = cmbGenres.SelectedItems;
-            List<long> actorsId = new List<long>();
-            List<long> genresId = new List<long>();
-
-            foreach (var item in actors)
+            List<int> actorsId = new List<int>();
+            List<int> genresId = new List<int>();
+            if (actors != null)
             {
-                var actor = (ActorResponseDto)item;
-                actorsId.Add((long)actor.Id);
+                foreach (var item in actors)
+                {
+                    var actor = (ActorResponseDto)item;
+                    actorsId.Add((int)actor.Id);
+                }
             }
-            foreach (var item in genres)
+            if (genres != null)
             {
-                var genre = (GenreResponseDto)item;
-                genresId.Add((long)genre.Id);
+                foreach (var item in genres)
+                {
+                    var genre = (GenreResponseDto)item;
+                    genresId.Add((int)genre.Id);
+                }
             }
 
 
@@ -260,7 +271,8 @@ namespace Imi.Project.Wpf
             }
             else
             {
-                await webApiClient.PutCallApi(id.ToString(), movie, token);
+                movie.Id = Convert.ToInt32(id);
+                await webApiClient.PutCallApi(id, movie, token);
             }
             //await webApiClient.AddMovieAsync(movie);
             ClearEditOrAddGrid();

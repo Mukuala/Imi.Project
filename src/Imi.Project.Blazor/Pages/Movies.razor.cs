@@ -3,6 +3,7 @@ using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Blazor.Pages
@@ -14,10 +15,9 @@ namespace Imi.Project.Blazor.Pages
         protected List<GenreResponseDto> genres = new List<GenreResponseDto>();
         protected MovieResponseDto movie = null;
         protected UserResponseDto user = new UserResponseDto();
-        protected MovieRequestDto movieRequest = new MovieRequestDto();
+        protected MovieRequestDto movieRequest = null;
         protected string error;
         protected string storedToken = null;
-        protected string JwtWarning = null;
 
 
         [Inject]
@@ -25,7 +25,7 @@ namespace Imi.Project.Blazor.Pages
         [Parameter]
         public string Action { get; set; }
         [Parameter]
-        public long MovieId { get; set; }
+        public int MovieId { get; set; }
 
 
 
@@ -47,7 +47,7 @@ namespace Imi.Project.Blazor.Pages
             }
             else if (Action == "create" && MovieId == 0)
             {
-                movie = new MovieResponseDto();
+                movieRequest = new MovieRequestDto();
                 await GetActorsList();
                 await GetGenresList();
             }
@@ -56,8 +56,23 @@ namespace Imi.Project.Blazor.Pages
                 await GetMovie(MovieId);
                 await GetActorsList();
                 await GetGenresList();
-
+                movieRequest = new MovieRequestDto
+                {
+                    Name = movie.Name,
+                    Id = movie.Id,
+                    AverageRating = movie.AverageRating,
+                    Description = movie.Description,
+                    Duration = movie.Duration,
+                    EmbeddedTrailerUrl = movie.EmbeddedTrailerUrl,
+                    ReleaseDate = movie.ReleaseDate,
+                    //ActorsId = (IEnumerable<int>)movie.Actors.Select(a => a.Id),
+                    //GenresId = (IEnumerable<int>)movie.Genres.Select(g => g.Id),
+                };
             }
+        }
+        protected override async Task OnInitializedAsync()
+        {
+            await GetJwtToken();
         }
 
         public async Task GetMovieList()
@@ -67,7 +82,7 @@ namespace Imi.Project.Blazor.Pages
             movie = null;
         }
 
-        public async Task GetMovie(long? id)
+        public async Task GetMovie(int id)
         {
             movie = await movieService.GetByIdAsync(id.ToString());
         }
@@ -84,7 +99,7 @@ namespace Imi.Project.Blazor.Pages
                 }
                 else if (storedToken != null)
                 {
-                    await movieService.PutCallApi(movie.Id.ToString(), movieRequest, storedToken);
+                    await movieService.PutCallApi(movieRequest.Id.ToString(), movieRequest, storedToken);
                     UrlNavigationManager.NavigateTo("/movies");
                 }
             }
@@ -99,12 +114,13 @@ namespace Imi.Project.Blazor.Pages
             try
             {
                 await movieService.DeleteCallApi(movie.Id.ToString(), storedToken);
-                await this.GetMovieList();
+                UrlNavigationManager.NavigateTo("/movies");
             }
             catch (Exception ex)
             {
                 this.error = ex.Message;
             }
+
         }
 
         public async Task GetActorsList()

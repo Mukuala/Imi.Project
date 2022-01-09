@@ -6,6 +6,6 @@ namespace Imi.Project.Mobile.Core.Models
 {
     public class BaseModel
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
     }
 }

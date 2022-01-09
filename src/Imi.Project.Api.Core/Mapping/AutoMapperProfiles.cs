@@ -127,13 +127,15 @@ namespace Imi.Project.Api.Core.Mapping
                 .Select(a => new MovieActor
                 {
                     ActorId = a,
+                    MovieId = src.Id
                 })))
 
                 .ForMember(dest=>dest.Genres,
                 opt => opt.MapFrom(src => src.GenresId
                 .Select(g => new MovieGenre
                 {
-                    GenreId = g
+                    GenreId = g,
+                    MovieId = src.Id
                 })));
             #endregion
 

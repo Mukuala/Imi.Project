@@ -8,6 +8,6 @@ namespace Imi.Project.Api.Core.Entities.Base
     public class BaseEntity
     {
         [Key]
-        public long Id { get; set; }
+        public int Id { get; set; }
     }
 }

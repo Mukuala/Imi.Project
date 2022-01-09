@@ -30,26 +30,26 @@ namespace Imi.Project.Api.Core.Services
             return dto;
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(int id)
         {
             await _movieRepo.DeleteAsync(id);
         }
 
-        public async Task<MovieResponseDto> GetByIdAsync(long id)
+        public async Task<MovieResponseDto> GetByIdAsync(int id)
         {
             var result = await _movieRepo.GetByIdAsync(id);
             var dto = _mapper.Map<MovieResponseDto>(result);
             return dto;
         }
 
-        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(long id)
+        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(int id)
         {
             var result = await _movieRepo.GetByActorId(id);
             var dto = _mapper.Map<IEnumerable<MovieResponseDto>>(result);
             return dto;
         }
 
-        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(long id)
+        public async Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(int id)
         {
             var result = await _movieRepo.GetByGenreId(id);
             var dto = _mapper.Map<IEnumerable<MovieResponseDto>>(result);

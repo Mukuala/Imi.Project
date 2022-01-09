@@ -27,6 +27,8 @@ namespace Imi.Project.Api.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<MovieGenre>()
+                .HasKey(mg => new { mg.MovieId, mg.GenreId });
+            modelBuilder.Entity<MovieGenre>()
                 .HasOne<Genre>(mg => mg.Genre)
                 .WithMany(g => g.Movies)
                 .HasForeignKey(mg => mg.GenreId);
@@ -35,6 +37,8 @@ namespace Imi.Project.Api.Infrastructure.Data
                 .WithMany(m => m.Genres)
                 .HasForeignKey(mg => mg.MovieId);
 
+            modelBuilder.Entity<MovieActor>()
+                .HasKey(ma => new { ma.MovieId, ma.ActorId });
             modelBuilder.Entity<MovieActor>()
                 .HasOne<Actor>(ma => ma.Actor)
                 .WithMany(a => a.Movies)

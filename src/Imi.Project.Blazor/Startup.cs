@@ -36,6 +36,7 @@ namespace Imi.Project.Blazor
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTQ3NzczQDMxMzkyZTMzMmUzMFdGNmlzK3hmYVFkY3ZYcmZDeTlqUkQyZWZHdEhvdW1wRWEwT21yOWpydjA9;NTQ3Nzc0QDMxMzkyZTMzMmUzMEJablV6WlNaaG1KVUNyZ0Faak5UdkdMOVk4SnVVU09DTjRXQmhtSDJ5eHM9;NTQ3Nzc1QDMxMzkyZTMzMmUzMGx0Nng0TktkK0p4R0lZbmwzM3JPcjl0QUNSSHo2eUdTOTMvQVN0RzdJKzQ9;NTQ3Nzc2QDMxMzkyZTMzMmUzMGtGTlRjbnNzNC81cWRKa2g2b1lOQlFaVFZXR01KbHI0YmVkUU5pcHdab3c9;NTQ3Nzc3QDMxMzkyZTMzMmUzMEFEbGk0UDcvM2hLT015SlJ3YkhrTWFCZ3diaVR1N2I3QVE1dEFsY0wzSWM9");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

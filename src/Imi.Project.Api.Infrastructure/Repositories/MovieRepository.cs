@@ -25,17 +25,17 @@ namespace Imi.Project.Api.Infrastructure.Repositories
 
             return entities;
         }
-        public async override Task<Movie> GetByIdAsync(long id)
+        public async override Task<Movie> GetByIdAsync(int id)
         {
             return await GetAllAsync().FirstOrDefaultAsync(m => m.Id.Equals(id));
         }
-        public async Task<IEnumerable<Movie>> GetByActorId(long actorId)
+        public async Task<IEnumerable<Movie>> GetByActorId(int actorId)
         {
             return await GetAllAsync()
                 .Where(m => m.Actors.Any(ma => ma.ActorId.Equals(actorId))).ToListAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetByGenreId(long genreId)
+        public async Task<IEnumerable<Movie>> GetByGenreId(int genreId)
         {
             return await GetAllAsync()
                 .Where(m => m.Genres.Any(mg => mg.GenreId.Equals(genreId))).ToListAsync();

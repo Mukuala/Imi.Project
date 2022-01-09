@@ -92,7 +92,7 @@ namespace Imi.Project.Blazor.Services.Api
                 }
                 else if (httpMethod == HttpMethod.Put)
                 {
-                    await Client.PutAsJsonAsync(id, entity);
+                    await Client.PutAsJsonAsync("", entity);
                 }
                 else
                 {

@@ -15,11 +15,11 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         public FavoriteRepository(ApplicationDbContext context) : base(context)
         {
         }
-        public async Task<Favorite> GetByUserIdAndMovieIdAsync(string userId, long movieId)
+        public async Task<Favorite> GetByUserIdAndMovieIdAsync(string userId, int movieId)
         {
             return await GetAllAsync().FirstOrDefaultAsync(f => f.ApplicationUserId.Equals(userId) && f.MovieId.Equals(movieId));
         }
-        public async Task<Favorite> AddByUserIdAndMovieIdAsync(string userId, long movieId)
+        public async Task<Favorite> AddByUserIdAndMovieIdAsync(string userId, int movieId)
         {
             var entity = new Favorite { ApplicationUserId = userId, MovieId = movieId };
             return await AddAsync(entity);

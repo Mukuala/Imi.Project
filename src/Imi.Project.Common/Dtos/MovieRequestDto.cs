@@ -21,7 +21,7 @@ namespace Imi.Project.Common.Dtos
         [RegularExpression(@"^\d+.?\d{0,1}$", ErrorMessage = "Maximum one Decimal Point. Example: 7,5 not 7,50..")]
         [Range(0, 10.0,ErrorMessage ="Min 0 and max 10!")]
         public double AverageRating { get; set; }
-        public IEnumerable<long> ActorsId { get; set; }
-        public IEnumerable<long> GenresId { get; set; }
+        public IEnumerable<int> ActorsId { get; set; }
+        public IEnumerable<int> GenresId { get; set; }
     }
 }

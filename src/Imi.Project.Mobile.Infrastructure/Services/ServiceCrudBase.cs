@@ -9,7 +9,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services
     public class ServiceCrudBase<T> : IServiceCrudBase<T> where T : BaseModel
     {
         public string baseApiUri = WebApiClient.baseUri;
-        public async Task<T> GetByIdAsync(long id)
+        public async Task<T> GetByIdAsync(int id)
         {
             return await WebApiClient.GetApiResult<T>($"{baseApiUri}{nameof(T).ToLower()}s/{id}");
         }
@@ -19,7 +19,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services
             return await WebApiClient.PostCallApi<T, T>($"{baseApiUri}", model);
         }
 
-        public async Task<T> DeleteAsync(long id)
+        public async Task<T> DeleteAsync(int id)
         {
             return await WebApiClient.DeleteCallApi<T>($"{baseApiUri}{nameof(T).ToLower()}s/{id}");
         }

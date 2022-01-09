@@ -6,14 +6,14 @@ using System.Text;
 
 namespace Imi.Project.Api.Core.Entities
 {
-    public class MovieGenre: BaseEntity
+    public class MovieGenre
     {
         [ForeignKey(nameof(Movie))]
-        public long MovieId { get; set; }
+        public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
         [ForeignKey(nameof(Genre))]
-        public long GenreId { get; set; }
+        public int GenreId { get; set; }
         public Genre Genre { get; set; }
 
     }

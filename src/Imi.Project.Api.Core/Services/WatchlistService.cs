@@ -33,14 +33,14 @@ namespace Imi.Project.Api.Core.Services
             await _watchlistRepo.DeleteAsync(entity);
         }
 
-        public async Task<WatchlistResponseDto> GetByIdAsync(long id)
+        public async Task<WatchlistResponseDto> GetByIdAsync(int id)
         {
             var result = await _watchlistRepo.GetByIdAsync(id);
             var dto = _mapper.Map<WatchlistResponseDto>(result);
             return dto;
         }
 
-        public async Task<WatchlistResponseDto> GetByUserIdAndMovieId(string userId, long movieId)
+        public async Task<WatchlistResponseDto> GetByUserIdAndMovieId(string userId, int movieId)
         {
             var result = await _watchlistRepo.GetByUserIdAndMovieIdAsync(userId, movieId);
             var dto = _mapper.Map<WatchlistResponseDto>(result);
