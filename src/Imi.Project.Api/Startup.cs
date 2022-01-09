@@ -45,8 +45,8 @@ namespace Imi.Project.Api
             services.AddScoped<IRepository<Genre>, GenreRepository>();
             services.AddScoped<IWatchlistRepository, WatchlistRepository>();
             services.AddScoped<IFavoriteRepository, FavoriteRepository>();
-            services.AddScoped<IRepository<MovieGenre>, MovieGenreRepository>();
-            services.AddScoped<IRepository<MovieActor>, MovieActorRepository>();
+            //services.AddScoped<IRepository<MovieGenre>, MovieGenreRepository>();
+            //services.AddScoped<IRepository<MovieActor>, MovieActorRepository>();
             services.AddScoped<IActorRepository, ActorRepository>();
             services.AddScoped<IUserRepository, ApplicationUserRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();

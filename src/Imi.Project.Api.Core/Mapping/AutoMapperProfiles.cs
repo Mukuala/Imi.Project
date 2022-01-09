@@ -101,6 +101,7 @@ namespace Imi.Project.Api.Core.Mapping
 
             #region Movie
             CreateMap<Movie, MovieResponseDto>()
+                .ForMember(d => d.Image, opt => opt.MapFrom(src=> GetFullImageUrl(src.Image)))
                 .ForMember(dest => dest.Actors,
                 opt => opt.MapFrom(src => src.Actors
                 .Select(a => new ActorResponseDto
@@ -120,27 +121,46 @@ namespace Imi.Project.Api.Core.Mapping
                       Id = g.Genre.Id
                   })));
 
-            CreateMap<MovieRequestDto, Movie>();
+            CreateMap<MovieRequestDto, Movie>()
+                .ForMember(dest=>dest.Actors,
+                opt => opt.MapFrom(src => src.ActorsId
+                .Select(a => new MovieActor
+                {
+                    ActorId = a,
+                    MovieId = src.Id
+                })))
+
+                .ForMember(dest=>dest.Genres,
+                opt => opt.MapFrom(src => src.GenresId
+                .Select(g => new MovieGenre
+                {
+                    GenreId = g,
+                    MovieId = src.Id
+                })));
             #endregion
 
         }
         string GetFullImageUrl(string image)
         {
-            if (string.IsNullOrEmpty(image))
-            {
-                return null;
-            }
-
             HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
 
-            var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
-            var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
+            if (string.IsNullOrEmpty(image))
+            {
+                var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
+                var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
+                var noImageimgUrl = $"{scheme}://{url}/Images/No_Image.png";
 
-            var fullImageUrl = $"{scheme}://{url}/{image}";
+                return noImageimgUrl;
+            }
+            else
+            {
+                var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
+                var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
 
-            return fullImageUrl;
+                var fullImageUrl = $"{scheme}://{url}/{image}";
+
+                return fullImageUrl;
+            }
         }
-
-
     }
 }

@@ -7,9 +7,9 @@ namespace Imi.Project.Mobile.Infrastructure.Services.Interfaces
 {
     public interface IServiceCrudBase<T>
     {
-        Task<T> GetByIdAsync(long id);
+        Task<T> GetByIdAsync(int id);
         Task<ICollection<T>> GetAllAsync();
-        Task<T> DeleteAsync(long id);
+        Task<T> DeleteAsync(int id);
         Task<T> UpdateAsync(T model);
         Task<T> CreateAsync(T model);
     }

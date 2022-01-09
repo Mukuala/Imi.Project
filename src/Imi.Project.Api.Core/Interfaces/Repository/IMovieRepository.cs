@@ -9,8 +9,8 @@ namespace Imi.Project.Api.Core.Interfaces.Repository
     public interface IMovieRepository:IRepository<Movie>
     {
         Task<IEnumerable<Movie>> SearchByNameAsync(string name);
-        Task<IEnumerable<Movie>> GetByActorId(long id);
-        Task<IEnumerable<Movie>> GetByGenreId(long id);
+        Task<IEnumerable<Movie>> GetByActorId(int id);
+        Task<IEnumerable<Movie>> GetByGenreId(int id);
         Task<IEnumerable<Movie>> GetFavoriteMoviesByUserId(string id);
         Task<IEnumerable<Movie>> GetMovieWatchlistByUserId(string id);
     }

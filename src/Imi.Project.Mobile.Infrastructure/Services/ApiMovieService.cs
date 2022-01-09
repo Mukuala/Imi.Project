@@ -9,12 +9,12 @@ namespace Imi.Project.Mobile.Infrastructure.Services
 {
     public class ApiMovieService : ServiceCrudBase<Movie>, IMovieService
     {
-        public async Task<ICollection<Movie>> GetMoviesByActorIdAsync(long actorId)
+        public async Task<ICollection<Movie>> GetMoviesByActorIdAsync(int actorId)
         {
             return await WebApiClient.GetApiResult<ICollection<Movie>>($"{baseApiUri}{nameof(Actor)}s/{actorId}/{nameof(Movie).ToLower()}s");
         }
 
-        public async Task<ICollection<Movie>> GetMoviesByGenreIdAsync(long genreId)
+        public async Task<ICollection<Movie>> GetMoviesByGenreIdAsync(int genreId)
         {
             return await WebApiClient.GetApiResult<ICollection<Movie>>($"{baseApiUri}{nameof(Genre)}s/{genreId}/{nameof(Movie).ToLower()}s");
         }

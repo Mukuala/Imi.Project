@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -36,8 +37,11 @@ namespace Imi.Project.Wpf
 
         private void lstMovies_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            movieDetailsGrid.IsEnabled = true;
-            PopulateMovieDetail();
+            if (lstMovies.SelectedItem != null)
+            {
+                PopulateMovieDetail();            
+                movieDetailsGrid.IsEnabled = true;
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -61,25 +65,34 @@ namespace Imi.Project.Wpf
             MessageBoxResult result = MessageBox.Show("Are you sure?", $"Delete {movie.Name}", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                await webApiClient.DeleteMovieAsync((long)movie.Id);
+                await webApiClient.DeleteMovieAsync((int)movie.Id);
                 CLearMovieDetailsGrid();
+                ClearEditOrAddGrid();
+                PopulateMoviesListBox();
             }
         }
 
-        private void btnAddMovie_Click(object sender, RoutedEventArgs e)
+        private async void btnAddMovie_Click(object sender, RoutedEventArgs e)
         {
-            AddMovie();
+            await AddOrEditMovie(null);
+            CLearMovieDetailsGrid();
+            ClearEditOrAddGrid();
             PopulateMoviesListBox();
         }
 
-        private void btnEditMovie_Click(object sender, RoutedEventArgs e)
+        private async void btnEditMovie_Click(object sender, RoutedEventArgs e)
         {
-            lstMovies.IsEnabled = true;
+            await AddOrEditMovie(lblId.Content.ToString());
+            CLearMovieDetailsGrid();
+            ClearEditOrAddGrid();
+            PopulateMoviesListBox();
+
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             ClearEditOrAddGrid();
+            PopulateMoviesListBox();
             lstMovies.IsEnabled = true;
         }
         private void btnAddImage_Click(object sender, RoutedEventArgs e)
@@ -95,8 +108,10 @@ namespace Imi.Project.Wpf
         }
         private async void PopulateMoviesListBox()
         {
+            lstMovies.ItemsSource = null;
             var movies = await webApiClient.GetAllAsync();
             lstMovies.ItemsSource = movies;
+            lstMovies.IsEnabled = true;
         }
         private async void PopulateMovieDetail()
         {
@@ -104,9 +119,7 @@ namespace Imi.Project.Wpf
             string genres = "";
             var m = (MovieResponseDto)lstMovies.SelectedItem;
 
-            sfBusy.IsBusy = true;
-
-            var movie = await webApiClient.GetByIdAsync((long)m.Id);
+            var movie = await webApiClient.GetByIdAsync((int)m.Id);
 
             foreach (ActorResponseDto actor in movie.Actors)
             {
@@ -125,7 +138,10 @@ namespace Imi.Project.Wpf
             lblActors.Content = actors;
             lblDuration.Content = movie.Duration + " min";
             lblReleaseDate.Content = movie.ReleaseDate.Date;
-            EmbedYoutubeTrailer(movie.EmbeddedTrailerUrl);
+            if (!string.IsNullOrWhiteSpace(movie.EmbeddedTrailerUrl))
+            {
+                EmbedYoutubeTrailer(movie.EmbeddedTrailerUrl);
+            }
 
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
@@ -133,27 +149,44 @@ namespace Imi.Project.Wpf
             bitmap.EndInit();
             imgImage.Source = bitmap;
 
-            sfBusy.IsBusy = false;
         }
         private void PopulateEditMovieGrid()
         {
+            var t = cmbActors.SelectedItems;
+            var movie = (MovieResponseDto)lstMovies.SelectedItem;
+
             foreach (var item in cmbActors.Items)
             {
-                var actor = (ActorResponseDto)item;
-                if (true)
+                foreach (var actor in movie.Actors)
                 {
+                    var cmbActor = (ActorResponseDto)item;
 
+                    if (actor.Id == cmbActor.Id)
+                    {
+                        cmbActors.SelectedItem = item;
+                    }
+                }
+            }
+
+            foreach (var item in cmbGenres.Items)
+            {
+                foreach (var genre in movie.Genres)
+                {
+                    var cmbGenre = (GenreResponseDto)item;
+
+                    if (genre.Id == cmbGenre.Id)
+                    {
+                        cmbGenres.SelectedItem = item;
+                    }
                 }
             }
             addOrEditGrid.IsEnabled = true;
 
-            var movie = (MovieResponseDto)lstMovies.SelectedItem;
             txtName.Text = movie.Name;
             txtDescription.Text = movie.Description;
             txtRating.Text = movie.AverageRating.ToString();
             txtDuration.Text = movie.Duration.ToString();
-            cmbActors.SelectedItems = movie.Actors;
-            cmbGenres.SelectedItems = movie.Genres;
+            txtEmbedUrl.Text = movie.EmbeddedTrailerUrl;
             imgFileImage.Source = new BitmapImage(new Uri(movie.Image, UriKind.Absolute));
         }
         private void ClearEditOrAddGrid()
@@ -170,6 +203,7 @@ namespace Imi.Project.Wpf
             txtEmbedUrl.Text = "";
             btnAddMovie.Visibility = Visibility.Hidden;
             btnEditMovie.Visibility = Visibility.Hidden;
+            addOrEditGrid.IsEnabled = false;
         }
         private void CLearMovieDetailsGrid()
         {
@@ -182,6 +216,7 @@ namespace Imi.Project.Wpf
             lblGenres.Content = "";
             imgImage.Source = null;
             webEmbbedTrailer.Source = null;
+            movieDetailsGrid.IsEnabled = false;
         }
         private void EmbedYoutubeTrailer(string embedUrl)
         {
@@ -194,22 +229,27 @@ namespace Imi.Project.Wpf
 
             webEmbbedTrailer.NavigateToString(page);
         }
-        private async void AddMovie()
+        private async Task AddOrEditMovie(string id)
         {
             var actors = cmbActors.SelectedItems;
             var genres = cmbGenres.SelectedItems;
-            List<long> actorsId = new List<long>();
-            List<long> genresId = new List<long>();
-
-            foreach (var item in actors)
+            List<int> actorsId = new List<int>();
+            List<int> genresId = new List<int>();
+            if (actors != null)
             {
-                var actor = (ActorResponseDto)item;
-                actorsId.Add((long)actor.Id);
+                foreach (var item in actors)
+                {
+                    var actor = (ActorResponseDto)item;
+                    actorsId.Add((int)actor.Id);
+                }
             }
-            foreach (var item in genres)
+            if (genres != null)
             {
-                var genre = (GenreResponseDto)item;
-                genresId.Add((long)genre.Id);
+                foreach (var item in genres)
+                {
+                    var genre = (GenreResponseDto)item;
+                    genresId.Add((int)genre.Id);
+                }
             }
 
 
@@ -223,9 +263,19 @@ namespace Imi.Project.Wpf
                 ReleaseDate = (DateTime)dateReleaseDate.DateTime,
                 ActorsId = actorsId,
                 GenresId = genresId,
-                Image = GetIFromFileFromImgFile(),
+                //Image = GetIFromFileFromImgFile(),
             };
-            await webApiClient.PostCallApi(movie, token);
+            if (id == null)
+            {
+                await webApiClient.PostCallApi(movie, token);
+            }
+            else
+            {
+                movie.Id = Convert.ToInt32(id);
+                await webApiClient.PutCallApi(id, movie, token);
+            }
+            //await webApiClient.AddMovieAsync(movie);
+            ClearEditOrAddGrid();
         }
 
         private async void FillComboBoxesDropDown()
@@ -235,7 +285,7 @@ namespace Imi.Project.Wpf
             cmbActors.ItemsSource = AllActors;
             cmbGenres.ItemsSource = AllGenres;
         }
-        public IFormFile GetIFromFileFromImgFile()
+        public IFormFile GetIFormFileFromImgFile()
         {
             string contentType;
             string imgFilePath = txbAddedImgPath.Text;
@@ -249,16 +299,7 @@ namespace Imi.Project.Wpf
                 };
                 return file;
             }
-
-            //JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            //encoder.Frames.Add(BitmapFrame.Create((BitmapImage)imgFileImage.Source));
-            //using (MemoryStream ms = new MemoryStream())
-            //{
-            //    encoder.Save(ms);
-            //    byte[] bytez = ms.ToArray();
-            //    IFormFile file = new FormFile(ms, 0, bytez.Length, null, Path.GetFileName(img));
-            //    return file;
-            //}
         }
+
     }
 }

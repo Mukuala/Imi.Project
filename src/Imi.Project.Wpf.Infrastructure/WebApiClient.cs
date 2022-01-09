@@ -61,7 +61,7 @@ namespace Imi.Project.Wpf.Infrastructure
             };
         }
 
-        public async Task<MovieResponseDto> GetByIdAsync(long id)
+        public async Task<MovieResponseDto> GetByIdAsync(int id)
         {
             MovieResponseDto movie = null;
             using (HttpResponseMessage response = await Client.GetAsync("Movies/" + id))
@@ -73,21 +73,10 @@ namespace Imi.Project.Wpf.Infrastructure
                 return movie;
             }
         }
-        public async Task<MovieResponseDto> AddMovieAsync(MovieRequestDto movie)
+        public async Task AddMovieAsync(MovieRequestDto movie)
         {
-            MovieResponseDto addedMovie = null;
-            using (HttpResponseMessage response = await Client.PostAsync("Movies", movie, GetJsonFormatter()))
+            using (HttpResponseMessage response = await Client.PostAsJsonAsync("Movies", movie))
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    addedMovie = await response.Content.ReadAsAsync<MovieResponseDto>();
-                    return addedMovie;
-
-                }
-                else
-                {
-                    throw new Exception(response.ReasonPhrase);
-                }
 
             }
         }
@@ -104,7 +93,7 @@ namespace Imi.Project.Wpf.Infrastructure
                 return editedMovie;
             }
         }
-        public async Task<MovieResponseDto> DeleteMovieAsync(long id)
+        public async Task<MovieResponseDto> DeleteMovieAsync(int id)
         {
             using (HttpResponseMessage response = await Client.DeleteAsync("Movies/" + id))
             {
@@ -143,53 +132,63 @@ namespace Imi.Project.Wpf.Infrastructure
             };
 
         }
+        public async Task<UserResponseDto> GetUserProfile()
+        {
+            UserResponseDto user = null;
+            using (HttpResponseMessage response = await Client.GetAsync("Me/profile"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    user = await response.Content.ReadAsAsync<UserResponseDto>();
+                }
+                return user;
+            };
+
+        }
+
 
         //MDE versie
 
-        public async Task<MovieResponseDto> PutCallApi(string id, MovieRequestDto entity, string jwtToken)
+        public async Task PutCallApi(string id, MovieRequestDto entity, string jwtToken)
         {
-            return await CallApi(id, entity, HttpMethod.Put, jwtToken);
+             await CallApi(id, entity, HttpMethod.Put, jwtToken);
         }
 
-        public async Task<MovieResponseDto> PostCallApi(MovieRequestDto entity, string jwtToken)
+        public async Task PostCallApi(MovieRequestDto entity, string jwtToken)
         {
-            return await CallApi(null, entity, HttpMethod.Post, jwtToken);
+             await CallApi(null, entity, HttpMethod.Post, jwtToken);
         }
 
-        public async Task<MovieResponseDto> DeleteCallApi(string id, string jwtToken)
+        public async Task DeleteCallApi(string id, string jwtToken)
         {
-            return await CallApi(id, null, HttpMethod.Delete, jwtToken);
+            await CallApi(id, null, HttpMethod.Delete, jwtToken);
         }
 
 
-        private async Task<MovieResponseDto> CallApi(string id, MovieRequestDto entity, HttpMethod httpMethod, string jwtToken)
+        private async Task CallApi(string id, MovieRequestDto entity, HttpMethod httpMethod, string jwtToken)
         {
-            MovieResponseDto result;
-
             HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://localhost:5001/api/Movies/");
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwtToken);
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             {
 
                 HttpResponseMessage response;
                 if (httpMethod == HttpMethod.Post)
                 {
-                    response = await httpClient.PostAsync("", entity, GetJsonFormatter());
+                    response = await httpClient.PostAsJsonAsync("", entity);
                 }
                 else if (httpMethod == HttpMethod.Put)
                 {
-                    response = await httpClient.PutAsync(id, entity, GetJsonFormatter());
+                    response = await httpClient.PutAsJsonAsync("", entity);
                 }
                 else
                 {
                     response = await httpClient.DeleteAsync(id);
                 }
-                result = await response.Content.ReadAsAsync<MovieResponseDto>();
-                var status = response.StatusCode;
             }
-            return result;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Imi.Project.Api.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<IActionResult> GetByUserAndMovieId(string userId, long movieId)
+        public async Task<IActionResult> GetByUserAndMovieId(string userId, int movieId)
         {
             var watchlist = await _favoriteService.GetByUserIdAndMovieId(userId, movieId);
             if (watchlist == null)

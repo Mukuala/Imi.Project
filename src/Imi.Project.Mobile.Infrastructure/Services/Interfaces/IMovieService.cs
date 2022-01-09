@@ -7,7 +7,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services.Interfaces
     public interface IMovieService : IServiceCrudBase<Movie>
     {
         Task<ICollection<Movie>> SearchByNameAsync(string name);
-        Task<ICollection<Movie>> GetMoviesByGenreIdAsync(long genreId);
-        Task<ICollection<Movie>> GetMoviesByActorIdAsync(long actorId);
+        Task<ICollection<Movie>> GetMoviesByGenreIdAsync(int genreId);
+        Task<ICollection<Movie>> GetMoviesByActorIdAsync(int actorId);
     }
 }

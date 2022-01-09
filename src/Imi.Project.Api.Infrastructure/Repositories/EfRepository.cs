@@ -20,12 +20,12 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public virtual async Task<T> GetByIdAsync(long id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public virtual async Task<T> GetByIdAsync(long id, string[] includes)
+        public virtual async Task<T> GetByIdAsync(int id, string[] includes)
         {
             var query = _dbContext.Set<T>().AsQueryable();
 
@@ -74,29 +74,11 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<T> DeleteAsync(long id)
+        public async Task<T> DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             await DeleteAsync(entity);
             return entity;
         }
-        public string GetFullImageUrl(string image)
-        {
-            if (string.IsNullOrEmpty(image))
-            {
-                return null;
-            }
-
-            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
-
-            var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
-            var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
-
-            var fullImageUrl = $"{scheme}://{url}/{image}";
-
-            return fullImageUrl;
-        }
-
-
     }
 }

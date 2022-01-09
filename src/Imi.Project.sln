@@ -35,11 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imi.Project.Common", "Imi.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imi.Project.Vue", "Imi.Project.Vue\Imi.Project.Vue.csproj", "{44AF898A-23F0-4435-A3D6-DCE16BF97922}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imi.Project.Wpf", "Imi.Project.Wpf\Imi.Project.Wpf.csproj", "{D396C760-04B8-4677-BC02-82496EF32CBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imi.Project.Wpf", "Imi.Project.Wpf\Imi.Project.Wpf.csproj", "{D396C760-04B8-4677-BC02-82496EF32CBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imi.Project.Wpf.Core", "Imi.Project.Wpf.Core\Imi.Project.Wpf.Core.csproj", "{6A3D53C5-C403-4B8E-9CD4-681E9FFCB4C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imi.Project.Wpf.Core", "Imi.Project.Wpf.Core\Imi.Project.Wpf.Core.csproj", "{6A3D53C5-C403-4B8E-9CD4-681E9FFCB4C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imi.Project.Wpf.Infrastructure", "Imi.Project.Wpf.Infrastructure\Imi.Project.Wpf.Infrastructure.csproj", "{BAEC576A-75EA-41A9-9D58-A35FF4008312}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Imi.Project.Wpf.Infrastructure", "Imi.Project.Wpf.Infrastructure\Imi.Project.Wpf.Infrastructure.csproj", "{BAEC576A-75EA-41A9-9D58-A35FF4008312}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

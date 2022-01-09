@@ -6,7 +6,7 @@ namespace Imi.Project.Mobile.Core.Models
 {
     public class Favorite : BaseModel
     {
-        public long MovieId { get; set; }
+        public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
         public string ApplicationUserId { get; set; }

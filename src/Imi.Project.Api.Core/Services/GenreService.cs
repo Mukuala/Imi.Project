@@ -27,12 +27,12 @@ namespace Imi.Project.Api.Core.Services
             return dto;
         }
 
-        public async Task DeleteAsync(long id)
+        public async Task DeleteAsync(int id)
         {
             await _genreRepo.DeleteAsync(id);
         }
 
-        public async Task<GenreResponseDto> GetByIdAsync(long id)
+        public async Task<GenreResponseDto> GetByIdAsync(int id)
         {
             var result = await _genreRepo.GetByIdAsync(id);
             var dto = _mapper.Map<GenreResponseDto>(result);

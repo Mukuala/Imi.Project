@@ -19,13 +19,6 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         public override IQueryable<Actor> GetAllAsync()
         {
             var entities = _dbContext.Actors.Include(a => a.Movies).ThenInclude(ma => ma.Movie);
-            foreach (var item in entities)
-            {
-                if (!string.IsNullOrWhiteSpace(item.Image))
-                {
-                    item.Image = GetFullImageUrl(item.Image);
-                }
-            }
             return entities;
         }
 

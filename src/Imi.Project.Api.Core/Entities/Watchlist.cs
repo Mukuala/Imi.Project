@@ -9,7 +9,7 @@ namespace Imi.Project.Api.Core.Entities
     public class Watchlist : BaseEntity
     {
         [ForeignKey(nameof(Movie))]
-        public long MovieId { get; set; }
+        public int MovieId { get; set; }
         public Movie Movie { get; set; }
 
         [ForeignKey(nameof(ApplicationUser))]

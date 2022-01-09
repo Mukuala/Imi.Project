@@ -35,14 +35,14 @@ namespace Imi.Project.Api.Core.Services
             await _favoriteRepo.DeleteAsync(entity);
         }
 
-        public async Task<FavoriteResponseDto> GetByIdAsync(long id)
+        public async Task<FavoriteResponseDto> GetByIdAsync(int id)
         {
             var result = await _favoriteRepo.GetByIdAsync(id);
             var dto = _mapper.Map<FavoriteResponseDto>(result);
             return dto;
         }
 
-        public async Task<FavoriteResponseDto> GetByUserIdAndMovieId(string userId, long movieId)
+        public async Task<FavoriteResponseDto> GetByUserIdAndMovieId(string userId, int movieId)
         {
             var result = await _favoriteRepo.GetByUserIdAndMovieIdAsync(userId, movieId);
             var dto = _mapper.Map<FavoriteResponseDto>(result);

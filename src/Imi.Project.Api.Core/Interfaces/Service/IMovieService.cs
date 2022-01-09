@@ -7,8 +7,8 @@ namespace Imi.Project.Api.Core.Interfaces.Service
     public interface IMovieService : IService<MovieResponseDto, MovieRequestDto>
     {
         Task<IEnumerable<MovieResponseDto>> SearchByNameAsync(string userName);
-        Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(long id);
-        Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(long id);
+        Task<IEnumerable<MovieResponseDto>> GetMoviesByActorId(int id);
+        Task<IEnumerable<MovieResponseDto>> GetMoviesByGenreId(int id);
 
     }
 }
