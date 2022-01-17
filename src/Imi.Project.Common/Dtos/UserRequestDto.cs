@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Imi.Project.Common.Dtos.Base;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 namespace Imi.Project.Common.Dtos
 {
-    public class UserRequestDto
+    public class UserRequestDto:BaseDto<string>
     {
-        public string Id { get; set; }
         [Required]
         public string UserName { get; set; }
         [Required]

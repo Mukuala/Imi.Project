@@ -11,7 +11,5 @@ namespace Imi.Project.Api.Core.Interfaces.Repository
         Task<IEnumerable<Movie>> SearchByNameAsync(string name);
         Task<IEnumerable<Movie>> GetByActorId(int id);
         Task<IEnumerable<Movie>> GetByGenreId(int id);
-        Task<IEnumerable<Movie>> GetFavoriteMoviesByUserId(string id);
-        Task<IEnumerable<Movie>> GetMovieWatchlistByUserId(string id);
     }
 }

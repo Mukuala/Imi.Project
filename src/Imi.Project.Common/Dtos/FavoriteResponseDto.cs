@@ -2,7 +2,7 @@
 
 namespace Imi.Project.Common.Dtos
 {
-    public class FavoriteResponseDto : BaseDto
+    public class FavoriteResponseDto
     {
         public int MovieId { get; set; }
         public string ApplicationUserId { get; set; }

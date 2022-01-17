@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Imi.Project.Common.Dtos.Base
 {
-    public class BaseDto
+    public class BaseDto<Tkey>
     {
-        public int Id { get; set; }
+        public Tkey Id { get; set; }
     }
 }

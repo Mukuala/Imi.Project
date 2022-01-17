@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Services
 {
-    public class GenreService : IService<GenreResponseDto, GenreRequestDto>
+    public class GenreService : IService<GenreResponseDto, GenreRequestDto,int>
     {
         private readonly IRepository<Genre> _genreRepo;
         private readonly IMapper _mapper;

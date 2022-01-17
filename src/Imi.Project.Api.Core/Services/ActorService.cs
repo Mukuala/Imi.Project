@@ -26,7 +26,7 @@ namespace Imi.Project.Api.Core.Services
         public async Task<ActorResponseDto> AddAsync(ActorRequestDto RequestDto)
         {
             var entity = _mapper.Map<Actor>(RequestDto);
-            entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
+            //entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, entity, null, RequestDto.Image);
             var result = await _actorRepo.AddAsync(entity);
             var dto = _mapper.Map<ActorResponseDto>(result);
             return dto;

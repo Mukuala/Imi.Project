@@ -62,7 +62,8 @@ namespace Imi.Project.Api.Infrastructure.Repositories
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            var entry = _dbContext.Attach(entity);
+            entry.State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
             return entity;
         }

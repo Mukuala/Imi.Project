@@ -6,10 +6,9 @@ namespace Imi.Project.Api.Core.Interfaces.Service
 {
     public interface IFavoriteService
     {
-        Task<FavoriteResponseDto> GetByIdAsync(int id);
         Task<FavoriteResponseDto> GetByUserIdAndMovieId(string userId, int movieId);
-        Task<FavoriteResponseDto> AddFavoriteAsync(FavoriteRequestDto favoriteRequestDto);
-        Task DeleteFavoriteAsync(FavoriteRequestDto favoriteRequestDto);
+        Task<FavoriteResponseDto> AddFavoriteAsync(string userId,int movieId);
+        Task DeleteFavoriteAsync(string userId,int movieId);
         Task<IEnumerable<FavoriteResponseDto>> GetFavoritesByUserId(string userId);
 
     }

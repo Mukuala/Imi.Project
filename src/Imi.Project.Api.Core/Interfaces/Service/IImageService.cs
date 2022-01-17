@@ -6,6 +6,6 @@ namespace Imi.Project.Api.Core.Interfaces.Service
 {
     public interface IImageService
     {
-        Task<string> AddOrUpdateImageAsync<T>(Movie? movie, Actor? actor, ApplicationUser? user, IFormFile image);
+        Task<string> AddOrUpdateImageAsync<TResponseDto>(IFormFile image, string id,bool isDelete);
     }
 }

@@ -57,19 +57,18 @@ namespace Imi.Project.Api.Controllers
             return Ok(movie);
         }
         [HttpPost]
-        public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)//, IFormFile image)
+        public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             var movieResponseDto = await _movieService.AddAsync(movieRequestDto);
-            
+
             return CreatedAtAction(nameof(Get), new { id = movieResponseDto.Id }, movieResponseDto);
         }
         [HttpPut]
-        public async Task<IActionResult> Put(MovieRequestDto movieRequestDto)//, IFormFile image)
+        public async Task<IActionResult> Put(MovieRequestDto movieRequestDto)
         {
             if (!ModelState.IsValid)
             {
@@ -90,6 +89,22 @@ namespace Imi.Project.Api.Controllers
             }
 
             await _movieService.DeleteAsync(id);
+            return Ok();
+        }
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> AddOrUpdateImage(int id, IFormFile image)
+        {
+            if (image == null)
+            {
+                return Ok("No image has been added");
+            }
+            var movie = await _movieService.GetByIdAsync(id);
+
+            if (movie == null)
+            {
+                return BadRequest("Movie doesn't exists!");
+            }
+            await _imageService.AddOrUpdateImageAsync<MovieRequestDto>(image, id.ToString(), false);
             return Ok();
         }
 

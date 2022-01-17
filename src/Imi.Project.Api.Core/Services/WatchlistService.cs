@@ -20,24 +20,17 @@ namespace Imi.Project.Api.Core.Services
             _userRepo = userRepo;
         }
 
-        public async Task<WatchlistResponseDto> AddWatchlistAsync(WatchlistRequestDto watchlistRequestDto)
+        public async Task<WatchlistResponseDto> AddWatchlistAsync(string userId, int movieId)
         {
-            var entity = _mapper.Map<Watchlist>(watchlistRequestDto);
+            var entity = new Watchlist { ApplicationUserId = userId, MovieId = movieId };
             var result = await _watchlistRepo.AddAsync(entity);
             var dto = _mapper.Map<WatchlistResponseDto>(result);
             return dto;
         }
-        public async Task DeleteWatchlistAsync(WatchlistRequestDto watchlistRequestDto)
+        public async Task DeleteWatchlistAsync(string userId, int movieId)
         {
-            var entity = await _watchlistRepo.GetByUserIdAndMovieIdAsync(watchlistRequestDto.ApplicationUserId, watchlistRequestDto.MovieId);
+            var entity = new Watchlist { ApplicationUserId = userId, MovieId = movieId };
             await _watchlistRepo.DeleteAsync(entity);
-        }
-
-        public async Task<WatchlistResponseDto> GetByIdAsync(int id)
-        {
-            var result = await _watchlistRepo.GetByIdAsync(id);
-            var dto = _mapper.Map<WatchlistResponseDto>(result);
-            return dto;
         }
 
         public async Task<WatchlistResponseDto> GetByUserIdAndMovieId(string userId, int movieId)

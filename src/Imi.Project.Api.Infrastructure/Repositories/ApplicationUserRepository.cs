@@ -49,7 +49,9 @@ namespace Imi.Project.Api.Infrastructure.Repositories
 
         public async Task<ApplicationUser> GetByIdAsync(string id)
         {
-            return await GetAllAsync().FirstOrDefaultAsync(a => a.Id.Equals(id));
+            var et =  GetAllAsync();
+             var t = await GetAllAsync().FirstOrDefaultAsync(a => a.Id.Equals(id));
+            return t;
         }
 
         public async Task<IEnumerable<ApplicationUser>> ListAllAsync()
@@ -67,7 +69,6 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
             return entity;
-
         }
     }
 }

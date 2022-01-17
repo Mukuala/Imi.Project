@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Core.Interfaces.Service
 {
-    public interface IActorService : IService<ActorResponseDto, ActorRequestDto>
+    public interface IActorService : IService<ActorResponseDto, ActorRequestDto,int>
     {
         Task<IEnumerable<ActorResponseDto>> SearchByNameAsync(string userName);
     }

@@ -51,7 +51,7 @@ namespace Imi.Project.Api
             services.AddScoped<IUserRepository, ApplicationUserRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();
 
-            services.AddScoped<IService<GenreResponseDto, GenreRequestDto>, GenreService>();
+            services.AddScoped<IService<GenreResponseDto, GenreRequestDto,int>, GenreService>();
             services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IUserService, UserService>();

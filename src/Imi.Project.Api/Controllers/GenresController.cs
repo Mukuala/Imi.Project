@@ -11,10 +11,10 @@ namespace Imi.Project.Api.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly IService<GenreResponseDto, GenreRequestDto> _genreService;
+        private readonly IService<GenreResponseDto, GenreRequestDto,int> _genreService;
         private readonly IMovieService _movieService;
 
-        public GenresController(IService<GenreResponseDto, GenreRequestDto> genreService, IMovieService movieService)
+        public GenresController(IService<GenreResponseDto, GenreRequestDto,int> genreService, IMovieService movieService)
         {
             _genreService = genreService;
             _movieService = movieService;

@@ -24,7 +24,7 @@ namespace Imi.Project.Api.Core.Services
         public async Task<UserResponseDto> AddAsync(UserRequestDto userRequestDto)
         {
             var entity = _mapper.Map<ApplicationUser>(userRequestDto);
-            entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, null, entity, userRequestDto.Image);
+            //entity.Image = await _imageService.AddOrUpdateImageAsync<Actor>(null, null, entity, userRequestDto.Image);
             var result = await _userRepo.AddAsync(entity);
             var dto = _mapper.Map<UserResponseDto>(result);
             return dto;
@@ -61,12 +61,12 @@ namespace Imi.Project.Api.Core.Services
         {
 
             var entity = _mapper.Map<ApplicationUser>(userRequestDto);
-            if (userRequestDto.Image != null)
-            {
-                entity.Image = await _imageService.AddOrUpdateImageAsync<ApplicationUser>(null, null, entity, userRequestDto.Image);
-            }
-            else
-                entity.Image = _userRepo.GetByIdAsync(userRequestDto.Id).Result.Image;
+            //if (userRequestDto.Image != null)
+            //{
+            //    entity.Image = await _imageService.AddOrUpdateImageAsync<ApplicationUser>(null, null, entity, userRequestDto.Image);
+            //}
+            //else
+            //    entity.Image = _userRepo.GetByIdAsync(userRequestDto.Id).Result.Image;
 
             var result = await _userRepo.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);

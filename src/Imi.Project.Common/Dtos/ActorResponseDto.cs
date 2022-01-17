@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Imi.Project.Common.Dtos
 {
-    public class ActorResponseDto : BaseDto
+    public class ActorResponseDto : BaseDto<int>
     {
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }

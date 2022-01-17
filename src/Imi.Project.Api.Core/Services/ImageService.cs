@@ -1,4 +1,5 @@
 ﻿using Imi.Project.Api.Core.Entities;
+using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -14,30 +15,55 @@ namespace Imi.Project.Api.Core.Services
     public class ImageService : IImageService
     {
         private readonly IHostEnvironment _webHostEnvironment;
+        private readonly IMovieRepository _movieRepo;
+        private readonly IActorRepository _actorRepo;
+        private readonly IUserRepository _userRepo;
 
-        public ImageService(IHostEnvironment webHostEnvironment)
+        public ImageService(IHostEnvironment webHostEnvironment, IMovieRepository movieRepo, IActorRepository actorRepo, IUserRepository userRepo)
         {
             _webHostEnvironment = webHostEnvironment;
+            _movieRepo = movieRepo;
+            _actorRepo = actorRepo;
+            _userRepo = userRepo;
         }
-        string entityImageString;
 
-        public async Task<string> AddOrUpdateImageAsync<T>(Movie? movie, Actor? actor,ApplicationUser? user, IFormFile image)
+        public async Task<string> AddOrUpdateImageAsync<TRequestDto>(IFormFile image, string id, bool isDelete)
         {
-            if (movie != null && !string.IsNullOrEmpty(movie.Image))
-            {
-                entityImageString = movie.Image;
-                DeleteOldImage(entityImageString);
+            string oldImageName;
+            var requestDtoType = typeof(TRequestDto);
+            var ImgFolderName = requestDtoType.Name.Replace("RequestDto", "") + "Img";
+            int intId;
+            var canParseId = Int32.TryParse(id, out intId);
 
-            }
-            if (actor != null && !string.IsNullOrEmpty(actor.Image))
+
+            if (image == null && !isDelete)
             {
-                entityImageString = actor.Image;
-                DeleteOldImage(entityImageString);
+                if (canParseId)
+                {
+                    return await CheckIntIdReturnImageString(intId, requestDtoType);
+                }
+                else
+                {
+                    return await CheckStringIdReturnImageString(id);
+                }
             }
-            if (user != null && !string.IsNullOrEmpty(user.Image))
+
+
+            if (canParseId && intId != 0)
             {
-                entityImageString = user.Image;
-                DeleteOldImage(entityImageString);
+                oldImageName = await CheckIntIdReturnImageString(intId, requestDtoType);
+                if (oldImageName != null)
+                {
+                    DeleteOldImage(oldImageName);
+                }
+            }
+            else if (!canParseId && !string.IsNullOrEmpty(id))
+            {
+                oldImageName = await CheckStringIdReturnImageString(id);
+                if (oldImageName != null)
+                {
+                    DeleteOldImage(oldImageName);
+                }
             }
 
             void DeleteOldImage(string eImageString)
@@ -45,11 +71,15 @@ namespace Imi.Project.Api.Core.Services
                 var oldImagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", eImageString);
                 File.Delete(oldImagePath);
             }
+            if (isDelete)
+            {
+                return null;
+            }
 
-            var pathForDatabase = Path.Combine("Images", typeof(T).Name+"Img"); 
+            var pathForDatabase = Path.Combine("Images", ImgFolderName);
 
             var folderPathForImages = Path.Combine(
-                _webHostEnvironment.ContentRootPath,"wwwroot",pathForDatabase);
+                _webHostEnvironment.ContentRootPath, "wwwroot", pathForDatabase);
 
 
             if (!Directory.Exists(folderPathForImages))
@@ -57,9 +87,8 @@ namespace Imi.Project.Api.Core.Services
                 Directory.CreateDirectory(folderPathForImages);
             }
 
-            var fileExtension = Path.GetExtension(image.FileName);
 
-            var newFileNameWithExtension = $"{image.Name}{fileExtension}";
+            var newFileNameWithExtension = $"{image.FileName}";
 
             var filePath = Path.Combine(folderPathForImages, newFileNameWithExtension);
 
@@ -73,11 +102,61 @@ namespace Imi.Project.Api.Core.Services
 
             var filePathForDatabase = Path.Combine(pathForDatabase, newFileNameWithExtension);
 
-            return filePathForDatabase.Replace("\\", "/");
+            string imagePath = filePathForDatabase.Replace("\\", "/");
+            await UpdateEntity(canParseId, id, intId, typeof(TRequestDto), imagePath);
+            return imagePath;
         }
-        //public void DeleteImage<T>(T dto)
-        //{
+        private async Task<string> CheckIntIdReturnImageString(int id, Type dtoType)
+        {
+            if (id != 0)
+            {
+                if (dtoType == typeof(MovieRequestDto))
+                {
+                    var movie = await _movieRepo.GetByIdAsync(id);
+                    return movie.Image;
+                }
+                else if (dtoType == typeof(ActorRequestDto))
+                {
+                    var actor = await _actorRepo.GetByIdAsync(id);
+                    return actor.Image;
+                }
+            }
+            return null;
 
-        //}
+        }
+        private async Task<string> CheckStringIdReturnImageString(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var user = await _userRepo.GetByIdAsync(id);
+                return user.Image;
+            }
+            return null;
+        }
+
+        private async Task UpdateEntity(bool canParseId,string id, int intId, Type dtoType, string imageString)
+        {
+            if (canParseId)
+            {
+                if (dtoType == typeof(MovieRequestDto))
+                {
+                    var movie = await _movieRepo.GetByIdAsync(intId);
+                    movie.Image = imageString;
+                    await _movieRepo.UpdateAsync(movie);
+                }
+                else if (dtoType == typeof(ActorRequestDto))
+                {
+                    var actor = await _actorRepo.GetByIdAsync(intId);
+                    actor.Image = imageString;
+                    await _actorRepo.UpdateAsync(actor);
+                }
+            }
+            else
+            {
+                var user = await _userRepo.GetByIdAsync(id);
+                user.Image = imageString;
+                await _userRepo.UpdateAsync(user);
+            }
+        }
     }
 }

@@ -24,14 +24,16 @@ namespace Imi.Project.Api.Core.Services
         public async Task<MovieResponseDto> AddAsync(MovieRequestDto RequestDto)
         {
             var entity = _mapper.Map<Movie>(RequestDto);
-  //          entity.Image = await _imageService.AddOrUpdateImageAsync<Movie>(entity, null, null, RequestDto.Image);
-            var result = await _movieRepo.AddAsync(entity);
+            //entity.Image = await _imageService.AddOrUpdateImageAsync<MovieRequestDto>(RequestDto.Image, RequestDto.Id.ToString(),false);
+            var x = await _movieRepo.AddAsync(entity);
+            var result = await _movieRepo.GetByIdAsync(x.Id);
             var dto = _mapper.Map<MovieResponseDto>(result);
             return dto;
         }
 
         public async Task DeleteAsync(int id)
         {
+            await _imageService.AddOrUpdateImageAsync<MovieRequestDto>(null, id.ToString(), true);
             await _movieRepo.DeleteAsync(id);
         }
 
@@ -73,12 +75,7 @@ namespace Imi.Project.Api.Core.Services
         public async Task<MovieResponseDto> UpdateAsync(MovieRequestDto RequestDto)
         {
             var entity = _mapper.Map<Movie>(RequestDto);
-            //if (RequestDto.Image != null)
-            //{
-            //    entity.Image = await _imageService.AddOrUpdateImageAsync<Movie>(entity, null, null, RequestDto.Image);
-            //}
-            //else
-            //    entity.Image = _movieRepo.GetByIdAsync(RequestDto.Id.Value).Result.Image;
+            //entity.Image = await _imageService.AddOrUpdateImageAsync<MovieRequestDto>(RequestDto.Image, RequestDto.Id.ToString(), false);
             var result = await _movieRepo.UpdateAsync(entity);
             return await GetByIdAsync(result.Id);
         }

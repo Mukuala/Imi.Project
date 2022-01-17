@@ -2,7 +2,7 @@
 
 namespace Imi.Project.Common.Dtos
 {
-    public class WatchlistResponseDto : BaseDto
+    public class WatchlistResponseDto
     {
         public int MovieId { get; set; }
         public string ApplicationUserId { get; set; }

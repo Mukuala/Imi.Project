@@ -1,11 +1,12 @@
 ﻿using Imi.Project.Common.Dtos.Base;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Imi.Project.Common.Dtos
 {
-    public class MovieRequestDto : BaseDto
+    public class MovieRequestDto : BaseDto<int>
     {
         [Required]
         public string Name { get; set; }
@@ -13,7 +14,7 @@ namespace Imi.Project.Common.Dtos
         public string Description { get; set; }
         [Required]
         public int Duration { get; set; }
-        //public IFormFile Image { get; set; }
+        public IFormFile Image { get; set; }
         public string EmbeddedTrailerUrl { get; set; }
         [Required]
         public DateTime ReleaseDate { get; set; }

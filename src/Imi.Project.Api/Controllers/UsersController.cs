@@ -16,6 +16,7 @@ namespace Imi.Project.Api.Controllers
         private readonly IWatchlistService _watchlistService;
         private readonly IFavoriteService _favoriteService;
 
+
         public UsersController(IUserService userService, IWatchlistService watchlistService, IFavoriteService favoriteService)
         {
             _userService = userService;
@@ -60,14 +61,16 @@ namespace Imi.Project.Api.Controllers
         public async Task<IActionResult> GetFavoritesByUserId(string id)
         {
             var favorites = await _favoriteService.GetFavoritesByUserId(id);
-            return Ok(favorites);
+            var movies = favorites.Select(w => w.Movie);
+            return Ok(movies);
         }
 
         [HttpGet("{id}/watchlists")]
         public async Task<IActionResult> GetWatchlistsByUserId(string id)
         {
             var watchlists = await _watchlistService.GetWatchlistsByUserId(id);
-            return Ok(watchlists);
+            var movies = watchlists.Select(w => w.Movie);
+            return Ok(movies);
         }
 
         [HttpPost]

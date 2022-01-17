@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Imi.Project.Common.Dtos
 {
-    public class GenreResponseDto : BaseDto
+    public class GenreResponseDto : BaseDto<int>
     {
         public string Name { get; set; }
-        public IEnumerable<MovieResponseDto> Movies { get; set; }
     }
 }

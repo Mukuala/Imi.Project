@@ -19,7 +19,6 @@ namespace Imi.Project.Api.Core.Mapping
                  {
                      MovieId = f.MovieId,
                      ApplicationUserId = f.ApplicationUserId,
-                     Id = f.Id,
                      Movie = new MovieResponseDto
                      {
                          Id = f.MovieId,
@@ -37,7 +36,6 @@ namespace Imi.Project.Api.Core.Mapping
                   {
                       MovieId = f.MovieId,
                       ApplicationUserId = f.ApplicationUserId,
-                      Id = f.MovieId,
                       Movie = new MovieResponseDto
                       {
                           Id = f.MovieId,
@@ -61,20 +59,20 @@ namespace Imi.Project.Api.Core.Mapping
             CreateMap<WatchlistRequestDto, Watchlist>();
 
             #region Genre
-            CreateMap<Genre, GenreResponseDto>()
-                .ForMember(dest => dest.Movies,
-                opt => opt.MapFrom(src => src.Movies
-                .Select(mg => new MovieResponseDto
-                {
-                    Id = mg.MovieId,
-                    Name = mg.Movie.Name,
-                    AverageRating = mg.Movie.AverageRating,
-                    Description = mg.Movie.Description,
-                    Duration = mg.Movie.Duration,
-                    EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
-                    Image = GetFullImageUrl(mg.Movie.Image),
-                    ReleaseDate = mg.Movie.ReleaseDate,
-                })));
+            CreateMap<Genre, GenreResponseDto>();
+                //.ForMember(dest => dest.Movies,
+                //opt => opt.MapFrom(src => src.Movies
+                //.Select(mg => new MovieResponseDto
+                //{
+                //    Id = mg.MovieId,
+                //    Name = mg.Movie.Name,
+                //    AverageRating = mg.Movie.AverageRating,
+                //    Description = mg.Movie.Description,
+                //    Duration = mg.Movie.Duration,
+                //    EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
+                //    Image = GetFullImageUrl(mg.Movie.Image),
+                //    ReleaseDate = mg.Movie.ReleaseDate,
+                //})));
 
             CreateMap<GenreRequestDto, Genre>();
             #endregion

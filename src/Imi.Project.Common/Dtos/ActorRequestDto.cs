@@ -4,7 +4,7 @@ using System;
 
 namespace Imi.Project.Common.Dtos
 {
-    public class ActorRequestDto : BaseDto
+    public class ActorRequestDto : BaseDto<int>
     {
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }

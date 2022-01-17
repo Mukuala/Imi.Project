@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Imi.Project.Common.Dtos.Base;
+using System;
 using System.Collections.Generic;
 namespace Imi.Project.Common.Dtos
 {
-    public class UserResponseDto
+    public class UserResponseDto : BaseDto<string>
     {
-        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Image { get; set; }

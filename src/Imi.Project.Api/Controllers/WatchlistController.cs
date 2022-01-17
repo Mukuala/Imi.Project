@@ -1,6 +1,8 @@
 ﻿using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Imi.Project.Api.Controllers
@@ -15,34 +17,35 @@ namespace Imi.Project.Api.Controllers
         {
             _watchlistService = watchlistService;
         }
-        [HttpGet("id")]
-        public async Task<IActionResult> GetByUserAndMovieId(string userId, int movieId)
+        [HttpGet]
+        public async Task<IActionResult> GetLoggedInUserWatchlists()
         {
-            var watchlist = await _watchlistService.GetByUserIdAndMovieId(userId, movieId);
-            if (watchlist == null)
+            var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
+            var favorites = await _watchlistService.GetWatchlistsByUserId(userId);
+            if (favorites == null)
             {
                 return NotFound();
             }
-
-            return Ok(watchlist);
-
+            return Ok(favorites);
         }
-
         [HttpPost]
-        public async Task<IActionResult> Post(WatchlistRequestDto watchlistRequestDto)
+        public async Task<IActionResult> Post(int movieId)
         {
+            var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var watchlistResponseDto = await _watchlistService.AddWatchlistAsync(watchlistRequestDto);
+            var watchlistResponseDto = await _watchlistService.AddWatchlistAsync(userId, movieId);
             return Ok(watchlistResponseDto);
         }
 
-        [HttpDelete("id")]
-        public async Task<IActionResult> Delete(WatchlistRequestDto watchlistRequest)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int movieId)
         {
-            await _watchlistService.DeleteWatchlistAsync(watchlistRequest);
+            var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
+            await _watchlistService.DeleteWatchlistAsync(userId, movieId);
             return Ok();
         }
     }

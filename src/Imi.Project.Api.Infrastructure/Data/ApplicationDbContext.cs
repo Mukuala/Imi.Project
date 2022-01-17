@@ -17,6 +17,7 @@ namespace Imi.Project.Api.Infrastructure.Data
         public DbSet<MovieGenre> MovieGenres { get; set; }
         public DbSet<MovieActor> MovieActors { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Watchlist> Watchlists { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
