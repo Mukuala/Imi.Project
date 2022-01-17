@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-
-
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Imi.Project.Blazor.Services.Api
 {
@@ -63,14 +63,14 @@ namespace Imi.Project.Blazor.Services.Api
             return result;
         }
 
-        public async Task PutCallApi(string id, TRequestDto entity, string jwtToken)
+        public async Task<TResponseDto> PutCallApi(string id, TRequestDto entity, string jwtToken)
         {
-            await CallApi(id, entity, HttpMethod.Put, jwtToken);
+            return await CallApi(id, entity, HttpMethod.Put, jwtToken);
         }
 
-        public async Task PostCallApi(TRequestDto entity, string jwtToken)
+        public async Task<TResponseDto> PostCallApi(TRequestDto entity, string jwtToken)
         {
-            await CallApi(null, entity, HttpMethod.Post, jwtToken);
+            return await CallApi(null, entity, HttpMethod.Post, jwtToken);
         }
 
         public async Task DeleteCallApi(string id, string jwtToken)
@@ -79,7 +79,7 @@ namespace Imi.Project.Blazor.Services.Api
         }
 
 
-        private async Task CallApi(string id, TRequestDto entity, HttpMethod httpMethod, string jwtToken)
+        private async Task<TResponseDto> CallApi(string id, TRequestDto entity, HttpMethod httpMethod, string jwtToken)
         {
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -88,15 +88,22 @@ namespace Imi.Project.Blazor.Services.Api
 
                 if (httpMethod == HttpMethod.Post)
                 {
-                    await Client.PostAsJsonAsync("", entity);
+                    var response = await Client.PostAsJsonAsync("", entity);
+                    var responsedto = await response.Content.ReadAsAsync<TResponseDto>();
+                    return responsedto;
+
                 }
                 else if (httpMethod == HttpMethod.Put)
                 {
-                    await Client.PutAsJsonAsync("", entity);
+                    var response = await Client.PutAsJsonAsync("", entity);
+                    var responsedto = await response.Content.ReadAsAsync<TResponseDto>();
+                    return responsedto;
+
                 }
                 else
                 {
                     await Client.DeleteAsync(id);
+                    return default;
                 }
             }
         }
@@ -119,7 +126,24 @@ namespace Imi.Project.Blazor.Services.Api
                 return null;
             }
             else throw new Exception(response.ReasonPhrase);
+        }
 
+        public async Task PostImageAsync(byte[] imgByteArray, string imgName, int movieId)
+        {
+            using (var form = new MultipartFormDataContent())
+            {
+                using (var stream = new MemoryStream(imgByteArray))
+                {
+                    form.Add(new StreamContent(stream), "Image", imgName);
+                    using (HttpResponseMessage response = await Client.PostAsync(movieId + "/image", form))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string m = "hello";
+                        }
+                    }
+                }
+            }
         }
     }
 }

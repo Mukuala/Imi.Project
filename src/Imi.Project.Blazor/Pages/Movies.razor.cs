@@ -3,6 +3,7 @@ using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,9 +17,10 @@ namespace Imi.Project.Blazor.Pages
         protected MovieResponseDto movie = null;
         protected UserResponseDto user = new UserResponseDto();
         protected MovieRequestDto movieRequest = null;
+        protected byte[] imgByteArray;
+        protected string imageName;
         protected string error;
         protected string storedToken = null;
-
 
         [Inject]
         public NavigationManager UrlNavigationManager { get; set; }
@@ -26,8 +28,6 @@ namespace Imi.Project.Blazor.Pages
         public string Action { get; set; }
         [Parameter]
         public int MovieId { get; set; }
-
-
 
         [Inject]
         private IApiService<MovieResponseDto, MovieRequestDto> movieService { get; set; }
@@ -65,16 +65,15 @@ namespace Imi.Project.Blazor.Pages
                     Duration = movie.Duration,
                     EmbeddedTrailerUrl = movie.EmbeddedTrailerUrl,
                     ReleaseDate = movie.ReleaseDate,
-                    //ActorsId = (IEnumerable<int>)movie.Actors.Select(a => a.Id),
-                    //GenresId = (IEnumerable<int>)movie.Genres.Select(g => g.Id),
+                    ActorsId = movie.Actors.Select(a => a.Id),
+                    GenresId = movie.Genres.Select(g => g.Id),
                 };
             }
         }
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await GetJwtToken();
         }
-
         public async Task GetMovieList()
         {
             var m = await movieService.GetAllAsync();
@@ -91,17 +90,19 @@ namespace Imi.Project.Blazor.Pages
         {
             try
             {
-                if (storedToken != null || movieRequest.Id == 0 || movieRequest.Id == null)
+                if (storedToken != null || movieRequest.Id == 0)
                 {
-                    await movieService.PostCallApi(movieRequest, storedToken);
-                    UrlNavigationManager.NavigateTo("/movies");
-
+                    movie = await movieService.PostCallApi(movieRequest, storedToken);
                 }
                 else if (storedToken != null)
                 {
                     await movieService.PutCallApi(movieRequest.Id.ToString(), movieRequest, storedToken);
-                    UrlNavigationManager.NavigateTo("/movies");
                 }
+                if (imgByteArray != null && !string.IsNullOrEmpty(imageName))
+                {
+                    await movieService.PostImageAsync(imgByteArray, imageName, movie.Id);
+                }
+                UrlNavigationManager.NavigateTo("/movies");
             }
             catch (Exception ex)
             {
@@ -120,7 +121,6 @@ namespace Imi.Project.Blazor.Pages
             {
                 this.error = ex.Message;
             }
-
         }
 
         public async Task GetActorsList()
@@ -133,13 +133,5 @@ namespace Imi.Project.Blazor.Pages
             var g = await genreService.GetAllAsync();
             genres = (List<GenreResponseDto>)g;
         }
-        //private bool ValidJwtToken()
-        //{
-        //    if (movieService.GetJwtUserProfile(storedToken) == null)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
     }
 }

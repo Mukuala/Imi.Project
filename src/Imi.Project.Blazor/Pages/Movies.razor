@@ -1,6 +1,6 @@
 ﻿@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Popups
-@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Inputs
 @inject IJSRuntime JSRuntime
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @page "/movies"
@@ -147,14 +147,20 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
             <ValidationMessage For="@(() =>movieRequest.ReleaseDate)" />
         </div>
         <div class="form-group">
+            <label for="image">Image: </label>
+            <SfUploader AllowMultiple="false">
+                <UploaderEvents ValueChange="ImageAdd"></UploaderEvents>
+            </SfUploader>
+        </div>
+        <div class="form-group">
             <label for="actors">Actor(s): </label>
-            <SfMultiSelect id="actors" TValue="IEnumerable<int>" TItem="ActorResponseDto" @bind-Value="movieRequest.ActorsId" DataSource="@actors" AllowFiltering="true" class="form-control">
+            <SfMultiSelect id="actors" TValue="IEnumerable<int>" TItem="ActorResponseDto" @bind-Value="movieRequest.ActorsId" DataSource="@actors" AllowFiltering="true" Placeholder="Choose Actors..." class="form-control">
                 <MultiSelectFieldSettings Text="Name" Value="Id"></MultiSelectFieldSettings>
             </SfMultiSelect>
         </div>
         <div class="form-group">
             <label for="genres">Genre(s): </label>
-            <SfMultiSelect id="genres" @bind-Value="movieRequest.GenresId" DataSource="@genres" AllowFiltering="true" class="form-control">
+            <SfMultiSelect id="genres" @bind-Value="movieRequest.GenresId" DataSource="@genres" AllowFiltering="true" Placeholder="Choose Genres..." class="form-control">
                 <MultiSelectFieldSettings Text="Name" Value="Id"></MultiSelectFieldSettings>
             </SfMultiSelect>
         </div>
@@ -190,4 +196,21 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
         await DeleteMovie(movie);
         CloseDialog();
     }
+    private void ImageAdd(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            imgByteArray = file.Stream.ToArray();
+            imageName = file.FileInfo.Name;
+        }
+        if (args.Files.Count == 0)
+        {
+            imgByteArray = null;
+            imageName = null;
+        }
+    }
+    //private async Task SubmitForm()
+    //{
+    //    await SaveMovie();
+    //}
 }
