@@ -75,7 +75,6 @@ namespace Imi.Project.Api.Infrastructure.Data
             WatchlistSeeder.Seed(modelBuilder);
             MovieActorSeeder.Seed(modelBuilder);
             MovieGenreSeeder.Seed(modelBuilder);
-
         }
 
     }

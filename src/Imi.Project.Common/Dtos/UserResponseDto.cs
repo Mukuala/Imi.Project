@@ -11,9 +11,8 @@ namespace Imi.Project.Common.Dtos
         public string Email { get; set; }
         public string UserName { get; set; }
         public DateTime Birthday { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsModerator { get; set; }
-        public IEnumerable<FavoriteResponseDto> FavoritesMovies { get; set; }
-        public IEnumerable<WatchlistResponseDto> WatchlistMovies { get; set; }
+        public string Role { get; set; }
+        public IEnumerable<MovieResponseDto> FavoritesMovies { get; set; }
+        public IEnumerable<MovieResponseDto> WatchlistMovies { get; set; }
     }
 }

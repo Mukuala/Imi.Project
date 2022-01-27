@@ -2,6 +2,7 @@
 using Imi.Project.Api.Core.Entities;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
 namespace Imi.Project.Api.Core.Mapping
@@ -13,40 +14,43 @@ namespace Imi.Project.Api.Core.Mapping
             #region ApplicationUser
 
             CreateMap<ApplicationUser, UserResponseDto>()
+                .ForMember(u => u.Image, opt => opt.MapFrom(src => GetFullImageUrl(src.Image)))
                 .ForMember(dest => dest.FavoritesMovies,
                  opt => opt.MapFrom(src => src.FavoriteMovies
-                 .Select(f => new FavoriteResponseDto
+                 .Select(f => new MovieResponseDto
                  {
-                     MovieId = f.MovieId,
-                     ApplicationUserId = f.ApplicationUserId,
-                     Movie = new MovieResponseDto
-                     {
+                     //MovieId = f.MovieId,
+                     //ApplicationUserId = f.ApplicationUserId,
+                     //Movie = new MovieResponseDto
+                     //{
                          Id = f.MovieId,
                          Image = GetFullImageUrl(f.Movie.Image),
                          Name = f.Movie.Name,
                          AverageRating = f.Movie.AverageRating,
                          ReleaseDate = f.Movie.ReleaseDate,
-                     }
+                     //}
                  }
                 )))
 
                 .ForMember(dest => dest.WatchlistMovies,
                 opt => opt.MapFrom(src => src.WatchlistMovies
-                  .Select(f => new WatchlistResponseDto
+                  .Select(f => new MovieResponseDto
                   {
-                      MovieId = f.MovieId,
-                      ApplicationUserId = f.ApplicationUserId,
-                      Movie = new MovieResponseDto
-                      {
+                      //MovieId = f.MovieId,
+                      //ApplicationUserId = f.ApplicationUserId,
+                      //Movie = new MovieResponseDto
+                      //{
                           Id = f.MovieId,
                           Image = GetFullImageUrl(f.Movie.Image),
                           Name = f.Movie.Name,
                           AverageRating = f.Movie.AverageRating,
                           ReleaseDate = f.Movie.ReleaseDate
-                      }
+                      //}
                   })));
 
-            CreateMap<UserRequestDto, ApplicationUser>();
+            CreateMap<UserRequestDto, ApplicationUser>()
+                .ForMember(au => au.NormalizedEmail, opt => opt.MapFrom(ur => ur.Email.ToUpper()))
+                .ForMember(au => au.NormalizedUserName, opt => opt.MapFrom(ur => ur.UserName.ToUpper()));
             #endregion
 
 
@@ -80,6 +84,7 @@ namespace Imi.Project.Api.Core.Mapping
             #region Actor
 
             CreateMap<Actor, ActorResponseDto>()
+                .ForMember(a => a.Image, opt => opt.MapFrom(src => GetFullImageUrl(src.Image)))
                 .ForMember(dest => dest.Movies,
                 opt => opt.MapFrom(src => src.Movies
                  .Select(m => new MovieResponseDto
@@ -152,6 +157,10 @@ namespace Imi.Project.Api.Core.Mapping
             }
             else
             {
+                if (image.Contains("https://robohash.org/"))
+                {
+                    return image;
+                }
                 var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
                 var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
 

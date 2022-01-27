@@ -40,7 +40,11 @@ namespace Imi.Project.Api
                 options.EnableSensitiveDataLogging();
             });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IRepository<Genre>, GenreRepository>();
             services.AddScoped<IWatchlistRepository, WatchlistRepository>();
@@ -51,7 +55,7 @@ namespace Imi.Project.Api
             services.AddScoped<IUserRepository, ApplicationUserRepository>();
             services.AddScoped<IMovieRepository, MovieRepository>();
 
-            services.AddScoped<IService<GenreResponseDto, GenreRequestDto,int>, GenreService>();
+            services.AddScoped<IService<GenreResponseDto, GenreRequestDto, int>, GenreService>();
             services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IUserService, UserService>();
@@ -59,7 +63,7 @@ namespace Imi.Project.Api
             services.AddScoped<IWatchlistService, WatchlistService>();
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IMeService, MeService>();
-
+            
             services.AddControllers();
             services.AddCors();
             services.AddHttpContextAccessor();
@@ -106,8 +110,6 @@ namespace Imi.Project.Api
                     });
                 });
             });
-            services.AddCors();
-
 
             services.AddControllersWithViews()
         .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -146,6 +148,7 @@ namespace Imi.Project.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -165,6 +168,10 @@ namespace Imi.Project.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(builder => builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+
 
             app.UseEndpoints(endpoints =>
             {

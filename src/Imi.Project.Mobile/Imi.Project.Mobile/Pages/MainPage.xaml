@@ -1,16 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<FlyoutPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="Imi.Project.Mobile.Pages.MainPage"
-             xmlns:pages="clr-namespace:Imi.Project.Mobile.Pages">
-  <FlyoutPage.Flyout>
-    <pages:MainPageFlyout x:Name="FlyoutPage" />
-  </FlyoutPage.Flyout>
-  <FlyoutPage.Detail>
-    <NavigationPage>
-      <x:Arguments>
-        <pages:MainPageDetail />
-      </x:Arguments>
-    </NavigationPage>
-  </FlyoutPage.Detail>
-</FlyoutPage>
+             Title="Mini IMDB">
+    <StackLayout>
+        <SearchBar Placeholder="Search..."/>
+        <CollectionView x:Name="MoviesList" SelectionMode="Single" SelectionChanged="MoviesList_SelectionChanged">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="0"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="0.5" BackgroundColor="Wheat" xct:TouchEffect.NativeAnimation="True"> 
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" />
+                        <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="Goldenrod">
+                                <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                                <Label Text="{Binding ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" TextColor="Black"  LineBreakMode="TailTruncation"/>
+                            </StackLayout>
+                        </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

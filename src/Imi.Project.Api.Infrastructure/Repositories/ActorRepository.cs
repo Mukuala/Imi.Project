@@ -18,10 +18,13 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         }
         public override IQueryable<Actor> GetAllAsync()
         {
-            var entities = _dbContext.Actors.Include(a => a.Movies).ThenInclude(ma => ma.Movie);
+            var entities = _dbContext.Actors.Include(a => a.Movies).ThenInclude(ma => ma.Movie).OrderBy(a => a.Name);
             return entities;
         }
-
+        public override async Task<Actor> GetByIdAsync(int id)
+        {
+            return await GetAllAsync().FirstOrDefaultAsync(a => a.Id.Equals(id));
+        }
         public async Task<IEnumerable<Actor>> SearchByNameAsync(string name)
         {
             return await GetAllAsync().Where(a => a.Name.ToUpper().Contains(name.ToUpper())).ToListAsync();

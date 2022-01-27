@@ -1,0 +1,21 @@
+﻿@using Plk.Blazor.DragDrop;
+@using Syncfusion.Blazor.Layouts
+@page "/puzzle"
+
+<h3>ImagePuzzle</h3>
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 align-items">
+        <Dropzone MaxItems="arrayf.Length" Items="arrayf">
+            <div class="h-100 card box-shadow text-center">
+                <div class="card-img d-flex align-items-center justify-content-center">
+                    @context
+                </div>
+            </div>
+        </Dropzone>
+    </div>
+</div>
+<div style="max-height:80%;max-width:80%">
+</div>
+@code {
+    string[] arrayf = { "one", "two", "three", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+}

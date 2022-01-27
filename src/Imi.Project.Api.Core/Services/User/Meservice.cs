@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Imi.Project.Api.Core.Entities;
+using Imi.Project.Api.Core.Interfaces.Repository;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,14 +21,16 @@ namespace Imi.Project.Api.Core.Services.User
     public class MeService : IMeService
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserRepository _userRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
 
 
-        public MeService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration, IHttpContextAccessor contextAccessor, IMapper mapper)
+        public MeService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration, IHttpContextAccessor contextAccessor, IMapper mapper, IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             _signInManager = signInManager;
             _userManager = userManager;
             _configuration = configuration;
@@ -41,9 +44,15 @@ namespace Imi.Project.Api.Core.Services.User
             if (currentHttpContextUser != null)
             {
                 var currentUserId = currentHttpContextUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var applicationUser = await _userManager.FindByIdAsync(currentUserId);
-
+                var applicationUser = await _userRepository.GetByIdAsync(currentUserId);
+                var roles = await _userManager.GetRolesAsync(applicationUser);
                 var dto = _mapper.Map<UserResponseDto>(applicationUser);
+
+                foreach (var role in roles)
+                {
+                    dto.Role = role;
+                }
+
                 return dto;
             }
 
@@ -57,8 +66,10 @@ namespace Imi.Project.Api.Core.Services.User
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(loginRequestDto.UserName);
+                var applicationUser = _userRepository.GetByIdAsync(user.Id);
                 var claims = await GetClaimsFromUser(user);
                 var jwtToken = GetJwtTokenForUser(user, claims);
+                var role = await _userManager.GetRolesAsync(user);
 
                 // Creating the ClaimsIdentity
                 var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
@@ -69,7 +80,7 @@ namespace Imi.Project.Api.Core.Services.User
                 // Sign in, in the context
                 await _contextAccessor.HttpContext.SignInAsync(claimsPrincipal);
 
-                return new LoginResult { Succeeded = true, JwtToken = jwtToken };
+                return new LoginResult { Succeeded = true, JwtToken = jwtToken, Role = role[0]  };
             }
             else
             {

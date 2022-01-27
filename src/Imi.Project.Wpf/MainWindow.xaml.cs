@@ -21,7 +21,6 @@ namespace Imi.Project.Wpf
     {
         WebApiClient webApiClient = new WebApiClient();
         string token = Properties.Settings.Default.Token;
-        byte[] bytes;
 
         public MainWindow()
         {
@@ -102,9 +101,9 @@ namespace Imi.Project.Wpf
             if (openFileDialog.ShowDialog() == true)
             {
                 txbAddedImgPath.Text = openFileDialog.FileName;
-                bytes = File.ReadAllBytes(openFileDialog.FileName);
-                imgFileImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+                //imgFileImage.Source = new BitmapImage(new Uri(openFileDialog.FileName));
             }
+            
         }
         private async void PopulateMoviesListBox()
         {
@@ -263,11 +262,12 @@ namespace Imi.Project.Wpf
                 ReleaseDate = (DateTime)dateReleaseDate.DateTime,
                 ActorsId = actorsId,
                 GenresId = genresId,
-                //Image = GetIFromFileFromImgFile(),
+                //Image = GetIFormFileFromImgFile(),
             };
             if (id == null)
             {
-                await webApiClient.PostCallApi(movie, token);
+              var m =  await webApiClient.PostCallApi(movie, token,txbAddedImgPath.Text);
+              await webApiClient.PostImageAsync(txbAddedImgPath.Text, m.Id);
             }
             else
             {

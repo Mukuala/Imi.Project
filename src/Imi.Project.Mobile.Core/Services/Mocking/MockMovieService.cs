@@ -1,8 +1,7 @@
-﻿using Imi.Project.Mobile.Core.Models;
+﻿using Imi.Project.Api.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace Imi.Project.Mobile.Core.Services.Mocking
 {

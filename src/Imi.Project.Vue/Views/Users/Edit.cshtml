@@ -1,0 +1,150 @@
+﻿@model Guid
+
+<div class="row" id="app">
+    <div class="col-sm-6 text-black">
+
+        <div class="d-flex align-items-center ">
+
+            <form style="width: 50rem;" v-on:submit.prevent="submitForm">
+
+                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Edit {{user.userName}}</h3>
+
+                <div class="form-outline mb-4">
+                    <label>Username</label>
+                    <input class="form-control form-control-lg" placeholder="Username" v-model="form.userName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>First Name</label>
+                    <input class="form-control form-control-lg" placeholder="First Name" v-model="form.firstName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Last Name</label>
+                    <input class="form-control form-control-lg" placeholder="Last Name" v-model="form.lastName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Date of birth</label>
+                    <input type="date" class="form-control form-control-lg" v-model="form.birthday" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Email</label>
+                    <input type="email" class="form-control form-control-lg" v-model="form.email" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Password</label>
+                    <input type="password" class="form-control form-control-lg" placeholder="Password" v-model="form.password" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Confirm pasword</label>
+                    <input type="password" class="form-control form-control-lg" placeholder="Confirm password" v-model="form.passwordConfirm" required />
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input id="imageFile" type="file" style="background-color:wheat" class="form-control" accept="image/png, image/gif, image/jpeg" />
+                </div>
+                <div class="form-outline mb-4">
+                    <ul v-for="error in errors">
+                        <li class="text-danger">{{error}}</li>
+                    </ul>
+                </div>
+
+                <div class="pt-1 mb-4">
+                    <button class="btn btn-info btn-lg btn-block" type="submit">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var formData = new FormData();
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    };
+    var apiURL = 'https://localhost:5001/api/Users/'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            user: {},
+            errors: [],
+            image: null,
+            form: {
+                id: '',
+                userName: '',
+                firstName: '',
+                lastName: '',
+                password: '',
+                passwordConfirm: '',
+                email: '',
+                birthday: null,
+            },
+            userId:'@Model.ToString()',
+        },
+        created: function () {
+            var self = this;
+            self.fetchUser();
+        },
+        methods: {
+            submitForm: async function () {
+
+                await axios.put(apiURL, this.form, config)
+                    .then(response => {
+                        this.image = document.getElementById('imageFile').files[0];
+                        formData.append("image", this.image);
+
+                        if (this.image == null) {
+                            setTimeout(ReturnToUsers(), 500);
+                        }
+                    }).catch(function (error) {
+                        console.log(JSON.stringify(error));
+                        alert(error);
+                    });
+                if (this.userId != null && this.image != null) {
+                    var self = this;
+                    async function imgUpload(id) {
+                        console.log(apiURL + id + "/image", this.image);
+                        await axios
+                            .post(apiURL + id + "/image", formData, config).then(response => {
+                                setTimeout(ReturnToUsers(), 500);
+                            })
+                            .catch(function (error) {
+                                console.log(JSON.stringify(error));
+                                alert(error);
+                                self.errors = error.response.data.errors;
+                            });
+                    };
+                    imgUpload(this.userId);
+                };
+            },
+
+            fetchUser: async function () {
+                await axios.get(apiURL + this.userId, config)
+                    .then(response => {
+                        this.user = response.data;
+                        this.form.userName = response.data.userName;
+                        this.form.firstName = response.data.firstName;
+                        this.form.lastName = response.data.lastName;
+                        this.form.email = response.data.email;
+                        this.form.id = response.data.id;
+                        this.form.birthday = response.data.birthday;
+                    })
+            }
+
+        }
+    });
+
+    function ReturnToUsers() {
+        window.location.href = 'https://localhost:5005/users';
+    };
+
+
+</script>
+

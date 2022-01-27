@@ -1,0 +1,88 @@
+﻿<h1>Users</h1>
+<a style="margin:30px" href="https://localhost:5005/Users/create" class="btn btn-primary ">Add User</a>
+
+<div class=" container" id="app">
+    <table class="table table-striped table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Username</th>
+                <th>Favorites amount</th>
+                <th>Watchlist amount</th>
+                <th>Birthday</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="user in users">
+                <td>
+                    <a v-bind:href="'https://localhost:5005/Users/Detail/'+user.id">
+                        <img v-bind:src="user.image" style="object-fit:cover" height="100" />
+                    </a>
+                </td>
+                <td>
+                        {{user.userName}}
+                </td>
+                <td>{{user.favoritesMovies.length}}</td>
+                <td>{{user.watchlistMovies.length}}</td>
+                <td>{{user.birthday.split("T")[0]}}</td>
+                <td>
+                    <a class="btn btn-primary" v-bind:href="'https://localhost:5005/Users/Edit/'+user.id">Edit</a>
+                    <button class="btn btn-danger" data-toggle="modal" :data-target="'#delete'+user.userName">Delete</button>
+
+                    <div class="modal fade" :id="'delete'+user.userName" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModal">Delete {{user.userName}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete {{user.userName}}?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" v-on:click="deleteUser(user.id)" class="btn btn-primary">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+<script>
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    };
+    var apiURL = 'https://localhost:5001/api/Users/'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            users: null,
+        },
+        created: async function () {
+            await axios
+                .get(apiURL, config)
+                .then(response => (this.users = response.data))
+        },
+        methods: {
+            deleteUser: async function (id) {
+                await axios.delete(apiURL + id, config);
+                setTimeout(window.location.href = window.location.href, 500);
+            },
+        }
+
+    });
+
+</script>

@@ -44,13 +44,13 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         {
             return _dbContext.ApplicationUsers
                 .Include(au => au.FavoriteMovies).ThenInclude(f => f.Movie)
-                .Include(au => au.WatchlistMovies).ThenInclude(w => w.Movie);
+                .Include(au => au.WatchlistMovies).ThenInclude(w => w.Movie).OrderBy(au => au.UserName);
         }
 
         public async Task<ApplicationUser> GetByIdAsync(string id)
         {
-            var et =  GetAllAsync();
-             var t = await GetAllAsync().FirstOrDefaultAsync(a => a.Id.Equals(id));
+            var et = GetAllAsync();
+            var t = await GetAllAsync().FirstOrDefaultAsync(a => a.Id.Equals(id));
             return t;
         }
 
@@ -70,5 +70,10 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
             return entity;
         }
+        //public IEnumerable<Role> GetAllRoles()
+        //{
+        //    var c = _dbContext.Roles.ToList();
+        //    return c;
+        //}
     }
 }

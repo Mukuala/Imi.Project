@@ -1,0 +1,88 @@
+﻿<div class="container row" id="app">
+
+    <div class="card border mx-auto col-sm-6">
+        <div class="card-header" style="background-color:white">
+            <h2>{{user.userName}}</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>First Name</th>
+                        <td>{{user.firstName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Name</th>
+                        <td>{{user.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{user.email}}</td>
+                    </tr>
+                    <tr>
+                        <th>Birthday</th>
+                        <td>{{user.birthday.split("T")[0]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <img v-bind:src="user.image" class="img-fluid" />
+    </div>
+
+    <div class="card border mx-auto col-sm-6">
+        <div class="card-header" style="background-color:white">
+            <h2>Favorite movies</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr v-for="movie in user.favoritesMovies">
+                        <th>{{movie.name}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card border mx-auto col-sm-6">
+        <div class="card-header" style="background-color:white">
+            <h2>Watchlist</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr v-for="movie in user.watchlistMovies">
+                        <th>{{movie.name}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    };
+
+    var apiUser = 'https://localhost:5001/api/Me/profile'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            user: null,
+        },
+        created: async function () {
+            await axios
+                .get(apiUser, config)
+                .then(response => (this.user = response.data))
+            console.log(JSON.stringify(this.user));
+        }
+    })
+</script>

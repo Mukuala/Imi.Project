@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,7 +61,7 @@ namespace Imi.Project.Api.Core.Services
             else if (!canParseId && !string.IsNullOrEmpty(id))
             {
                 oldImageName = await CheckStringIdReturnImageString(id);
-                if (oldImageName != null)
+                if (oldImageName != null && !oldImageName.Contains("https://robohash.org/"))
                 {
                     DeleteOldImage(oldImageName);
                 }
@@ -87,12 +88,16 @@ namespace Imi.Project.Api.Core.Services
                 Directory.CreateDirectory(folderPathForImages);
             }
 
+            var AllFolderPathImages = Directory.GetFiles(folderPathForImages);
 
             var newFileNameWithExtension = $"{image.FileName}";
 
             var filePath = Path.Combine(folderPathForImages, newFileNameWithExtension);
 
-            if (image.Length > 0)
+            bool ImageAlreadyExists = AllFolderPathImages.Any(x => x.Equals(filePath));
+
+
+            if (image.Length > 0 && ImageAlreadyExists == false)
             {
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -134,7 +139,7 @@ namespace Imi.Project.Api.Core.Services
             return null;
         }
 
-        private async Task UpdateEntity(bool canParseId,string id, int intId, Type dtoType, string imageString)
+        private async Task UpdateEntity(bool canParseId, string id, int intId, Type dtoType, string imageString)
         {
             if (canParseId)
             {

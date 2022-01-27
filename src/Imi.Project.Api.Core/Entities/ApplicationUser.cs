@@ -11,6 +11,7 @@ namespace Imi.Project.Api.Core.Entities
         public string LastName { get; set; }
         public string Image { get; set; }
         public DateTime Birthday { get; set; }
+        //public UserRole Role { get; set; }
         public IEnumerable<Favorite> FavoriteMovies { get; set; }
         public IEnumerable<Watchlist> WatchlistMovies { get; set; }
     }

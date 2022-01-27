@@ -1,6 +1,7 @@
 ﻿using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,13 +16,15 @@ namespace Imi.Project.Api.Controllers
         private readonly IUserService _userService;
         private readonly IWatchlistService _watchlistService;
         private readonly IFavoriteService _favoriteService;
+        private readonly IImageService _imageService;
 
 
-        public UsersController(IUserService userService, IWatchlistService watchlistService, IFavoriteService favoriteService)
+        public UsersController(IUserService userService, IWatchlistService watchlistService, IFavoriteService favoriteService, IImageService imageService)
         {
             _userService = userService;
             _favoriteService = favoriteService;
             _watchlistService = watchlistService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -107,6 +110,22 @@ namespace Imi.Project.Api.Controllers
             }
 
             await _userService.DeleteAsync(id);
+            return Ok();
+        }
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> AddOrUpdateImage(string id, IFormFile image)
+        {
+            if (image == null)
+            {
+                return Ok("No image has been added");
+            }
+            var movie = await _userService.GetByIdAsync(id);
+
+            if (movie == null)
+            {
+                return BadRequest("Movie doesn't exists!");
+            }
+            await _imageService.AddOrUpdateImageAsync<UserRequestDto>(image, id, false);
             return Ok();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +15,13 @@ namespace Imi.Project.Api.Controllers
     {
         private readonly IActorService _actorService;
         private readonly IMovieService _movieService;
+        private readonly IImageService _imageService;
 
-
-        public ActorsController(IActorService actorService, IMovieService movieService)
+        public ActorsController(IActorService actorService, IMovieService movieService, IImageService imageService)
         {
             _actorService = actorService;
             _movieService = movieService;
+            _imageService = imageService;
         }
 
         [AllowAnonymous]
@@ -104,5 +106,22 @@ namespace Imi.Project.Api.Controllers
             await _actorService.DeleteAsync(id);
             return Ok();
         }
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> AddOrUpdateImage(int id, IFormFile image)
+        {
+            if (image == null)
+            {
+                return Ok("No image has been added");
+            }
+            var actor = await _actorService.GetByIdAsync(id);
+
+            if (actor == null)
+            {
+                return BadRequest("Actor doesn't exists!");
+            }
+            await _imageService.AddOrUpdateImageAsync<ActorRequestDto>(image, id.ToString(), false);
+            return Ok();
+        }
+
     }
 }

@@ -21,7 +21,7 @@ namespace Imi.Project.Api.Infrastructure.Repositories
             .Include(m => m.Actors).ThenInclude(ma => ma.Actor)
             .Include(m => m.Genres).ThenInclude(mg => mg.Genre)
             .Include(m => m.UsersFavorite).ThenInclude(f => f.ApplicationUser)
-            .Include(m => m.UsersWatchlist).ThenInclude(w => w.ApplicationUser);
+            .Include(m => m.UsersWatchlist).ThenInclude(w => w.ApplicationUser).OrderBy(m => m.Name);
 
             return entities;
         }

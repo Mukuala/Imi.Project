@@ -16,7 +16,7 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         public override IQueryable<Genre> GetAllAsync()
         {
             return _dbContext.Genres
-                .Include(g => g.Movies).ThenInclude(mg => mg.Movie);
+                .Include(g => g.Movies).ThenInclude(mg => mg.Movie).OrderBy(g => g.Name);
         }
 
     }

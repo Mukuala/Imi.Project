@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DLToolkit.Forms.Controls;
+using Imi.Project.Mobile.Core.Models;
+using Imi.Project.Mobile.Core.Services.Mocking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,27 +13,23 @@ using Xamarin.Forms.Xaml;
 namespace Imi.Project.Mobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : FlyoutPage
+    public partial class MainPage : ContentPage
     {
         public MainPage()
         {
             InitializeComponent();
-            FlyoutPage.ListView.ItemSelected += ListView_ItemSelected;
+            MoviesList.ItemsSource = MockMovieService.Movies;
         }
 
-        private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void MoviesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = e.SelectedItem as MainPageFlyoutMenuItem;
-            if (item == null)
-                return;
-
-            var page = (Page)Activator.CreateInstance(item.TargetType);
-            page.Title = item.Title;
-
-            Detail = new NavigationPage(page);
-            IsPresented = false;
-
-            FlyoutPage.ListView.SelectedItem = null;
+            var movies = e.CurrentSelection;
+            ((CollectionView)sender).SelectedItem = null;
+            for (int i = 0; i < movies.Count; i++)
+            {
+                var movie = movies[i] as Movie;
+                await Navigation.PushAsync(new MovieDetailPage(movie));
+            }
         }
     }
 }

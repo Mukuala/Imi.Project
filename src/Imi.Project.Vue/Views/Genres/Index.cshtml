@@ -1,0 +1,132 @@
+﻿<div  class="container text-center" id="app">
+    <h1 >Genres</h1>
+    <button style="margin:30px" data-toggle="modal" data-target="#create" class="btn btn-primary">Add Genre</button>
+
+    <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createModal" aria-hidden="true">
+        <form v-on:submit.prevent="createGenre">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModal">Add new genre</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input v-model="form.name" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <table class="table table-borderless">
+        <tbody>
+            <tr v-for="genre in genres">
+                <td class="text-right">{{genre.name}}</td>
+                <td class="text-left">
+                    <button class="btn btn-primary" data-toggle="modal" :data-target="'#edit'+genre.name">Edit</button>
+                    <button class="btn btn-danger" data-toggle="modal" :data-target="'#delete'+genre.name">Delete</button>
+
+                    <div class="modal fade" :id="'delete'+genre.name" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModal">Delete {{genre.name}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete {{genre.name}}?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" v-on:click="deleteGenre(genre.id)" class="btn btn-primary">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" :id="'edit'+genre.name" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+                        <form v-on:submit.prevent="editGenre(genre.id)">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModal">Edit {{genre.name}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input v-model="form.name" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    };
+    var apiURL = 'https://localhost:5001/api/Genres/'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            genres: null,
+            form: {
+                name: '',
+                id: 0,
+            }
+        },
+        created: async function () {
+            await axios
+                .get(apiURL, config)
+                .then(response => (this.genres = response.data))
+        },
+        methods: {
+            deleteGenre: async function (id) {
+                await axios.delete(apiURL + id, config);
+                setTimeout(window.location.href = window.location.href, 500);
+            },
+
+            editGenre: async function (id) {
+                this.form.id = id;
+                await axios.put(apiURL + id, this.form, config).then(response => {
+                    setTimeout(window.location.href = window.location.href, 500)
+                }).catch(function (error) {
+                    console.log(JSON.stringify(error));
+                    alert(error)
+                })
+
+            },
+            createGenre: async function () {
+                this.form.id = 0;
+                await axios.post(apiURL, this.form, config).then(response => {
+                    setTimeout(window.location.href = window.location.href, 500)
+                }).catch(function (error) {
+                    console.log(JSON.stringify(error));
+                    alert(error)
+                })
+            }
+        }
+
+    });
+
+</script>

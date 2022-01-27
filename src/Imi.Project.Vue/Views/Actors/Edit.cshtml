@@ -1,0 +1,99 @@
+﻿@model int
+<div class="row" id="app">
+    <div class="col-sm-6 text-black">
+        <h1>Edit {{actor.name}}</h1>
+
+        <form style="width: 50rem;" v-on:submit.prevent="submitForm">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" v-model="form.name" required accept="image/png, image/gif, image/jpeg" />
+            </div>
+            <div class="form-group">
+                <label>Biography</label>
+                <textarea class="form-control" v-model="form.biography" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Date of birth</label>
+                <input type="date" class="form-control" v-model="form.dateOfBirth" required />
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input id="imageFile" type="file" style="background-color:wheat" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var formData = new FormData();
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: {
+            Authorization: `Bearer ${jwtToken}`
+        }
+    };
+    var apiURL = 'https://localhost:5001/api/Actors/'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            actor: {},
+            image: null,
+            form: {
+                name: '',
+                biography: '',
+                dateOfBirth: null,
+            },
+            actorId: 0,
+        },
+        created: function () {
+            var self = this;
+            self.fetchActor();
+        },
+        methods: {
+            submitForm: async function () {
+
+                await axios.put(apiURL, this.form, config)
+                    .then(response => {
+                        this.actorId = response.data.id
+                        this.image = document.getElementById('imageFile').files[0];
+                        formData.append("image", this.image);
+
+                        if (this.image == null) {
+                            setTimeout(ReturnToActor(this.actorId), 500);
+                        }
+                    }).catch(function (error) {
+                        console.log(error)
+                        alert(error);
+                    });
+                if (this.actorId != 0 && this.image != null) {
+                    async function imgUpload(id) {
+                        console.log(apiURL + id + "/image", this.image);
+                        await axios
+                            .post(apiURL + id + "/image", formData, config).then(response => {
+                                setTimeout(ReturnToActor(id), 500);
+                            })
+                            .catch(function (error) {
+                                console.log(JSON.stringify(error));
+                                alert(error);
+                            });
+                    };
+                    imgUpload(this.actorId);
+                }
+            },
+            fetchActor: async function () {
+                await axios.get(apiURL +@Model).then(response => {
+                    this.actor = response.data;
+                    this.form.name = response.data.name;
+                    this.form.biography = response.data.biography;
+                    this.form.dateOfBirth = response.data.dateOfBirth;
+                })
+            }
+        }
+    });
+    function ReturnToActor(actorId) {
+        window.location.href = 'https://localhost:5005/actors/detail/' + actorId;
+    }
+</script>

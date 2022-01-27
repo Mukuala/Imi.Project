@@ -7,9 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.3.0.47" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Imi.Project.Common\Imi.Project.Common.csproj" />
     <ProjectReference Include="..\Imi.Project.Mobile.Core\Imi.Project.Mobile.Core.csproj" />
   </ItemGroup>
 

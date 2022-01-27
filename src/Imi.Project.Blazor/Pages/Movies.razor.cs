@@ -3,7 +3,6 @@ using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,10 +69,10 @@ namespace Imi.Project.Blazor.Pages
                 };
             }
         }
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await GetJwtToken();
-        }
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    await GetJwtToken();
+        //}
         public async Task GetMovieList()
         {
             var m = await movieService.GetAllAsync();

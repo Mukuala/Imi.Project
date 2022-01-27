@@ -1,0 +1,42 @@
+﻿<h1>Coming soon</h1>
+
+<div class=" container" id="app">
+    <table class="table table-striped table-bordered text-center">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Duration</th>
+                <th>Content Rating</th>
+                <th>Release Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="movie in movies">
+                <td>
+                        <img v-bind:src="movie.image" style="object-fit:cover" height="100" />
+                </td>
+                <td>{{movie.title}}</td>
+                <td>{{movie.runtimeStr}}</td>
+                <td>{{movie.contentRating}}</td>
+                <td>{{movie.releaseState}} {{movie.year}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    var apiURL = 'https://imdb-api.com/en/API/ComingSoon/k_llmut71i'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            movies: null,
+        },
+        created: async function () {
+            await axios
+                .get(apiURL)
+                .then(response => (this.movies = response.data.items))
+        }
+    })
+</script>

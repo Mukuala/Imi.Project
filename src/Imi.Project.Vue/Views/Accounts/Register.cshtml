@@ -1,0 +1,111 @@
+﻿
+<div class="row" id="app">
+    <div class="col-sm-6 text-black">
+
+        <div class="d-flex align-items-center ">
+
+            <form style="width: 23rem;" v-on:submit.prevent="submitForm">
+
+                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Register</h3>
+
+                <div class="form-outline mb-4">
+                    <label>Username</label>
+                    <input class="form-control form-control-lg" placeholder="Username" v-model="form.userName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>First Name</label>
+                    <input class="form-control form-control-lg" placeholder="First Name" v-model="form.firstName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Last Name</label>
+                    <input class="form-control form-control-lg" placeholder="Last Name" v-model="form.lastName" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Date of birth</label>
+                    <input type="date" class="form-control form-control-lg" v-model="form.birthday" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Email</label>
+                    <input type="email" class="form-control form-control-lg" v-model="form.email" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Password</label>
+                    <input type="password" class="form-control form-control-lg" placeholder="Password" v-model="form.password" required />
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label>Confirm pasword</label>
+                    <input type="password" class="form-control form-control-lg" placeholder="Confirm password" v-model="form.passwordConfirm" required />
+                </div>
+                <div class="form-outline mb-4">
+                    <ul v-for="error in errors">
+                        <li class="text-danger">{{error}}</li>
+                    </ul>
+                </div>
+                <div class="pt-1 mb-4">
+                    <button class="btn btn-info btn-lg btn-block" type="submit">Register</button>
+                </div>
+
+                <p>Already have an account? <a href="https://localhost:5005/accounts/login" class="link-info">Log in</a></p>
+
+            </form>
+
+        </div>
+
+    </div>
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+        <img src="https://www.advantageico.com/wp-content/uploads/2018/07/movies-tiles.jpg" alt="Movies collage image" class="w-100 min-vh-100" style="object-fit: cover; object-position: left;">
+    </div>
+</div>
+
+<script>
+    var apiURL = 'https://localhost:5001/api/Auth/register'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            errors: [],
+            form: {
+                userName: '',
+                firstName: '',
+                lastName: '',
+                password: '',
+                passwordConfirm: '',
+                email: '',
+                birthday: null
+            }
+        },
+        methods: {
+            submitForm: async function Register() {
+                try {
+                    let res = await axios.post(apiURL, this.form);
+
+                    let data = res.data;
+                    ReturnToLogin();
+                } catch (error) {
+                    //console.log(error.response.data.errors); // this is the main part. Use the response property from the error object
+                    this.errors = error.response.data.errors
+                }
+            }
+
+            //    submitForm: function () {
+            //        axios.post(apiURL, this.form)
+            //            .catch(function (error) {
+            //                if (error.response) {
+            //                    console.log(error.response.data);
+            //                }
+            //            })
+            //            .then(async response => CheckResponseErrors(response));
+            //        //    setTimeout(ReturnToLogin, 1500);
+            //    }
+        }
+    });
+
+    function ReturnToLogin() {
+        window.location.href = 'https://localhost:5005/accounts/login';
+    }
+</script>

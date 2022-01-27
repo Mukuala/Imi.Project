@@ -1,0 +1,106 @@
+﻿@model int
+
+<div class="container row" id="app">
+
+    <div class="card border mx-auto col-sm-6">
+        <div class="card-header" style="background-color:white">
+            <h2>{{movie.name}}</h2>
+            <button>FAV</button>
+            <button>WATCH</button>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th>Release Date</th>
+                        <td>{{movie.releaseDate.split("T")[0]}}</td>
+                    </tr>
+                    <tr>
+                        <th>Actor(s)</th>
+                        <td><a :href="'https://localhost:5005/actors/detail/' +actor.id" v-for="actor in movie.actors"> {{actor.name}}<br/></a></td>
+                    </tr>
+                    <tr>
+                        <th>Genre(s)</th>
+                        <td><p v-for="genre in movie.genres"> {{genre.name}}</p></td>
+                    </tr>
+                    <tr>
+                        <th>Rating</th>
+                        <td>{{movie.averageRating}}/10</td>
+                    </tr>
+                    <tr>
+                        <th>Duration</th>
+                        <td>{{movie.duration}} min</td>
+                    </tr>
+                    <tr>
+                        <th>Trailer</th>
+                        <td><iframe v-bind:src="movie.embeddedTrailerUrl" height="300" frameborder="0"> </iframe></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <h4>DESCRIPTION:</h4>
+            <p>{{movie.description}}</p>
+            <br />
+            <button class="btn-danger btn-block" data-toggle="modal" data-target="#delete">Delete</button>
+            <a href="https://localhost:5005/movies/Edit/@Model" class=" btn btn-primary btn-block text-center">Edit</a>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <img v-bind:src="movie.image" class="img-fluid" />
+    </div>
+
+
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModal">Delete {{movie.name}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete {{movie.name}}?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" v-on:click="deleteMovie" class="btn btn-primary">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/axios/axios.min.js"></script>
+<script>
+    var jwtToken = window.localStorage.getItem('jwtToken');
+    const config = {
+        headers: { Authorization: `Bearer ${jwtToken}` }
+    };
+    var apiMovie = 'https://localhost:5001/api/Movies/@Model'
+    var app = new Vue({
+        el: '#app',
+        data: {
+            movie: {},
+        },
+        created: async function () {
+           await axios
+                .get(apiMovie)
+                .then(response => (this.movie = response.data))
+        },
+        methods: {
+            deleteMovie: async function () {
+                await axios.delete(apiMovie, config);
+                setTimeout(ReturnToMovies, 1000);
+            },
+        }
+    })
+
+    function ReturnToMovies() {
+        window.location.href = 'https://localhost:5005/movies';
+    }
+
+
+</script>
