@@ -66,10 +66,10 @@ namespace Imi.Project.Api.Core.Services.User
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(loginRequestDto.UserName);
-                var applicationUser = _userRepository.GetByIdAsync(user.Id);
+                //var applicationUser = _userRepository.GetByIdAsync(user.Id);
                 var claims = await GetClaimsFromUser(user);
                 var jwtToken = GetJwtTokenForUser(user, claims);
-                var role = await _userManager.GetRolesAsync(user);
+                //var role = await _userManager.GetRolesAsync(user);
 
                 // Creating the ClaimsIdentity
                 var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
@@ -80,7 +80,7 @@ namespace Imi.Project.Api.Core.Services.User
                 // Sign in, in the context
                 await _contextAccessor.HttpContext.SignInAsync(claimsPrincipal);
 
-                return new LoginResult { Succeeded = true, JwtToken = jwtToken, Role = role[0]  };
+                return new LoginResult { Succeeded = true, JwtToken = jwtToken/*, Role = role[0]*/  };
             }
             else
             {
@@ -100,7 +100,7 @@ namespace Imi.Project.Api.Core.Services.User
             {
                 UserName = registerRequestDto.UserName,
                 Birthday = registerRequestDto.Birthday,
-                Email = registerRequestDto.EmailAddress,
+                Email = registerRequestDto.Email,
                 FirstName = registerRequestDto.FirstName,
                 LastName = registerRequestDto.LastName,
                 //Image = Image

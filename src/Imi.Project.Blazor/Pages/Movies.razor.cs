@@ -3,6 +3,7 @@ using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,6 +37,10 @@ namespace Imi.Project.Blazor.Pages
         private IApiService<GenreResponseDto, GenreRequestDto> genreService { get; set; }
         protected override async Task OnParametersSetAsync()
         {
+            imgByteArray = null;
+            imageName = "";
+            actorsId = null;
+            genresId = null;
             if (Action == null && MovieId == 0)
             {
                 await GetMovieList();
@@ -64,15 +69,13 @@ namespace Imi.Project.Blazor.Pages
                     Duration = movie.Duration,
                     EmbeddedTrailerUrl = movie.EmbeddedTrailerUrl,
                     ReleaseDate = movie.ReleaseDate,
-                    ActorsId = movie.Actors.Select(a => a.Id),
-                    GenresId = movie.Genres.Select(g => g.Id),
+                    ActorsId = movie.Actors.Select(a => a.Id).ToList(),
+                    GenresId = movie.Genres.Select(g => g.Id).ToList(),
                 };
+                actorsId = (List<int>)movieRequest.ActorsId;
+                genresId = (List<int>)movieRequest.GenresId;
             }
         }
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    await GetJwtToken();
-        //}
         public async Task GetMovieList()
         {
             var m = await movieService.GetAllAsync();
@@ -89,7 +92,7 @@ namespace Imi.Project.Blazor.Pages
         {
             try
             {
-                if (storedToken != null || movieRequest.Id == 0)
+                if (storedToken != null && movieRequest.Id == 0)
                 {
                     movie = await movieService.PostCallApi(movieRequest, storedToken);
                 }

@@ -81,7 +81,6 @@ namespace Imi.Project.Api.Infrastructure.Repositories
                     });
                 }
             }
-            oldMovie.Image = movie.Image;
             oldMovie.Name = movie.Name;
             oldMovie.ReleaseDate = movie.ReleaseDate;
             oldMovie.UsersFavorite = movie.UsersFavorite;

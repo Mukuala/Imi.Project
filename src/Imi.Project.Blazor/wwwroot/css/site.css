@@ -135,6 +135,23 @@ app {
     right: 0.75rem;
     top: 0.5rem;
 }
+.grid-container {
+    height:666px;
+    width:644px;
+    
+    display: grid;
+    grid-template-columns: 0.5pc auto 0.5pc auto 0.5pc auto 0.5pc auto;
+    padding: 20px;
+}
+
+.grid-item {
+/*    background-color: rgba(0,0,0,0.4);
+    border: 1px solid #f7f7f7;
+    margin:0 5px 0 5px;
+    padding: 20px;
+    font-size: 30px;
+*/    text-align: center;
+}
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {

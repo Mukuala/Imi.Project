@@ -154,14 +154,16 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
         </div>
         <div class="form-group">
             <label for="actors">Actor(s): </label>
-            <SfMultiSelect id="actors" TValue="IEnumerable<int>" TItem="ActorResponseDto" @bind-Value="movieRequest.ActorsId" DataSource="@actors" AllowFiltering="true" Placeholder="Choose Actors..." class="form-control">
+            <SfMultiSelect id="actors" TValue="List<int>" TItem="ActorResponseDto" @bind-Value="actorsId" DataSource="@actors" AllowFiltering="true" Placeholder="Choose Actors..." class="form-control">
                 <MultiSelectFieldSettings Text="Name" Value="Id"></MultiSelectFieldSettings>
+                <MultiSelectEvents TItem="ActorResponseDto" TValue="List<int>" Closed="OnActorsValueChanged"></MultiSelectEvents>
             </SfMultiSelect>
         </div>
         <div class="form-group">
             <label for="genres">Genre(s): </label>
-            <SfMultiSelect id="genres" @bind-Value="movieRequest.GenresId" DataSource="@genres" AllowFiltering="true" Placeholder="Choose Genres..." class="form-control">
+            <SfMultiSelect id="genres" @bind-Value="genresId" DataSource="@genres" AllowFiltering="true" Placeholder="Choose Genres..." class="form-control">
                 <MultiSelectFieldSettings Text="Name" Value="Id"></MultiSelectFieldSettings>
+                <MultiSelectEvents  TItem="GenreResponseDto"TValue="List<int>" Closed="OnGenresValueChanged" ></MultiSelectEvents>
             </SfMultiSelect>
         </div>
         <div class="form-group">
@@ -172,6 +174,12 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
 
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await GetJwtToken();
+    }
+
     public async Task GetJwtToken()
     {
         var responseDto = await movieService.LogInGetJwtToken();
@@ -180,6 +188,7 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
         user = await movieService.GetJwtUserProfile(storedToken);
     }
 
+    //ShowDialog
     private bool IsVisible { get; set; } = false;
 
     private void OpenDialog()
@@ -191,11 +200,14 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
     {
         this.IsVisible = false;
     }
+
     private async Task ConfirmDelete()
     {
         await DeleteMovie(movie);
         CloseDialog();
     }
+
+    //ImageUpload
     private void ImageAdd(UploadChangeEventArgs args)
     {
         foreach (var file in args.Files)
@@ -209,8 +221,19 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
             imageName = null;
         }
     }
-    //private async Task SubmitForm()
-    //{
-    //    await SaveMovie();
-    //}
+    //Multiselect
+
+    private List<int> actorsId = new List<int>();
+
+    private List<int> genresId = new List<int>();
+
+    private void OnActorsValueChanged()
+    {
+        movieRequest.ActorsId = actorsId;
+    }
+    private void OnGenresValueChanged()
+    {
+        movieRequest.GenresId = genresId;
+    }
+
 }

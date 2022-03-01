@@ -72,6 +72,7 @@
             movie: {},
             image: null,
             form: {
+                id: @Model,
                 name: '',
                 description: '',
                 duration: 0,
@@ -96,12 +97,15 @@
 
                 await axios.put(apiURL, this.form, config)
                     .then(response => {
-                        this.image = document.getElementById('imageFile').files[0];
-                        formData.append("image", this.image);
-
                         if (this.image == null) {
                             setTimeout(ReturnToMovie(this.movieId), 500);
+                        } else {
+                            this.image = document.getElementById('imageFile').files[0];
+                            formData.append("image", this.image);
+
                         }
+
+
                     }).catch(function (error) {
                         console.log(error)
                         alert(error);

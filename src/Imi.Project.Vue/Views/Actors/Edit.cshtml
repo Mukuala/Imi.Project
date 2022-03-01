@@ -42,11 +42,12 @@
             actor: {},
             image: null,
             form: {
+                id:@Model,
                 name: '',
                 biography: '',
                 dateOfBirth: null,
             },
-            actorId: 0,
+            actorId: @Model,
         },
         created: function () {
             var self = this;
@@ -57,7 +58,6 @@
 
                 await axios.put(apiURL, this.form, config)
                     .then(response => {
-                        this.actorId = response.data.id
                         this.image = document.getElementById('imageFile').files[0];
                         formData.append("image", this.image);
 
@@ -65,7 +65,7 @@
                             setTimeout(ReturnToActor(this.actorId), 500);
                         }
                     }).catch(function (error) {
-                        console.log(error)
+                        console.log(JSON.stringify(error));
                         alert(error);
                     });
                 if (this.actorId != 0 && this.image != null) {

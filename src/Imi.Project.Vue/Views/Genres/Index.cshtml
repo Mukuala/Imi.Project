@@ -108,7 +108,7 @@
 
             editGenre: async function (id) {
                 this.form.id = id;
-                await axios.put(apiURL + id, this.form, config).then(response => {
+                await axios.put(apiURL, this.form, config).then(response => {
                     setTimeout(window.location.href = window.location.href, 500)
                 }).catch(function (error) {
                     console.log(JSON.stringify(error));

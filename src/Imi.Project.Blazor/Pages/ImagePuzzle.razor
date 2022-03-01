@@ -1,21 +1,108 @@
 ﻿@using Plk.Blazor.DragDrop;
+@inject IJSRuntime JSRuntime
 @using Syncfusion.Blazor.Layouts
+@using Imi.Project.Blazor.Models
+@using Imi.Project.Blazor.Services.Puzzle
 @page "/puzzle"
+<div class="container text-center">
+    <h3>Image Puzzle</h3>
+    @if (showPlaybtn)
+    {
+        <button style="margin:30px" class="btn btn-success" @onclick="(()=>StartPlaying())"> PLAY</button>
+    }
+    @if (showRetrybtn)
+    {
+        <button style="margin:30px" @onclick="(()=>StartPlaying())" class="btn btn-danger">RETRY</button>
+    }
 
-<h3>ImagePuzzle</h3>
-<div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 align-items">
-        <Dropzone MaxItems="arrayf.Length" Items="arrayf">
-            <div class="h-100 card box-shadow text-center">
-                <div class="card-img d-flex align-items-center justify-content-center">
-                    @context
+    @if (showPuzzle)
+    {
+        <div id="puzzle">
+            <h4 class="font-weight-bold">Time : @counter</h4>
+            <Dropzone Class="grid-container " Items="ImagePiecesList" TItem="ImagePiece" InstantReplace OnItemDrop="@((p)=>OnItemDrop(p))">
+                <div class="grid-item" id="puz_@context.Id">
+                    <img src="@context.Url" class="img-fluid" style="max-height:fit-content" alt="@context.Name" />
                 </div>
-            </div>
-        </Dropzone>
-    </div>
+            </Dropzone>
+        </div>
+    }
+
 </div>
-<div style="max-height:80%;max-width:80%">
-</div>
+
 @code {
-    string[] arrayf = { "one", "two", "three", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+    Random rnd = new Random();
+    public List<string> correctList = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+    public List<string> currentPuzzleList = new List<string>();
+    public List<string> ImageNames = PuzzleService.GetImageNames();
+    List<ImagePiece> ImagePiecesList = new List<ImagePiece>();
+
+    public bool showPlaybtn = true;
+    public bool showPuzzle = false;
+    public bool showRetrybtn = false;
+
+    private static System.Timers.Timer Timer;
+    private int counter = 60;
+
+    protected override void OnParametersSet()
+    {
+        if (Timer != null)
+        {
+            Timer.Dispose();
+        }
+    }
+
+
+    public async Task OnItemDrop(ImagePiece item)
+    {
+        currentPuzzleList = await JSRuntime.InvokeAsync<List<string>>("UpdateList");
+        if (currentPuzzleList.SequenceEqual(correctList))
+        {
+            await JSRuntime.InvokeVoidAsync("Solved");
+            showPlaybtn = true;
+            Timer.Enabled = false;
+            Timer.Dispose();
+            showPuzzle = false;
+        }
+    }
+
+    public void StartPlaying()
+    {
+        counter = 60;
+        showPuzzle = true;
+        if (!showRetrybtn)
+        {
+            showPlaybtn = false;
+            var imageName = ImageNames.OrderBy(a => rnd.Next()).FirstOrDefault();
+            ImagePiecesList = PuzzleService.GetImagePieces(imageName).OrderBy(a => rnd.Next()).ToList();
+        }
+        ImagePiecesList.OrderBy(a => rnd.Next()).ToList();
+        showRetrybtn = false;
+
+        Timer = new System.Timers.Timer(1000);
+        Timer.Elapsed += CountDownTimer;
+        Timer.Enabled = true;
+    }
+
+    public async void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 1;
+        }
+        await DoStuff();
+
+        await InvokeAsync(StateHasChanged);
+    }
+    public async Task DoStuff()
+    {
+        if (counter <= 0)
+        {
+            showRetrybtn = true;
+            showPuzzle = false;
+            Timer.Enabled = false;
+            Timer.Dispose();
+            counter = 60;
+            await JSRuntime.InvokeVoidAsync("TimeOut");
+        }
+    }
 }

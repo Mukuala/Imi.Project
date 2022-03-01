@@ -43,9 +43,15 @@
         methods: {
             submitForm: async function () {
                 await axios.post(apiURL, this.form)
-                    .then(response => SaveToken(response.data.jwtToken));
+                    .then(response => {
+                        SaveToken(response.data.jwtToken)
+                        setTimeout(ReturnToMovies, 500)
+                            .catch(function (error) {
+                                console.log(JSON.stringify(error));
+                                alert(error);
+                            });
 
-                setTimeout(ReturnToMovies,500);
+                    })
             }
         }
     });
