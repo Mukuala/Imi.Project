@@ -16,25 +16,53 @@
 
     <a style="margin:30px" href="/movies/create" class="btn btn-primary">Add new movie</a>
 
-    <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 align-items">
-
-            @foreach (var movie in movies)
-            {
-                <div class="col mb-5">
-                    <a href="/movies/@movie.Id">
-                        <div class="h-100 card box-shadow text-center">
-                            <div class="card-header d-flex align-items-center justify-content-center">
-                                <h6 class="my-0 font-weight-normal flex-grow-1">@movie.Name</h6>
-                            </div>
-                            <img src="@movie.Image" style="object-fit:cover" height="200" />
-
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
+    <div class=" container" id="app">
+        <table class="table table-striped table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in movies)
+                {
+                    <tr>
+                        <td>
+                            <a href="/movies/@movie.Id">
+                                <img src="@movie.Image" style="object-fit:cover" height="100" />
+                            </a>
+                        </td>
+                        <td><a href="/movies/@movie.Id">@movie.Name</a></td>
+                        <td>@movie.AverageRating/10</td>
+                        <td>@movie.ReleaseDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
+
+    @*<div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 align-items">
+
+                @foreach (var movie in movies)
+                {
+                    <div class="col mb-5">
+                        <a href="/movies/@movie.Id">
+                            <div class="h-100 card box-shadow text-center">
+                                <div class="card-header d-flex align-items-center justify-content-center">
+                                    <h6 class="my-0 font-weight-normal flex-grow-1">@movie.Name</h6>
+                                </div>
+                                <img src="@movie.Image" style="object-fit:cover" height="200" />
+
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>*@
 }
 @if (Action == null && movie != null && MovieId != 0)
 {
@@ -163,7 +191,7 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
             <label for="genres">Genre(s): </label>
             <SfMultiSelect id="genres" @bind-Value="genresId" DataSource="@genres" AllowFiltering="true" Placeholder="Choose Genres..." class="form-control">
                 <MultiSelectFieldSettings Text="Name" Value="Id"></MultiSelectFieldSettings>
-                <MultiSelectEvents  TItem="GenreResponseDto"TValue="List<int>" Closed="OnGenresValueChanged" ></MultiSelectEvents>
+                <MultiSelectEvents TItem="GenreResponseDto" TValue="List<int>" Closed="OnGenresValueChanged"></MultiSelectEvents>
             </SfMultiSelect>
         </div>
         <div class="form-group">
@@ -178,6 +206,7 @@ else if (Action == "create" || Action == "edit" && movieRequest != null)
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await GetJwtToken();
+        await InvokeAsync(StateHasChanged);
     }
 
     public async Task GetJwtToken()

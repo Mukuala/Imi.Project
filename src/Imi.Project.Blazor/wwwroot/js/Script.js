@@ -13,4 +13,7 @@ function Solved() {
 
 }function TimeOut() {
     alert("Failed to solve puzzle in time :(");
+
+}function SolvedAll() {
+    alert("Congratulations u solved all puzzles!");
 }

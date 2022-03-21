@@ -11,6 +11,7 @@ namespace Imi.Project.Blazor.Services.Puzzle
     public static class PuzzleService
     {
         private static List<ImagePiece> ImagePieceList = new List<ImagePiece>();
+        public static int PuzzleImagesAmount = GetImageNames().Count();
         public static List<ImagePiece> GetImagePieces(string imageName)
         {
             ImagePieceList.Clear();

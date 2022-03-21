@@ -14,9 +14,14 @@
     {
         <button style="margin:30px" @onclick="(()=>StartPlaying())" class="btn btn-danger">RETRY</button>
     }
+    @if (showNextbtn)
+    {
+        <button style="margin:30px" @onclick="(()=>StartPlaying())" class="btn btn-secondary">NEXT</button>
+    }
 
     @if (showPuzzle)
     {
+        <h3>@CurrentPuzzle/@AmountOfPuzzles</h3>
         <div id="puzzle">
             <h4 class="font-weight-bold">Time : @counter</h4>
             <Dropzone Class="grid-container " Items="ImagePiecesList" TItem="ImagePiece" InstantReplace OnItemDrop="@((p)=>OnItemDrop(p))">
@@ -33,21 +38,24 @@
     Random rnd = new Random();
     public List<string> correctList = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
     public List<string> currentPuzzleList = new List<string>();
-    public List<string> ImageNames = PuzzleService.GetImageNames();
+    public List<string> ImageNames = PuzzleService.GetImageNames().OrderBy(a => Guid.NewGuid()).ToList();
     List<ImagePiece> ImagePiecesList = new List<ImagePiece>();
 
     public bool showPlaybtn = true;
     public bool showPuzzle = false;
     public bool showRetrybtn = false;
+    public bool showNextbtn = false;
 
     private static System.Timers.Timer Timer;
     private int counter = 60;
+    private int AmountOfPuzzles = PuzzleService.PuzzleImagesAmount;
+    private int CurrentPuzzle = 1;
 
     protected override void OnParametersSet()
     {
         if (Timer != null)
         {
-            Timer.Dispose();
+            Timer.Stop();
         }
     }
 
@@ -57,11 +65,17 @@
         currentPuzzleList = await JSRuntime.InvokeAsync<List<string>>("UpdateList");
         if (currentPuzzleList.SequenceEqual(correctList))
         {
-            await JSRuntime.InvokeVoidAsync("Solved");
-            showPlaybtn = true;
-            Timer.Enabled = false;
-            Timer.Dispose();
+            showNextbtn = true;
+            Timer.Stop();
             showPuzzle = false;
+            CurrentPuzzle++;
+            await JSRuntime.InvokeVoidAsync("Solved");
+        }
+        if (CurrentPuzzle - 1 == AmountOfPuzzles)
+        {
+            showNextbtn = false;
+            showPlaybtn = true;
+            await JSRuntime.InvokeVoidAsync("SolvedAll");
         }
     }
 
@@ -69,18 +83,26 @@
     {
         counter = 60;
         showPuzzle = true;
+
         if (!showRetrybtn)
         {
+            if (!showNextbtn)
+            {
+                CurrentPuzzle = 1;
+            }
+
             showPlaybtn = false;
-            var imageName = ImageNames.OrderBy(a => rnd.Next()).FirstOrDefault();
+            showNextbtn = false;
+            var imageName = ImageNames[CurrentPuzzle - 1];
             ImagePiecesList = PuzzleService.GetImagePieces(imageName).OrderBy(a => rnd.Next()).ToList();
         }
-        ImagePiecesList.OrderBy(a => rnd.Next()).ToList();
+
+        ImagePiecesList = ImagePiecesList.OrderBy(a => rnd.Next()).ToList();
         showRetrybtn = false;
 
         Timer = new System.Timers.Timer(1000);
         Timer.Elapsed += CountDownTimer;
-        Timer.Enabled = true;
+        Timer.Start();
     }
 
     public async void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
@@ -89,20 +111,19 @@
         {
             counter -= 1;
         }
-        await DoStuff();
+        DoStuff();
 
         await InvokeAsync(StateHasChanged);
     }
-    public async Task DoStuff()
+    public void DoStuff()
     {
         if (counter <= 0)
         {
             showRetrybtn = true;
             showPuzzle = false;
-            Timer.Enabled = false;
-            Timer.Dispose();
+            Timer.Stop();
             counter = 60;
-            await JSRuntime.InvokeVoidAsync("TimeOut");
+            JSRuntime.InvokeVoidAsync("TimeOut");
         }
     }
 }
