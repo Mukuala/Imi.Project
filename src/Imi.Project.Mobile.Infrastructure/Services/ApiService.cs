@@ -1,4 +1,6 @@
-﻿using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
+﻿using Imi.Project.Common.Dtos;
+using Imi.Project.Common.IPBaseUrl;
+using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,11 +12,22 @@ namespace Imi.Project.Mobile.Infrastructure.Services
 {
     public class ApiService<TResponseDto, TRequestDto> : IApiService<TResponseDto, TRequestDto>
     {
+        private HttpClientHandler ClientHandler()
+        {
+            var httpClientHandler = new HttpClientHandler();
+#if DEBUG
+            //allow connecting to untrusted certificates when running a DEBUG assembly
+            httpClientHandler.ServerCertificateCustomValidationCallback =
+                (message, cert, chain, errors) => { return true; };
+#endif
+            return httpClientHandler;
+        }
+
         private HttpClient Client { get; set; }
         public ApiService()
         {
-            Client = new HttpClient();
-            Client.BaseAddress = new Uri("https://localhost:5001/api/" + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
+            Client = new HttpClient(ClientHandler());
+            Client.BaseAddress = new Uri(IPBaseAdress.Url + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

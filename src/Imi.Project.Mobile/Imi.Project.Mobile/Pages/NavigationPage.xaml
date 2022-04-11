@@ -4,19 +4,18 @@
              x:Class="Imi.Project.Mobile.Pages.NavigationPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Movies"/>
-            <Button Text="Actors"/>
-            <Button Text="Genres"/>
-            <Button Text="Users"/>
-            
-            <Button Text="Add Movie"/>
-            <Button Text="Add Actor"/>
-            <Button Text="Add Genre"/>
-            <Button Text="Add User"/>
-            
-            <Button Text="Watchlist"/>
-            <Button Text="Favorite"/>
-            <Button Text="Profile"/>
+            <Button Text="Actors" Command="{Binding OpenActorsPage}"/>
+            <Button Text="Genres" Command="{Binding OpenGenresPage}"/>
+            <Button Text="Users"  Command="{Binding OpenUsersPage} "/>
+
+            <Button Text="Add Movie" Command="{Binding OpenAddMoviePage}"/>
+            <Button Text="Add Actor" Command="{Binding OpenAddActorPage}"/>
+            <Button Text="Add Genre" Command="{Binding OpenAddGenrePage}"/>
+            <Button Text="Add User"  Command="{Binding OpenAddUserPage}"/>
+
+            <Button Text="Watchlist" Command="{Binding OpenWatchlistPage}"/>
+            <Button Text="Favorite"  Command="{Binding OpenFavoritePage}"/>
+            <Button Text="Profile"   Command="{Binding OpenProfilePage}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

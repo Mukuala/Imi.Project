@@ -4,20 +4,22 @@
              x:Class="Imi.Project.Mobile.App">
     <Application.Resources>
         <ResourceDictionary>
-            <OnPlatform x:TypeArguments="x:String" 
+            <OnPlatform 
+                x:TypeArguments="x:String" 
                 x:Key="FontAwesomeBrands">
                 <On Platform="Android" 
-          Value="FontAwesome5Brands.otf#Regular" />
+                    Value="FontAwesome5Brands.otf#Regular" />
                 <On Platform="UWP" 
-          Value="/Assets/FontAwesome5Brands.otf#Font Awesome 5 Brands" />
+                    Value="/Assets/FontAwesome5Brands.otf#Font Awesome 5 Brands" />
             </OnPlatform>
 
-            <OnPlatform x:TypeArguments="x:String" 
+            <OnPlatform 
+                x:TypeArguments="x:String" 
                 x:Key="FontAwesomeSolid">
                 <On Platform="Android" 
-          Value="FontAwesome5Solid.otf#Regular" />
+                    Value="FontAwesome5Solid.otf#Regular" />
                 <On Platform="UWP" 
-          Value="/Assets/FontAwesome5Solid.otf#Font Awesome 5 Free" />
+                    Value="/Assets/FontAwesome5Solid.otf#Font Awesome 5 Solid" />
             </OnPlatform>
 
             <OnPlatform x:TypeArguments="x:String" 
@@ -25,7 +27,7 @@
                 <On Platform="Android" 
           Value="FontAwesome5Regular.otf#Regular" />
                 <On Platform="UWP" 
-           Value="/Assets/FontAwesome5Regular.otf#Font Awesome 5 Free" />
+           Value="/Assets/FontAwesome5Regular.otf#Font Awesome 5 Regular" />
             </OnPlatform>
         </ResourceDictionary>
     </Application.Resources>

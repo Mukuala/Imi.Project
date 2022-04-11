@@ -3,7 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
              x:Class="Imi.Project.Mobile.Pages.MovieDetailPage"
-             Title="{Binding Name}">
+             Title="{Binding Movie.Name}">
+    <ContentPage.ToolbarItems>
+        
+        <ToolbarItem Command="{Binding OpenEditMoviePage}" Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Edit}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        
+        <ToolbarItem Command="{Binding }" Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.TrashAlt}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
 
         <StackLayout>
@@ -19,36 +43,43 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Frame Padding="0" Grid.Row="0" Grid.ColumnSpan="2" CornerRadius="50" IsClippedToBounds="True"> <Image  Aspect="AspectFill" Source="{Binding Image}"  />
-</Frame>
+                    <Frame Padding="0" Grid.Row="0" Grid.ColumnSpan="2"  IsClippedToBounds="True">
+                        <Image  Aspect="AspectFill" Source="{Binding Movie.Image}"  />
+                    </Frame>
                     <StackLayout Grid.Row="1" Grid.Column="0" Padding="10">
-                        <Label  x:Name="GenresLbl"  />
-                        <Label  x:Name="ActorsLbl"  />
-                        <Label x:Name="ReleaseDateLbl" />
+                        <Label Text="Genre(s)" FontAttributes="Bold,Italic" TextColor="DarkGoldenrod"/>
+                        <Label Padding="5,0,0,0" Text="{Binding GenresListText}"  />
+
+                        <Label Text="Actor(s)" FontAttributes="Bold,Italic" TextColor="DarkGoldenrod"/>
+                        <Label Padding="5,0,0,0" Text="{Binding ActorsListText}"  />
+
+                        <Label Text="Release Date / Duration" FontAttributes="Bold,Italic" TextColor="DarkGoldenrod"/>
+                        <Label Padding="5,0,0,0" Text="{Binding Movie.ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" />
+                        <Label Padding="5,0,0,0" Text="{Binding Movie.Duration, StringFormat='{0} min'}" />
                     </StackLayout>
                     <StackLayout Padding="10"  Grid.Row="1" Grid.Column="1">
-                        <Button HeightRequest="40" x:Name="FavoriteBtn"
+                        <Button HeightRequest="40"
                                 FontSize="Body"
                                 BackgroundColor="DarkGoldenrod"
                                 Text="{x:Static fontawesome:FontAwesomeIcons.Heart}"  
                                 FontFamily="{StaticResource FontAwesomeRegular}"/>
 
-                        <Button HeightRequest="40" x:Name="WatchlistBtn"  
+                        <Button HeightRequest="40"  
                                 FontSize="Body" 
                                 BackgroundColor="DarkGoldenrod"
                                 Text="{x:Static fontawesome:FontAwesomeIcons.Bookmark}"  
                                 FontFamily="{StaticResource FontAwesomeRegular}" />
                     </StackLayout>
-                    <Frame BackgroundColor="DarkGoldenrod" CornerRadius="20" Grid.Row="2" Grid.ColumnSpan="2">
-                        <Label Text="{Binding Description}"></Label>
+                    <Frame BackgroundColor="DarkGoldenrod"  Grid.Row="2" Grid.ColumnSpan="2">
+                        <Label Text="{Binding Movie.Description}"></Label>
                     </Frame>
-                    <Frame Padding="0" CornerRadius="20" Grid.Row="3" Grid.ColumnSpan="2">
-                        <WebView Source="{Binding EmbeddedTrailerUrl}"
+                    <Frame Padding="0"  Grid.Row="3" Grid.ColumnSpan="2">
+                        <WebView Source="{Binding Movie.EmbeddedTrailerUrl}"
                                  WidthRequest="400"
                                  HeightRequest="400"
                                  IsVisible="true"

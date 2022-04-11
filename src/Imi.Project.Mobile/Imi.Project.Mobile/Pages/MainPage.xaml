@@ -2,29 +2,59 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
              x:Class="Imi.Project.Mobile.Pages.MainPage"
              Title="Mini IMDB">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding OpenNavigationPage}" Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Bars}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <StackLayout>
-        <SearchBar Placeholder="Search..."/>
-        <CollectionView x:Name="MoviesList" SelectionMode="Single" SelectionChanged="MoviesList_SelectionChanged">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="0"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="0.5" BackgroundColor="Wheat" xct:TouchEffect.NativeAnimation="True"> 
+        <SearchBar Placeholder="Search..." SearchCommand="{Binding SearchItem}" Text="{Binding SearchText}"/>
+        <RefreshView IsRefreshing="{Binding IsBusy}" RefreshColor="Goldenrod"
+                     Command="{Binding RefreshCommand}">
+            <CollectionView SelectionMode="Single" SelectedItem="{Binding SelectedMovie}" ItemsSource= "{Binding Movies}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0">
+                        <GridItemsLayout.Span>
+                            <OnPlatform x:TypeArguments="x:Int32">
+                                <On Platform="UWP" Value="5" />
+                                <On Platform="Android" Value="3" />
+                            </OnPlatform>
+                        </GridItemsLayout.Span>
+                    </GridItemsLayout>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid RowSpacing="0" Padding="0.5" BackgroundColor="Wheat" xct:TouchEffect.NativeAnimation="True">
+
                             <Grid.RowDefinitions>
                                 <RowDefinition  Height="*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" />
-                        <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="Goldenrod">
+
+                            <Image  Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" >
+                            </Image>
+
+                            <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="DarkGoldenrod">
                                 <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
                                 <Label Text="{Binding ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" TextColor="Black"  LineBreakMode="TailTruncation"/>
                             </StackLayout>
+
                         </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
     </StackLayout>
 </ContentPage>

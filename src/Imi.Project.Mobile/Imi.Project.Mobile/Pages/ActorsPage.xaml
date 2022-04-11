@@ -1,20 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Imi.Project.Mobile.Pages.AllActorsPage">
+             x:Class="Imi.Project.Mobile.Pages.ActorsPage"
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             Title="Actors">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem>
+            <ToolbarItem.IconImageSource>
+                <FontImageSource    
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Plus}"
+                    Size="Large"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
-            <SearchBar Placeholder="Search..."></SearchBar>
-            <CollectionView x:Name="ActorsList" SelectionMode="None">
+            <SearchBar Placeholder="Search..." SearchCommand="{Binding SearchItem}" Text="{Binding SearchText}"/>
+            <CollectionView ItemsSource="{Binding Actors}" SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="0"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="0.5" BackgroundColor="Wheat" >
+                        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5" BackgroundColor="Wheat" >
                             <Grid.RowDefinitions>
-                                <RowDefinition  Height="200" />
-                                <RowDefinition Height="*" />
+                                <RowDefinition  Height="150" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" />
                             <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="LightSalmon">

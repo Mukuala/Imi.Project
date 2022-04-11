@@ -1,4 +1,4 @@
-﻿using Imi.Project.Common.Dtos;
+﻿ using Imi.Project.Common.Dtos;
 using System;
 using System.Net;
 using System.Collections.Generic;
@@ -139,7 +139,7 @@ namespace Imi.Project.Blazor.Services.Api
                     {
                         if (response.IsSuccessStatusCode)
                         {
-                            string m = "hello";
+                            string justSomeTest = "hello";
                         }
                     }
                 }

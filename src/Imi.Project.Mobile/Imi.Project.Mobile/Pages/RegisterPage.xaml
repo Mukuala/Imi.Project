@@ -4,10 +4,11 @@
              x:Class="Imi.Project.Mobile.Pages.RegisterPage">
     <ContentPage.Content>
         <StackLayout>
+            <Label>Register</Label>
             <Entry Placeholder="Username"></Entry>
             <Entry Placeholder="Email"></Entry>
-            <Entry Placeholder="Password"></Entry>
-            <Entry Placeholder="Confirm Password"></Entry>
+            <Entry IsPassword="True" Placeholder="Password"></Entry>
+            <Entry IsPassword="True" Placeholder="Confirm Password"></Entry>
             <Button Text="Register"></Button>
         </StackLayout>
     </ContentPage.Content>

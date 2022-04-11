@@ -34,11 +34,15 @@
 
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
+    <Compile Update="Pages\ActorsPage.xaml.cs">
+      <DependentUpon>ActorsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\UsersPage.xaml.cs">
+      <DependentUpon>UsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\GenresPage.xaml.cs">
+      <DependentUpon>GenresPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Pages\MainPage.xaml.cs">
       <DependentUpon>AllMoviesPage.xaml</DependentUpon>
     </Compile>
