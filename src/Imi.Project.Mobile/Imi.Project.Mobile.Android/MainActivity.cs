@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using AndroidX.AppCompat.App;
 
 namespace Imi.Project.Mobile.Droid
 {
@@ -16,13 +17,14 @@ namespace Imi.Project.Mobile.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo;
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
-            Window.SetStatusBarColor(Android.Graphics.Color.Argb(0, 27, 94, 28));
+            Window.SetStatusBarColor(Android.Graphics.Color.DarkGoldenrod);
+            Window.SetNavigationBarColor(Android.Graphics.Color.DarkGoldenrod);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

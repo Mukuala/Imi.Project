@@ -13,6 +13,7 @@ namespace Imi.Project.Mobile
     {
         public App()
         {
+            Current.UserAppTheme = OSAppTheme.Light;
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTI4MDY5QDMxMzkyZTMzMmUzMFBWeTBFWHhOcWZ3d1VoZDhmTDZlSzFLaEYvam94eFpUVDdSVjhydXg5Yzg9; NTI4MDcwQDMxMzkyZTMzMmUzMGg1bGh6eWg2eWdmMFZkeEtvZVczNGFtalNqRUtiUTMrK3JSazI3bnU3OUU9; NTI4MDcxQDMxMzkyZTMzMmUzMEtHYUJSWHJXVDhRdzVtNG4ySUNjOVVaMjZOWWJEbUdUVEplRlVYWW51NDA9");
             InitializeComponent();
             FreshIOC.Container.Register<IApiService<MovieResponseDto, MovieRequestDto>>(new ApiService<MovieResponseDto, MovieRequestDto>());
@@ -21,14 +22,21 @@ namespace Imi.Project.Mobile
             FreshIOC.Container.Register<IApiService<GenreResponseDto, GenreRequestDto>>(new ApiService<GenreResponseDto, GenreRequestDto>());
             FreshIOC.Container.Register<IAuthApiService>(new AuthApiService());
 
-            if (!string.IsNullOrWhiteSpace(GetJwtToken.JwtToken))
-            {
-                MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>()) { BarBackgroundColor = Color.DarkGoldenrod, BarTextColor = Color.White, BackgroundColor = Color.Wheat };
-            }
-            else
-            {
-                MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<LogInViewModel>()) { BarBackgroundColor = Color.White, BarTextColor = Color.White, BackgroundColor = Color.Wheat };
-            }
+            //if (!string.IsNullOrWhiteSpace(GetJwtToken.JwtToken))
+            //{
+            //MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>()) { BarBackgroundColor = Color.DarkGoldenrod, BarTextColor = Color.White, BackgroundColor = Color.Wheat };
+            var masternav = new FreshMasterDetailNavigationContainer(null);
+            masternav.Init("Menu");
+            masternav.AddPage<MainViewModel>("Movies");
+            masternav.AddPage<GenresViewModel>("Genres");
+            masternav.AddPage<ActorsViewModel>("Actors");
+            masternav.AddPage<UsersViewModel>("Users");
+            MainPage = masternav;
+            //}
+            //else
+            //{
+            //    MainPage = FreshPageModelResolver.ResolvePageModel<LogInViewModel>();
+            //}
         }
 
         protected override void OnStart()

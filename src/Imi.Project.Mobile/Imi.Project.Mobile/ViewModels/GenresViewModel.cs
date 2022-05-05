@@ -92,8 +92,8 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 IsBusy = false;
             }
-
         }
+
         #region Properties
         private bool isBusy = false;
         public bool IsBusy
@@ -103,17 +103,6 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 isBusy = value;
                 RaisePropertyChanged(nameof(IsBusy));
-            }
-        }
-
-        private bool contentViewIsVisible = false;
-        public bool ContentViewIsVisible
-        {
-            get { return contentViewIsVisible; }
-            set
-            {
-                contentViewIsVisible = value;
-                RaisePropertyChanged(nameof(ContentViewIsVisible));
             }
         }
 
@@ -139,6 +128,7 @@ namespace Imi.Project.Mobile.ViewModels
         }
 
         #endregion
+
         #region Commands
 
         public ICommand AddPrompt => new Command(

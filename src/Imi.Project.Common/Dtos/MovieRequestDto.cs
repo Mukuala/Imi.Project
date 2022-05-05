@@ -9,11 +9,11 @@ namespace Imi.Project.Common.Dtos
     public class MovieRequestDto : BaseDto<int>
     {
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = "";
         [Required]
-        public int Duration { get; set; }
+        public int Duration { get; set; } = 0;
         public IFormFile Image { get; set; }
         public string EmbeddedTrailerUrl { get; set; }
         [Required]

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Imi.Project.Api.Core.Entities;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Common.IPBaseUrl;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -151,7 +152,7 @@ namespace Imi.Project.Api.Core.Mapping
             {
                 var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
                 //var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
-                var noImageimgUrl = $"http://192.168.1.47:5000/Images/No_Image.png";
+                var noImageimgUrl = $"{IPBaseAdress.Url}Images/No_Image.png";
 
                 return noImageimgUrl;
             }
@@ -164,7 +165,7 @@ namespace Imi.Project.Api.Core.Mapping
                 var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
                 var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
 
-                var fullImageUrl = $"http://192.168.1.47:5000/{image}";
+                var fullImageUrl = $"{IPBaseAdress.Url}{image}";
 
                 return fullImageUrl;
             }

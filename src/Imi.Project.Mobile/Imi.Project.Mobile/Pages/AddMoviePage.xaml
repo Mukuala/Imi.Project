@@ -2,52 +2,74 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
              xmlns:autocomplete="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
-             x:Class="Imi.Project.Mobile.Pages.AddMoviePage">
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             x:Class="Imi.Project.Mobile.Pages.AddMoviePage"
+             Title="{Binding Title, StringFormat='{0} movie'}">
     <ContentPage.Content>
         <ScrollView>
-                <StackLayout Padding="20" >
-                    <Label Padding="10" Text="Genre(s)"/>
+            <StackLayout Padding="20" >
+                <inputLayout:SfTextInputLayout Hint="Genre(s)">
                     <autocomplete:SfAutoComplete 
                         HeightRequest="60" 
                         EnableAutoSize="True"
-                        x:Name="GenreCmb" 
-                        MultiSelectMode="Token" 
+                        DataSource="{Binding Genres}"
+                        MultiSelectMode="Token"
                         TokensWrapMode="None" 
                         IsSelectedItemsVisibleInDropDown="False"
                         DropDownItemHeight="50"
                         DisplayMemberPath="Name" 
                         SuggestionMode="Contains"
-                                     />
-                    
-                    <Label Padding="10" Text="Actors(s)"/>
+                        SelectedItem="{Binding SelectedGenres}"/>
+
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Actor(s)">
                     <autocomplete:SfAutoComplete
                         EnableAutoSize="True"
                         HeightRequest="60"
                         SuggestionMode="Contains"
-                        x:Name="ActorCmb" 
+                        DataSource="{Binding Actors}"
                         MultiSelectMode="Token"
                         TokensWrapMode="None" 
                         IsSelectedItemsVisibleInDropDown="False"
                         DropDownItemHeight="50"
                         DisplayMemberPath="Name"
-                        ImageMemberPath="Image"/>
+                        SelectedItem="{Binding SelectedActors}"/>
+                </inputLayout:SfTextInputLayout>
 
+                <inputLayout:SfTextInputLayout Hint="Name" HelperText="{Binding NameError}">
+                    <Entry Text="{Binding Movie.Name}"/>
+                </inputLayout:SfTextInputLayout>
+                
+                <inputLayout:SfTextInputLayout Hint="Duration">
+                    <syncfusion:SfNumericTextBox Minimum="0" MaximumNumberDecimalDigits="0" Value="{Binding Movie.Duration}" />
+                </inputLayout:SfTextInputLayout>
 
-                    <Label Padding="10" VerticalOptions="Center" Text="Name"/>
-                    <Entry/>
-                    <Label Padding="10" VerticalOptions="Center" Text="Duration"/>
-                    <Entry Keyboard="Numeric"  />
-                    <Label Padding="10" VerticalOptions="Center" Text="Description"/>
-                    <Editor HeightRequest="100"/>
-                    <Label Padding="10" VerticalOptions="Center" Text="Trailer URL"/>
-                    <Entry />
-                    <Label Padding="10" VerticalOptions="Center" Text="Rating"/>
-                    <Entry Keyboard="Numeric"/>
-                    <Label Text="Release Date" VerticalOptions="Center" Padding="10"/>
-                    <DatePicker/>
-                    <Button Text="Add Movie"></Button>
-                </StackLayout>
+                <inputLayout:SfTextInputLayout OutlineCornerRadius="5" ContainerType="Outlined" Hint="Description" HelperText="{Binding DescriptionError}" >
+                    <Editor AutoSize="TextChanges" Text="{Binding Movie.Description}"/>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Trailer URL">
+                    <Entry Text="{Binding Movie.EmbeddedTrailerUrl}"/>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Rating">
+                    <syncfusion:SfNumericTextBox Maximum="10" Minimum="0"  MaximumNumberDecimalDigits="1" Value="{Binding Movie.AverageRating}"/>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Release Date">
+                    <DatePicker Date="{Binding Movie.ReleaseDate}"/>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}" >
+                    <Button HorizontalOptions="CenterAndExpand" VerticalOptions="End" Text="Image" Command="{Binding AddImage}" WidthRequest="100" Padding="5"/>
+
+                </inputLayout:SfTextInputLayout>
+
+                <Button BackgroundColor="LightSalmon" Text="Add Movie" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding AddOrEditCommand}" ></Button>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

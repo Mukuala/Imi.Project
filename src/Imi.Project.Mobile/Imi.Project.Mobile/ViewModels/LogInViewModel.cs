@@ -1,9 +1,6 @@
 ﻿using FreshMvvm;
-using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -18,15 +15,19 @@ namespace Imi.Project.Mobile.ViewModels
         {
             _authApiService = authApiService;
         }
+        public override void Init(object initData)
+        {
+            base.Init(initData);
+        }
         public async Task GetLogInJwt()
         {
             CurrentPage.IsBusy = true;
             try
             {
                 var response = await _authApiService.LogInGetJwtToken(userName, password);
+                Preferences.Remove("JwtToken");
                 Preferences.Set("JwtToken", response.JwtToken);
-                Application.Current.MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>()) { BarBackgroundColor = Color.DarkGoldenrod, BarTextColor = Color.White };
-                await CoreMethods.PushPageModel<MainViewModel>();
+                await CoreMethods.PopToRoot(true);
             }
             catch (Exception ex)
             {
@@ -39,7 +40,7 @@ namespace Imi.Project.Mobile.ViewModels
         }
 
         #region Properties
-        private string userName;
+        private string userName = "sfriskey13";
         public string UserName
         {
             get { return userName; }
@@ -49,7 +50,7 @@ namespace Imi.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(UserName));
             }
         }
-        private string password;
+        private string password = "WKlYnFhm0ikG";
         public string Password
         {
             get { return password; }
@@ -66,6 +67,11 @@ namespace Imi.Project.Mobile.ViewModels
             async () =>
             {
                 await GetLogInJwt();
+            });
+        public ICommand NavigateToRegisterPage => new Command(
+            async () =>
+            {
+                await CoreMethods.PushPageModel<RegisterViewModel>();
             });
         #endregion
     }

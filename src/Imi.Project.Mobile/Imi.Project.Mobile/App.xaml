@@ -1,9 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+
              x:Class="Imi.Project.Mobile.App">
     <Application.Resources>
         <ResourceDictionary>
+            <Style TargetType="inputLayout:SfTextInputLayout">
+                <Setter Property="ContainerType" Value="Outlined" />
+            </Style>
+            <Style TargetType="NavigationPage">
+                        <Setter Property="BarBackgroundColor" Value="DarkGoldenrod"/>
+                <Setter Property="BackgroundColor" Value="Wheat"/>
+                <Setter Property="BarTextColor" Value="White"/>
+            </Style>
             <OnPlatform 
                 x:TypeArguments="x:String" 
                 x:Key="FontAwesomeBrands">

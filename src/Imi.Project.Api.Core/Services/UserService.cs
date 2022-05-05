@@ -15,12 +15,15 @@ namespace Imi.Project.Api.Core.Services
         private readonly IUserRepository _userRepo;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
 
-        public UserService(IUserRepository userRepo, IMapper mapper, UserManager<ApplicationUser> userManager)
+
+        public UserService(IUserRepository userRepo, IMapper mapper, UserManager<ApplicationUser> userManager, IImageService imageService)
         {
             _userRepo = userRepo;
             _mapper = mapper;
             _userManager = userManager;
+            _imageService = imageService;
         }
 
         public async Task<UserResponseDto> AddAsync(UserRequestDto userRequestDto)
@@ -38,6 +41,7 @@ namespace Imi.Project.Api.Core.Services
 
         public async Task DeleteAsync(string id)
         {
+            await _imageService.AddOrUpdateImageAsync<UserRequestDto>(null, id.ToString(), true);
             await _userRepo.DeleteAsync(id);
         }
 

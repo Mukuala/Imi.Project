@@ -17,7 +17,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services
         public AuthApiService()
         {
             Client = new HttpClient();
-            Client.BaseAddress = new Uri(IPBaseAdress.Url);
+            Client.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl);
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -45,14 +45,20 @@ namespace Imi.Project.Mobile.Infrastructure.Services
             }
             else
             {
-                throw new Exception(response.ReasonPhrase);
+               return response.ReasonPhrase;
             }
 
         }
 
         public async Task<UserResponseDto> GetJwtUserProfile(string jwtToken)
         {
-            HttpResponseMessage response = await Client.GetAsync("Me/profile");
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+
+            HttpResponseMessage response = await httpClient.GetAsync("Me/profile");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsAsync<UserResponseDto>();

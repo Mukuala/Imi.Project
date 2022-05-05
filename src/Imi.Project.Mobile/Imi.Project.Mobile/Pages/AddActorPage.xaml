@@ -1,23 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Imi.Project.Mobile.Pages.AddActorPage">
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             x:Class="Imi.Project.Mobile.Pages.AddActorPage"
+             Title="{Binding Title, StringFormat='{0} actor'}">
     <ContentPage.Content>
+        <ScrollView>
             <StackLayout Padding="20">
-            <Label>Name</Label>
-            <Entry></Entry>
-            
-            <Label>Biography</Label>
-            <Editor HeightRequest="100"/>
+                <StackLayout>
+                    <inputLayout:SfTextInputLayout Hint="Name" HelperText="{Binding NameError}">
+                        <Entry Text="{Binding Actor.Name}"></Entry>
+                    </inputLayout:SfTextInputLayout>
 
-            <Label>Date of birth</Label>
-            <DatePicker/>
+                    <inputLayout:SfTextInputLayout Hint="Biography" HelperText="{Binding BiographyError}">
+                        <Editor AutoSize="TextChanges" Text="{Binding Actor.Biography}"/>
+                   </inputLayout:SfTextInputLayout>
 
-            <Label>Image</Label>
-            <Entry></Entry>
+                    <inputLayout:SfTextInputLayout Hint="Date of birth">
+                        <DatePicker Date="{Binding Actor.DateOfBirth}"/>
+                    </inputLayout:SfTextInputLayout>
 
-            <Button Text="Add new actor"></Button>
-           
-        </StackLayout>
+                    <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}">
+                        <Button Text="Image" Command="{Binding AddImage}" HorizontalOptions="Center"/>
+                    </inputLayout:SfTextInputLayout>
+
+                    <Button Text="{Binding Title}" Command="{Binding AddOrEditCommand}" HorizontalOptions="Center"></Button>
+
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

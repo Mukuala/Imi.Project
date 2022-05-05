@@ -52,7 +52,6 @@ namespace Imi.Project.Api.Controllers
                 if (result.Succeeded)
                 {
                     return Ok("Thank you for your registration, you can now login");
-
                 }
                 else
                 {

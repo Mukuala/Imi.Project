@@ -3,10 +3,12 @@ using Imi.Project.Common.IPBaseUrl;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace Imi.Project.Mobile.Infrastructure.Services
 {
@@ -27,7 +29,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services
         public ApiService()
         {
             Client = new HttpClient(ClientHandler());
-            Client.BaseAddress = new Uri(IPBaseAdress.Url + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
+            Client.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -35,8 +37,11 @@ namespace Imi.Project.Mobile.Infrastructure.Services
 
         public async Task<IEnumerable<TResponseDto>> GetAllAsync()
         {
-            //var result = await Client.GetFromJsonAsync<IEnumerable<TResponseDto>>("");
-            //return result;
+            if (typeof(TResponseDto) == typeof(UserResponseDto))
+            {
+                string jwtToken = Preferences.Get("JwtToken", null);
+                Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            }
             IEnumerable<TResponseDto> movies = null;
             using (HttpResponseMessage response = await Client.GetAsync(""))
             {
@@ -55,14 +60,14 @@ namespace Imi.Project.Mobile.Infrastructure.Services
             return result;
         }
 
-        public async Task PutCallApi(string id, TRequestDto entity, string jwtToken)
+        public async Task<TResponseDto> PutCallApi(string id, TRequestDto entity, string jwtToken)
         {
-            await CallApi(id, entity, HttpMethod.Put, jwtToken);
+            return await CallApi(id, entity, HttpMethod.Put, jwtToken);
         }
 
-        public async Task PostCallApi(TRequestDto entity, string jwtToken)
+        public async Task<TResponseDto> PostCallApi(TRequestDto entity, string jwtToken)
         {
-            await CallApi(null, entity, HttpMethod.Post, jwtToken);
+            return await CallApi(null, entity, HttpMethod.Post, jwtToken);
         }
 
         public async Task DeleteCallApi(string id, string jwtToken)
@@ -71,24 +76,49 @@ namespace Imi.Project.Mobile.Infrastructure.Services
         }
 
 
-        private async Task CallApi(string id, TRequestDto entity, HttpMethod httpMethod, string jwtToken)
+        private async Task<TResponseDto> CallApi(string id, TRequestDto entity, HttpMethod httpMethod, string jwtToken)
         {
-            Client.DefaultRequestHeaders.Accept.Clear();
-            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             {
 
                 if (httpMethod == HttpMethod.Post)
                 {
-                    await Client.PostAsJsonAsync("", entity);
+                    var response = await httpClient.PostAsJsonAsync("", entity);
+                    var responsedto = await response.Content.ReadAsAsync<TResponseDto>();
+                    return responsedto;
                 }
                 else if (httpMethod == HttpMethod.Put)
                 {
-                    await Client.PutAsJsonAsync("", entity);
+                    var response = await httpClient.PutAsJsonAsync("", entity);
+                    var responsedto = await response.Content.ReadAsAsync<TResponseDto>();
+                    return responsedto;
                 }
                 else
                 {
-                    await Client.DeleteAsync(id);
+                    await httpClient.DeleteAsync(id);
+                    return default;
+                }
+            }
+        }
+        public async Task PostImageAsync(byte[] imgByteArray, string imgName, string id, string jwtToken)
+        {
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+
+            using (var form = new MultipartFormDataContent())
+            {
+                using (var stream = new MemoryStream(imgByteArray))
+                {
+                    form.Add(new StreamContent(stream), "Image", imgName);
+                    await httpClient.PostAsync(id + "/image", form);
                 }
             }
         }

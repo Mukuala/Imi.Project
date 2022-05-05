@@ -51,6 +51,7 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         {
             var oldMovie = await GetByIdAsync(movie.Id);
 
+            //Save changes when image/movie has been changed in imgeservice
             if (oldMovie == movie)
             {
                 await _dbContext.SaveChangesAsync();

@@ -1,16 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
              x:Class="Imi.Project.Mobile.Pages.LogInPage"
-             x:Name="ThisPage">
+             x:Name="ThisPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="DarkGoldenrod">
     <ContentPage.Content>
-        <StackLayout Padding="20" >
-            <Frame BackgroundColor="LightSalmon" CornerRadius="50">
+        <StackLayout VerticalOptions="Center" BackgroundColor="DarkGoldenrod" Padding="10" HorizontalOptions="CenterAndExpand" WidthRequest="300">
+            <Frame BackgroundColor="LightSalmon" CornerRadius="20">
                 <StackLayout Padding="20" Spacing="20">
-              <Entry Text="{Binding UserName}" Placeholder="Username"></Entry>
-            <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="False"></Entry>
-            <Button Command="{Binding LogInGetJwtToken}" CornerRadius="50" Text="log in"></Button>
-              <Button CornerRadius="50" Text="Register"></Button>
+                    <Label FontSize="Title" FontAttributes="Bold" >Login</Label>
+                    
+                    <inputLayout:SfTextInputLayout Hint="Username">
+                        <Entry BackgroundColor="White" Text="{Binding UserName}"></Entry>
+                    </inputLayout:SfTextInputLayout>
+                    
+                    <inputLayout:SfTextInputLayout EnablePasswordVisibilityToggle="True" Hint="Password">
+                        <Entry BackgroundColor="White" Text="{Binding Password}" IsPassword="True"></Entry>
+                    </inputLayout:SfTextInputLayout>
+
+                    <Button Command="{Binding LogInGetJwtToken}" Text="login"></Button>
+                    <Button Command="{Binding NavigateToRegisterPage}" Text="Register"></Button>
                 </StackLayout>
             </Frame>
         </StackLayout>

@@ -1,6 +1,7 @@
 ﻿using FreshMvvm;
 using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
+using Imi.Project.Mobile.Pages;
 using Imi.Project.Mobile.Utils;
 using System;
 using System.Collections.ObjectModel;
@@ -16,17 +17,31 @@ namespace Imi.Project.Mobile.ViewModels
     {
         private readonly IApiService<MovieResponseDto, MovieRequestDto> _movieApiService;
         private readonly IApiService<GenreResponseDto, GenreRequestDto> _genreApiService;
+        private readonly IAuthApiService _authApiService;
 
-        public MainViewModel(IApiService<MovieResponseDto, MovieRequestDto> movieApiService, IApiService<GenreResponseDto, GenreRequestDto> genreApiService)
+        public MainViewModel(IApiService<MovieResponseDto, MovieRequestDto> movieApiService,
+            IApiService<GenreResponseDto, GenreRequestDto> genreApiService,
+            IAuthApiService authApiService)
         {
+            _authApiService = authApiService;
             _movieApiService = movieApiService;
             _genreApiService = genreApiService;
         }
 
         public override async void Init(object initData)
         {
-                base.Init(initData);
-                await FillMovies();
+            var user = await _authApiService.GetJwtUserProfile(GetJwtToken.JwtToken);
+            if (user == null)
+            {
+                await CoreMethods.PushPageModel<LogInViewModel>(null);
+            }
+            base.Init(initData);
+            await FillMovies();
+        }
+        public override async void ReverseInit(object returnedData)
+        {
+            base.ReverseInit(returnedData);
+            await FillMovies();
         }
 
         private async void NavigateToMovieDetailPage(MovieResponseDto movie)
@@ -133,15 +148,30 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 await FillMovies();
             });
-        public ICommand OpenNavigationPage => new Command(
+        //public ICommand OpenNavigationPage => new Command(
+        //    async () =>
+        //    {
+        //        await CoreMethods.PushPageModel<NavigationViewModel>();
+        //    });
+        public ICommand SignOut => new Command(
             async () =>
             {
-                await CoreMethods.PushPageModel<NavigationViewModel>();
+                Preferences.Remove("JwtToken");
+                await CoreMethods.PushPageModel<LogInViewModel>(null);
             });
         public ICommand SearchItem => new Command(
             async () =>
             {
                 await Search();
+            });
+        public ICommand OpenAddMoviePage => new Command(
+            async () =>
+            {
+                var amount = CurrentPage.Navigation.NavigationStack.Where(x => x is AddMoviePage).Count();
+                if (amount < 1)
+                {
+                    await CoreMethods.PushPageModel<AddMovieViewModel>();
+                }
             });
         #endregion
 

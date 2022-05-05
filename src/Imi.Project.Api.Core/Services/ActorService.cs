@@ -34,6 +34,7 @@ namespace Imi.Project.Api.Core.Services
 
         public async Task DeleteAsync(int id)
         {
+            await _imageService.AddOrUpdateImageAsync<ActorRequestDto>(null, id.ToString(), true);
             await _actorRepo.DeleteAsync(id);
         }
 

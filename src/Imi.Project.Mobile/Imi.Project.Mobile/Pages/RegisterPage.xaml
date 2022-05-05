@@ -1,15 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Imi.Project.Mobile.Pages.RegisterPage">
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             x:Class="Imi.Project.Mobile.Pages.RegisterPage"
+             BackgroundColor="DarkGoldenrod"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout>
-            <Label>Register</Label>
-            <Entry Placeholder="Username"></Entry>
-            <Entry Placeholder="Email"></Entry>
-            <Entry IsPassword="True" Placeholder="Password"></Entry>
-            <Entry IsPassword="True" Placeholder="Confirm Password"></Entry>
-            <Button Text="Register"></Button>
+        <StackLayout VerticalOptions="Center" BackgroundColor="DarkGoldenrod" Padding="10" WidthRequest="300">
+            <Frame BackgroundColor="LightSalmon" CornerRadius="20">
+                <ScrollView>
+                    <StackLayout Padding="20" Spacing="20">
+                        <Label FontSize="Title" FontAttributes="Bold">Register</Label>
+                        <inputLayout:SfTextInputLayout Hint="Username" HelperText="{Binding UserNameError}">
+                            <Entry Text="{Binding User.UserName}" ></Entry>
+                        </inputLayout:SfTextInputLayout>
+
+                        <inputLayout:SfTextInputLayout Hint="First name"  HelperText="{Binding FirstNameError}">
+                            <Entry Text="{Binding User.FirstName}" ></Entry>
+                        </inputLayout:SfTextInputLayout>
+                        
+                        <inputLayout:SfTextInputLayout Hint="Last name" HelperText="{Binding LastNameError}">
+                            <Entry  Text="{Binding User.LastName}" ></Entry>
+                        </inputLayout:SfTextInputLayout>
+
+                        <inputLayout:SfTextInputLayout Hint="Birthday">
+                            <DatePicker Date="{Binding User.Birthday}"/>
+                        </inputLayout:SfTextInputLayout>
+
+                        <inputLayout:SfTextInputLayout Hint="Email" HelperText="{Binding EmailError}">
+                            <Entry Text="{Binding User.Email}"  Keyboard="Email"></Entry>
+                        </inputLayout:SfTextInputLayout>
+
+                        <inputLayout:SfTextInputLayout Hint="Password" HelperText="{Binding PasswordError}" EnablePasswordVisibilityToggle="True">
+                            <Entry Text="{Binding User.Password}" Placeholder="Password" IsPassword="True"></Entry>
+                        </inputLayout:SfTextInputLayout>
+                        
+                        <inputLayout:SfTextInputLayout Hint="Confirm Password" HelperText="{Binding PasswordConfirmError}" EnablePasswordVisibilityToggle="True">
+                            <Entry Text="{Binding User.PasswordConfirm}" IsPassword="True"></Entry>
+                        </inputLayout:SfTextInputLayout>
+                        
+                        <Button Command="{Binding RegisterCommand}" HorizontalOptions="Center" Text="Register"></Button>
+                        <Button Command="{Binding NavigateToLogin}" HorizontalOptions="Center" Text="Cancel"></Button>
+                    </StackLayout>
+
+                </ScrollView>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

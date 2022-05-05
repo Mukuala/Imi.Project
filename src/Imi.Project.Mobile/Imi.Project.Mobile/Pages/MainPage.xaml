@@ -6,14 +6,9 @@
              x:Class="Imi.Project.Mobile.Pages.MainPage"
              Title="Mini IMDB">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding OpenNavigationPage}" Order="Primary">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource 
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Bars}"
-                    Size="Medium"
-                    ></FontImageSource>
-            </ToolbarItem.IconImageSource>
+        <ToolbarItem Command="{Binding OpenAddMoviePage}" Order="Secondary" Text="Add Movie">
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding SignOut}" Order="Secondary" Text="Sign Out">
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     
@@ -44,6 +39,12 @@
                             </Grid.RowDefinitions>
 
                             <Image  Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" >
+                                <Image.HeightRequest>
+                                    <OnPlatform x:TypeArguments="x:Double">
+                                        <On Platform="UWP" Value="500" />
+                                        <On Platform="Android" Value="180" />
+                                    </OnPlatform>
+                                </Image.HeightRequest>
                             </Image>
 
                             <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="DarkGoldenrod">

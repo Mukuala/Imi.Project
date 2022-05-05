@@ -5,8 +5,8 @@
              x:Class="Imi.Project.Mobile.Pages.MovieDetailPage"
              Title="{Binding Movie.Name}">
     <ContentPage.ToolbarItems>
-        
-        <ToolbarItem Command="{Binding OpenEditMoviePage}" Order="Primary">
+
+        <ToolbarItem Command="{Binding OpenAddMoviePage}" CommandParameter="{Binding Movie.Id}" Order="Primary">
             <ToolbarItem.IconImageSource>
                 <FontImageSource 
                     FontFamily="{StaticResource FontAwesomeSolid}"
@@ -15,8 +15,8 @@
                     ></FontImageSource>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        
-        <ToolbarItem Command="{Binding }" Order="Primary">
+
+        <ToolbarItem Command="{Binding DeleteAlert}" Order="Primary">
             <ToolbarItem.IconImageSource>
                 <FontImageSource 
                     FontFamily="{StaticResource FontAwesomeSolid}"

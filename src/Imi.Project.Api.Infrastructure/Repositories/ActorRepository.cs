@@ -29,6 +29,27 @@ namespace Imi.Project.Api.Infrastructure.Repositories
         {
             return await GetAllAsync().Where(a => a.Name.ToUpper().Contains(name.ToUpper())).ToListAsync();
         }
+        public override async Task<Actor> UpdateAsync(Actor actor)
+        {
+            var oldActor = await GetByIdAsync(actor.Id);
+
+            //Savechanges when image/actor has been changed in imageservice
+            if (oldActor == actor)
+            {
+                await _dbContext.SaveChangesAsync();
+                return oldActor;
+            }
+
+            oldActor.DateOfBirth = actor.DateOfBirth;
+            oldActor.Name = actor.Name;
+            oldActor.Id = actor.Id;
+            oldActor.Movies = actor.Movies;
+
+            _dbContext.Actors.Update(oldActor);
+            await _dbContext.SaveChangesAsync();
+
+            return actor;
+        }
 
     }
 }

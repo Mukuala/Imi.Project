@@ -16,5 +16,10 @@ namespace Imi.Project.Mobile.Pages
         {
             InitializeComponent();
         }
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
+        }
+
     }
 }
