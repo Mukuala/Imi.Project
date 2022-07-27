@@ -27,7 +27,7 @@ namespace Imi.Project.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string name)
         {
-            if (name != null)
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 var movies = await _movieService.SearchByNameAsync(name);
                 if (movies.Any())
@@ -39,7 +39,6 @@ namespace Imi.Project.Api.Controllers
             else
             {
                 var movies = await _movieService.ListAllAsync();
-
                 return Ok(movies);
             }
 
@@ -53,7 +52,6 @@ namespace Imi.Project.Api.Controllers
             {
                 return NotFound($"Movie with ID {id} does not exist");
             }
-
             return Ok(movie);
         }
         [HttpPost]
@@ -91,6 +89,7 @@ namespace Imi.Project.Api.Controllers
             await _movieService.DeleteAsync(id);
             return Ok();
         }
+
         [HttpPost("{id}/image")]
         public async Task<IActionResult> AddOrUpdateImage(int id, IFormFile image)
         {

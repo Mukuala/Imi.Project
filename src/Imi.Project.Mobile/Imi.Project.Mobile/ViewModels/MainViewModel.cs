@@ -2,7 +2,6 @@
 using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using Imi.Project.Mobile.Pages;
-using Imi.Project.Mobile.Utils;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,42 +16,51 @@ namespace Imi.Project.Mobile.ViewModels
     {
         private readonly IApiService<MovieResponseDto, MovieRequestDto> _movieApiService;
         private readonly IApiService<GenreResponseDto, GenreRequestDto> _genreApiService;
-        private readonly IAuthApiService _authApiService;
+        private readonly IMeApiService _meApiService;
 
         public MainViewModel(IApiService<MovieResponseDto, MovieRequestDto> movieApiService,
             IApiService<GenreResponseDto, GenreRequestDto> genreApiService,
-            IAuthApiService authApiService)
+            IMeApiService meApiService)
         {
-            _authApiService = authApiService;
+            _meApiService = meApiService;
             _movieApiService = movieApiService;
             _genreApiService = genreApiService;
         }
 
-        public override async void Init(object initData)
+        protected override async void ViewIsAppearing(object sender, EventArgs e)
         {
-            var user = await _authApiService.GetJwtUserProfile(GetJwtToken.JwtToken);
+            var user = await _meApiService.GetJwtUserProfile(Preferences.Get("JwtToken", null));
             if (user == null)
             {
                 await CoreMethods.PushPageModel<LogInViewModel>(null);
             }
-            base.Init(initData);
+            base.ViewIsAppearing(sender, e);
             await FillMovies();
         }
-        public override async void ReverseInit(object returnedData)
-        {
-            base.ReverseInit(returnedData);
-            await FillMovies();
-        }
+        //public override async void Init(object initData)
+        //{
+        //    var user = await _meApiService.GetJwtUserProfile(Preferences.Get("JwtToken", null));
+        //    if (user == null)
+        //    {
+        //        await CoreMethods.PushPageModel<LogInViewModel>(null);
+        //    }
+        //    base.Init(initData);
+        //    await FillMovies();
+        //}
 
-        private async void NavigateToMovieDetailPage(MovieResponseDto movie)
+        private async void NavigateToMovieDetailPage(int movieId)
         {
-            await CoreMethods.PushPageModel<MovieDetailViewModel>(movie);
+            await CoreMethods.PushPageModel<MovieDetailViewModel>(movieId);
         }
         private async Task Search()
         {
-            var apimovies = await _movieApiService.GetAllAsync();
-            var foundMovies = apimovies.Where(m => m.Name.ToUpper().Contains(SearchText.ToUpper()));
-            Movies = new ObservableCollection<MovieResponseDto>(foundMovies);
+            var apimovies = await _movieApiService.GetAllAsync(SearchText);
+
+            if (apimovies != null)
+                Movies = new ObservableCollection<MovieResponseDto>(apimovies);
+            else
+                Movies = null;
+            
         }
         private async Task FillMovies()
         {
@@ -112,7 +120,7 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 selectedMovie = value;
                 if (SelectedMovie != null)
-                    NavigateToMovieDetailPage(SelectedMovie);
+                    NavigateToMovieDetailPage(SelectedMovie.Id);
                 RaisePropertyChanged(nameof(SelectedMovie));
             }
         }
@@ -148,15 +156,12 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 await FillMovies();
             });
-        //public ICommand OpenNavigationPage => new Command(
-        //    async () =>
-        //    {
-        //        await CoreMethods.PushPageModel<NavigationViewModel>();
-        //    });
         public ICommand SignOut => new Command(
             async () =>
             {
-                Preferences.Remove("JwtToken");
+                Preferences.Clear();
+                var test = Preferences.Get("JwtToken", null);
+
                 await CoreMethods.PushPageModel<LogInViewModel>(null);
             });
         public ICommand SearchItem => new Command(

@@ -9,14 +9,14 @@
 @page "/movies/{action}/{movieId:int}"
 
 
-
+@* Show all movies *@
 @if (Action == null && movie == null && MovieId == 0)
 {
     <h2>Hello Admin @user.FirstName @user.LastName</h2>
 
     <a style="margin:30px" href="/movies/create" class="btn btn-primary">Add new movie</a>
 
-    <div class=" container" id="app">
+    <div class=" container">
         <table class="table table-striped table-bordered text-center">
             <thead>
                 <tr>
@@ -64,6 +64,7 @@
             </div>
         </div>*@
 }
+@* Show moviedetail *@
 @if (Action == null && movie != null && MovieId != 0)
 {
     <div class="container">
@@ -71,7 +72,7 @@
             <div class="card-header" style="background-color:white">
                 <h2>@movie.Name</h2>
             </div>
-            <img src="@movie.Image" class="card-img-top" />
+            <img src="@movie.Image" class="card-img-top"/>
             <div class="card-body">
                 <table class="table table-striped">
                     <tbody>
@@ -145,6 +146,7 @@
         </DialogButtons>
     </SfDialog>
 }
+@* Show create/edit page *@
 else if (Action == "create" || Action == "edit" && movieRequest != null)
 {
     <EditForm Model="@movieRequest" OnValidSubmit="SaveMovie">

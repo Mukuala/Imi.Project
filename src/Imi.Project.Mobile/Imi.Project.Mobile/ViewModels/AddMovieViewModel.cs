@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Imi.Project.Mobile.ViewModels
@@ -43,8 +44,10 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 Movie = (MovieResponseDto)initData;
                 Title = "Edit " + Movie.Name;
+
                 var castactors = Movie.Actors.Cast<object>();
                 SelectedActors = new ObservableCollection<object>(castactors);
+
                 var castgenres = Movie.Genres.Cast<object>();
                 SelectedGenres = new ObservableCollection<object>(castgenres);
             }
@@ -53,7 +56,6 @@ namespace Imi.Project.Mobile.ViewModels
                 Movie = new MovieResponseDto { };
                 Title = "Add";
             }
-            base.Init(initData);
             await GetGenres();
             await GetActors();
         }
@@ -80,19 +82,20 @@ namespace Imi.Project.Mobile.ViewModels
             return validationResult.IsValid;
         }
 
-
         private async Task GetGenres()
         {
             Genres = null;
             var apigenres = await _genreApiService.GetAllAsync();
             Genres = new ObservableCollection<GenreResponseDto>(apigenres);
         }
+
         private async Task GetActors()
         {
             Actors = null;
             var apiactor = await _actorApiService.GetAllAsync();
             Actors = new ObservableCollection<ActorResponseDto>(apiactor);
         }
+
         private async Task GetImageByteArray()
         {
             MemoryStream ms = new MemoryStream();
@@ -130,7 +133,7 @@ namespace Imi.Project.Mobile.ViewModels
             if (SelectedGenres != null)
             {
                 var genresSelected = SelectedGenres.Cast<GenreResponseDto>();
-                movie.ActorsId = genresSelected.Select(x => x.Id).ToList();
+                movie.GenresId = genresSelected.Select(x => x.Id).ToList();
             }
 
             var genresSelectedCast = SelectedGenres.Cast<GenreResponseDto>();
@@ -142,24 +145,25 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 if (Movie.Id == 0) //Add
                 {
-                    var newActor = await _movieApiService.PostCallApi(movie, GetJwtToken.JwtToken);
+                    var newActor = await _movieApiService.PostCallApi(movie, Preferences.Get("JwtToken", null));
                     if (!string.IsNullOrEmpty(imageName))
                     {
-                        await _movieApiService.PostImageAsync(ImgByteArray, imageName, newActor.Id.ToString(), GetJwtToken.JwtToken);
+                        await _movieApiService.PostImageAsync(ImgByteArray, imageName, newActor.Id.ToString(), Preferences.Get("JwtToken", null));
                     }
                     await CoreMethods.PopPageModel();
                 }
                 else // Edit
                 {
-                    await _movieApiService.PutCallApi(movie.Id.ToString(), movie, GetJwtToken.JwtToken);
+                    await _movieApiService.PutCallApi(movie.Id.ToString(), movie, Preferences.Get("JwtToken", null));
                     if (!string.IsNullOrEmpty(imageName))
                     {
-                        await _movieApiService.PostImageAsync(ImgByteArray, imageName, movie.Id.ToString(), GetJwtToken.JwtToken);
+                        await _movieApiService.PostImageAsync(ImgByteArray, imageName, movie.Id.ToString(), Preferences.Get("JwtToken", null));
                     }
                     await CoreMethods.PopPageModel();
                 }
             }
         }
+
         #region Properties
 
         private string imageName;
@@ -194,7 +198,8 @@ namespace Imi.Project.Mobile.ViewModels
             }
         }
 
-        private ObservableCollection<object> selectedActors;
+        private ObservableCollection<object> selectedActors = new ObservableCollection<object>();
+
         public ObservableCollection<object> SelectedActors
         {
             get { return selectedActors; }
@@ -205,7 +210,8 @@ namespace Imi.Project.Mobile.ViewModels
             }
         }
 
-        private ObservableCollection<object> selectedGenres;
+        private ObservableCollection<object> selectedGenres = new ObservableCollection<object>();
+
         public ObservableCollection<object> SelectedGenres
         {
             get { return selectedGenres; }

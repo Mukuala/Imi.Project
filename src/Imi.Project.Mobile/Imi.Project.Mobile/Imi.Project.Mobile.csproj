@@ -20,6 +20,7 @@
     <PackageReference Include="FluentValidation" Version="8.0.0" />
     <PackageReference Include="FreshMvvm" Version="3.0.0" />
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.3.0.48" />
     <PackageReference Include="Syncfusion.Xamarin.SfAutoComplete" Version="19.3.0.48" />
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.3.0.47" />
     <PackageReference Include="Syncfusion.Xamarin.SfNumericTextBox" Version="19.3.0.48" />
@@ -45,12 +46,6 @@
     <Compile Update="Pages\GenresPage.xaml.cs">
       <DependentUpon>GenresPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Pages\MainPage.xaml.cs">
-      <DependentUpon>AllMoviesPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Pages\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Pages\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
     </Compile>
@@ -58,6 +53,9 @@
 
 
   <ItemGroup>
+    <EmbeddedResource Update="Pages\EditProfilePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Pages\FavoritesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

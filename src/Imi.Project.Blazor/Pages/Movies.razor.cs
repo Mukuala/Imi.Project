@@ -92,15 +92,15 @@ namespace Imi.Project.Blazor.Pages
         {
             try
             {
-                if (storedToken != null && movieRequest.Id == 0)
+                if (storedToken != null && movieRequest.Id == 0)//add movie
                 {
                     movie = await movieService.PostCallApi(movieRequest, storedToken);
                 }
-                else if (storedToken != null)
+                else if (storedToken != null)//edit movie
                 {
                     await movieService.PutCallApi(movieRequest.Id.ToString(), movieRequest, storedToken);
                 }
-                if (imgByteArray != null && !string.IsNullOrEmpty(imageName))
+                if (imgByteArray != null && !string.IsNullOrEmpty(imageName))// add/edit movie image
                 {
                     await movieService.PostImageAsync(imgByteArray, imageName, movie.Id);
                 }

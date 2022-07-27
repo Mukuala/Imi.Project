@@ -1,6 +1,8 @@
 ﻿using Imi.Project.Api.Core.Interfaces.Service;
 using Imi.Project.Api.Core.Services.User;
+using Imi.Project.Common.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Security.Claims;
@@ -17,11 +19,16 @@ namespace Imi.Project.Api.Controllers
         private readonly IMeService _meService;
         private readonly IFavoriteService _favoriteService;
         private readonly IWatchlistService _watchlistService;
-        public MeController(IMeService meService, IFavoriteService favoriteService, IWatchlistService watchlistService)
+        private readonly IUserService _userService;
+        private readonly IImageService _imageService;
+
+        public MeController(IMeService meService, IFavoriteService favoriteService, IWatchlistService watchlistService, IUserService userService, IImageService imageService)
         {
             _meService = meService; 
             _favoriteService = favoriteService;
             _watchlistService = watchlistService;
+            _userService = userService;
+            _imageService = imageService;
         }
 
         [HttpGet("profile")]
@@ -30,6 +37,19 @@ namespace Imi.Project.Api.Controllers
             var profile = await _meService.GetCurrentUserProfileAsync();
             return Ok(profile);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(UserRequestDto userRequestDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userResponseDto = await _userService.UpdateAsync(userRequestDto);
+            return Ok(userResponseDto);
+        }
+
         #region Favorites
         [HttpGet("favorites")]
         public async Task<IActionResult> GetLoggedInUserFavoriteMovies()
@@ -45,7 +65,7 @@ namespace Imi.Project.Api.Controllers
             return Ok(favMovies);
         }
         [HttpPost("favorites")]
-        public async Task<IActionResult> PostFavorite(int movieId)
+        public async Task<IActionResult> PostFavorite([FromBody]int movieId)
         {
             var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -57,7 +77,7 @@ namespace Imi.Project.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("favorites")]
+        [HttpDelete("favorites/{movieId}")]
         public async Task<IActionResult> DeleteFavorite(int movieId)
         {
             var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -81,7 +101,7 @@ namespace Imi.Project.Api.Controllers
             return Ok(watchlistMovies);
         }
         [HttpPost("watchlists")]
-        public async Task<IActionResult> Post(int movieId)
+        public async Task<IActionResult> Post([FromBody]int movieId)
         {
             var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -93,7 +113,7 @@ namespace Imi.Project.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("watchlists")]
+        [HttpDelete("watchlists/{movieId}")]
         public async Task<IActionResult> Delete(int movieId)
         {
             var userId = User.Identities.FirstOrDefault().FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -102,6 +122,24 @@ namespace Imi.Project.Api.Controllers
         }
 
         #endregion
+
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> AddOrUpdateImage(string id, IFormFile image)
+        {
+            if (image == null)
+            {
+                return Ok("No image has been added");
+            }
+            var user = await _userService.GetByIdAsync(id);
+
+            if (user == null)
+            {
+                return BadRequest("User doesn't exist!");
+            }
+            await _imageService.AddOrUpdateImageAsync<UserRequestDto>(image, id, false);
+            return Ok();
+        }
+
 
     }
 }

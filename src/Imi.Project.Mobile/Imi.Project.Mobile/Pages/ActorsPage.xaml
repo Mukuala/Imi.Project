@@ -23,29 +23,17 @@
                      Command="{Binding RefreshCommand}">
                 <CollectionView ItemsSource="{Binding Actors}" SelectionMode="None">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0">
-                            <GridItemsLayout.Span>
-                                <OnPlatform x:TypeArguments="x:Int32">
-                                    <On Platform="UWP" Value="5" />
-                                    <On Platform="Android" Value="3" />
-                                </OnPlatform>
-                            </GridItemsLayout.Span>
+                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0" Span="{OnPlatform Android=3,UWP=5}">
                         </GridItemsLayout>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5" BackgroundColor="Wheat">
+                            <Grid RowSpacing="0" Padding="0.5" BackgroundColor="Wheat">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition  Height="150" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition  Height="*" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0">
-                                    <Image.HeightRequest>
-                                            <OnPlatform x:TypeArguments="x:Double">
-                                                <On Platform="UWP" Value="500" />
-                                                <On Platform="Android" Value="180" />
-                                            </OnPlatform>
-                                        </Image.HeightRequest>
+                                <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" HeightRequest="{OnPlatform Android=180}">
                                 </Image>
                                 <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="LightSalmon">
                                     <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
@@ -57,7 +45,7 @@
                                             <ImageButton.Source>
                                                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"
                                                                  Glyph="{x:Static fontawesome:FontAwesomeIcons.Edit}"
-                                                                 Size="Large"/>
+                                                                 Size="{OnPlatform Android=Large,UWP=Micro}"/>
                                             </ImageButton.Source>
                                         </ImageButton>
                                         <ImageButton HorizontalOptions="EndAndExpand" BackgroundColor="Transparent"
@@ -66,7 +54,7 @@
                                             <ImageButton.Source>
                                                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}"
                                                                  Glyph="{x:Static fontawesome:FontAwesomeIcons.Trash}"
-                                                                 Size="Large"
+                                                                 Size="{OnPlatform Android=Large,UWP=Micro}"
                                                                  />
                                             </ImageButton.Source>
                                         </ImageButton>

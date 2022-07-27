@@ -18,10 +18,5 @@ namespace Imi.Project.Mobile.Validators
                 .NotEmpty()
                 .WithMessage("Biography is required.");
         }
-        protected override void EnsureInstanceNotNull(object instanceToValidate)
-        {
-            var nothing = "";
-        }
-
     }
 }

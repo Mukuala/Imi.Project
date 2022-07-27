@@ -1,5 +1,6 @@
 ﻿using FreshMvvm;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
+using Imi.Project.Mobile.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -11,9 +12,11 @@ namespace Imi.Project.Mobile.ViewModels
     public class LogInViewModel : FreshBasePageModel
     {
         public readonly IAuthApiService _authApiService;
-        public LogInViewModel(IAuthApiService authApiService)
+        public readonly IMeApiService _meApiService;
+        public LogInViewModel(IAuthApiService authApiService, IMeApiService meApiService)
         {
             _authApiService = authApiService;
+            _meApiService = meApiService;
         }
         public override void Init(object initData)
         {
@@ -24,8 +27,8 @@ namespace Imi.Project.Mobile.ViewModels
             CurrentPage.IsBusy = true;
             try
             {
-                var response = await _authApiService.LogInGetJwtToken(userName, password);
                 Preferences.Remove("JwtToken");
+                var response = await _authApiService.LogInGetJwtToken(userName, password);
                 Preferences.Set("JwtToken", response.JwtToken);
                 await CoreMethods.PopToRoot(true);
             }

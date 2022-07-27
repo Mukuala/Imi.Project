@@ -11,22 +11,18 @@
         <ToolbarItem Command="{Binding SignOut}" Order="Secondary" Text="Sign Out">
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
+
     <StackLayout>
         <SearchBar Placeholder="Search..." SearchCommand="{Binding SearchItem}" Text="{Binding SearchText}"/>
         <RefreshView IsRefreshing="{Binding IsBusy}" RefreshColor="Goldenrod"
                      Command="{Binding RefreshCommand}">
-            <CollectionView SelectionMode="Single" SelectedItem="{Binding SelectedMovie}" ItemsSource= "{Binding Movies}">
+            <CollectionView SelectionMode="Single" 
+                            SelectedItem="{Binding SelectedMovie}" 
+                            ItemsSource= "{Binding Movies}" 
+                            EmptyView="No movies found">
 
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0">
-                        <GridItemsLayout.Span>
-                            <OnPlatform x:TypeArguments="x:Int32">
-                                <On Platform="UWP" Value="5" />
-                                <On Platform="Android" Value="3" />
-                            </OnPlatform>
-                        </GridItemsLayout.Span>
-                    </GridItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0" Span="{OnPlatform Android=3,UWP=5}"/>
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
@@ -38,13 +34,7 @@
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <Image  Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" >
-                                <Image.HeightRequest>
-                                    <OnPlatform x:TypeArguments="x:Double">
-                                        <On Platform="UWP" Value="500" />
-                                        <On Platform="Android" Value="180" />
-                                    </OnPlatform>
-                                </Image.HeightRequest>
+                            <Image Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" HeightRequest="{OnPlatform Android=180}" >
                             </Image>
 
                             <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="DarkGoldenrod">

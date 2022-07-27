@@ -12,7 +12,7 @@ namespace Imi.Project.Common.Dtos
         public string UserName { get; set; }
         public DateTime Birthday { get; set; }
         public string Role { get; set; }
-        public IEnumerable<MovieResponseDto> FavoritesMovies { get; set; }
-        public IEnumerable<MovieResponseDto> WatchlistMovies { get; set; }
+        public ICollection<MovieResponseDto> FavoritesMovies { get; set; }
+        public ICollection<MovieResponseDto> WatchlistMovies { get; set; }
     }
 }

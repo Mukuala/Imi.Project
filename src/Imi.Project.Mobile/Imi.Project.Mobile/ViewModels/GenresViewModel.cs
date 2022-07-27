@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Imi.Project.Mobile.ViewModels
 {
     public class GenresViewModel : FreshBasePageModel
     {
+        
         private readonly IApiService<GenreResponseDto, GenreRequestDto> _genreApiService;
         public GenresViewModel(IApiService<GenreResponseDto, GenreRequestDto> genreApiService)
         {
@@ -31,7 +33,7 @@ namespace Imi.Project.Mobile.ViewModels
             var alert = await CoreMethods.DisplayAlert("Delete", $"Are you sure you want to delete {name} genre?", "Yes", "No");
             if (alert)
             {
-                await _genreApiService.DeleteCallApi(id.ToString(), GetJwtToken.JwtToken);
+                await _genreApiService.DeleteCallApi(id.ToString(), Preferences.Get("JwtToken", null));
             }
         }
 
@@ -48,7 +50,7 @@ namespace Imi.Project.Mobile.ViewModels
                         Id = genre.Id,
                         Name = result
                     };
-                    await _genreApiService.PutCallApi(genre.Id.ToString(), updatedGenre, GetJwtToken.JwtToken);
+                    await _genreApiService.PutCallApi(genre.Id.ToString(), updatedGenre, Preferences.Get("JwtToken", null));
                 }
             }
             catch (Exception ex)
@@ -67,7 +69,7 @@ namespace Imi.Project.Mobile.ViewModels
                     {
                         Name = result
                     };
-                    await _genreApiService.PostCallApi(newGenre, GetJwtToken.JwtToken);
+                    await _genreApiService.PostCallApi(newGenre, Preferences.Get("JwtToken", null));
                 }
             }
             catch (Exception ex)
@@ -124,6 +126,16 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 genreName = value;
                 RaisePropertyChanged(nameof(GenreName));
+            }
+        }
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set
+            {
+                title = value;
+                RaisePropertyChanged(nameof(Title));
             }
         }
 

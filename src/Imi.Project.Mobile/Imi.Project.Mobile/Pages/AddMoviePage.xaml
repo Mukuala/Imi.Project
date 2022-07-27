@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
              xmlns:syncfusion="clr-namespace:Syncfusion.SfNumericTextBox.XForms;assembly=Syncfusion.SfNumericTextBox.XForms"
              xmlns:autocomplete="clr-namespace:Syncfusion.SfAutoComplete.XForms;assembly=Syncfusion.SfAutoComplete.XForms"
              xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
              x:Class="Imi.Project.Mobile.Pages.AddMoviePage"
-             Title="{Binding Title, StringFormat='{0} movie'}">
+             Title="{Binding Title}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="20" >
@@ -16,12 +15,12 @@
                         EnableAutoSize="True"
                         DataSource="{Binding Genres}"
                         MultiSelectMode="Token"
-                        TokensWrapMode="None" 
+                        TokensWrapMode="Wrap" 
                         IsSelectedItemsVisibleInDropDown="False"
                         DropDownItemHeight="50"
                         DisplayMemberPath="Name" 
                         SuggestionMode="Contains"
-                        SelectedItem="{Binding SelectedGenres}"/>
+                        SelectedItem="{Binding SelectedGenres,Mode=TwoWay}"/>
 
                 </inputLayout:SfTextInputLayout>
 
@@ -32,11 +31,11 @@
                         SuggestionMode="Contains"
                         DataSource="{Binding Actors}"
                         MultiSelectMode="Token"
-                        TokensWrapMode="None" 
+                        TokensWrapMode="Wrap" 
                         IsSelectedItemsVisibleInDropDown="False"
                         DropDownItemHeight="50"
                         DisplayMemberPath="Name"
-                        SelectedItem="{Binding SelectedActors}"/>
+                        SelectedItem="{Binding SelectedActors,Mode=TwoWay}"/>
                 </inputLayout:SfTextInputLayout>
 
                 <inputLayout:SfTextInputLayout Hint="Name" HelperText="{Binding NameError}">
@@ -63,12 +62,12 @@
                     <DatePicker Date="{Binding Movie.ReleaseDate}"/>
                 </inputLayout:SfTextInputLayout>
 
-                <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}" >
+                <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}" > 
                     <Button HorizontalOptions="CenterAndExpand" VerticalOptions="End" Text="Image" Command="{Binding AddImage}" WidthRequest="100" Padding="5"/>
 
                 </inputLayout:SfTextInputLayout>
 
-                <Button BackgroundColor="LightSalmon" Text="Add Movie" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding AddOrEditCommand}" ></Button>
+                <Button BackgroundColor="LightSalmon" Text="{Binding Title}" VerticalOptions="Center" HorizontalOptions="Center" Command="{Binding AddOrEditCommand}" ></Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

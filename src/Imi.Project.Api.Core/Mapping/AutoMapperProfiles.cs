@@ -3,7 +3,6 @@ using Imi.Project.Api.Core.Entities;
 using Imi.Project.Common.Dtos;
 using Imi.Project.Common.IPBaseUrl;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
 namespace Imi.Project.Api.Core.Mapping
@@ -24,11 +23,11 @@ namespace Imi.Project.Api.Core.Mapping
                      //ApplicationUserId = f.ApplicationUserId,
                      //Movie = new MovieResponseDto
                      //{
-                         Id = f.MovieId,
-                         Image = GetFullImageUrl(f.Movie.Image),
-                         Name = f.Movie.Name,
-                         AverageRating = f.Movie.AverageRating,
-                         ReleaseDate = f.Movie.ReleaseDate,
+                     Id = f.MovieId,
+                     Image = GetFullImageUrl(f.Movie.Image),
+                     Name = f.Movie.Name,
+                     AverageRating = f.Movie.AverageRating,
+                     ReleaseDate = f.Movie.ReleaseDate,
                      //}
                  }
                 )))
@@ -41,11 +40,11 @@ namespace Imi.Project.Api.Core.Mapping
                       //ApplicationUserId = f.ApplicationUserId,
                       //Movie = new MovieResponseDto
                       //{
-                          Id = f.MovieId,
-                          Image = GetFullImageUrl(f.Movie.Image),
-                          Name = f.Movie.Name,
-                          AverageRating = f.Movie.AverageRating,
-                          ReleaseDate = f.Movie.ReleaseDate
+                      Id = f.MovieId,
+                      Image = GetFullImageUrl(f.Movie.Image),
+                      Name = f.Movie.Name,
+                      AverageRating = f.Movie.AverageRating,
+                      ReleaseDate = f.Movie.ReleaseDate
                       //}
                   })));
 
@@ -53,7 +52,6 @@ namespace Imi.Project.Api.Core.Mapping
                 .ForMember(au => au.NormalizedEmail, opt => opt.MapFrom(ur => ur.Email.ToUpper()))
                 .ForMember(au => au.NormalizedUserName, opt => opt.MapFrom(ur => ur.UserName.ToUpper()));
             #endregion
-
 
             CreateMap<Favorite, FavoriteResponseDto>();
 
@@ -65,19 +63,19 @@ namespace Imi.Project.Api.Core.Mapping
 
             #region Genre
             CreateMap<Genre, GenreResponseDto>();
-                //.ForMember(dest => dest.Movies,
-                //opt => opt.MapFrom(src => src.Movies
-                //.Select(mg => new MovieResponseDto
-                //{
-                //    Id = mg.MovieId,
-                //    Name = mg.Movie.Name,
-                //    AverageRating = mg.Movie.AverageRating,
-                //    Description = mg.Movie.Description,
-                //    Duration = mg.Movie.Duration,
-                //    EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
-                //    Image = GetFullImageUrl(mg.Movie.Image),
-                //    ReleaseDate = mg.Movie.ReleaseDate,
-                //})));
+            //.ForMember(dest => dest.Movies,
+            //opt => opt.MapFrom(src => src.Movies
+            //.Select(mg => new MovieResponseDto
+            //{
+            //    Id = mg.MovieId,
+            //    Name = mg.Movie.Name,
+            //    AverageRating = mg.Movie.AverageRating,
+            //    Description = mg.Movie.Description,
+            //    Duration = mg.Movie.Duration,
+            //    EmbeddedTrailerUrl = mg.Movie.EmbeddedTrailerUrl,
+            //    Image = GetFullImageUrl(mg.Movie.Image),
+            //    ReleaseDate = mg.Movie.ReleaseDate,
+            //})));
 
             CreateMap<GenreRequestDto, Genre>();
             #endregion
@@ -105,7 +103,7 @@ namespace Imi.Project.Api.Core.Mapping
 
             #region Movie
             CreateMap<Movie, MovieResponseDto>()
-                .ForMember(d => d.Image, opt => opt.MapFrom(src=> GetFullImageUrl(src.Image)))
+                .ForMember(d => d.Image, opt => opt.MapFrom(src => GetFullImageUrl(src.Image)))
                 .ForMember(dest => dest.Actors,
                 opt => opt.MapFrom(src => src.Actors
                 .Select(a => new ActorResponseDto
@@ -126,7 +124,7 @@ namespace Imi.Project.Api.Core.Mapping
                   })));
 
             CreateMap<MovieRequestDto, Movie>()
-                .ForMember(dest=>dest.Actors,
+                .ForMember(dest => dest.Actors,
                 opt => opt.MapFrom(src => src.ActorsId
                 .Select(a => new MovieActor
                 {
@@ -134,7 +132,7 @@ namespace Imi.Project.Api.Core.Mapping
                     MovieId = src.Id
                 })))
 
-                .ForMember(dest=>dest.Genres,
+                .ForMember(dest => dest.Genres,
                 opt => opt.MapFrom(src => src.GenresId
                 .Select(g => new MovieGenre
                 {
@@ -151,8 +149,9 @@ namespace Imi.Project.Api.Core.Mapping
             if (string.IsNullOrEmpty(image))
             {
                 var scheme = httpContextAccessor.HttpContext.Request.Scheme; // example: https or http
-                //var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
+                var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
                 var noImageimgUrl = $"{IPBaseAdress.Url}Images/No_Image.png";
+                //var noImageimgUrl = $"{scheme}://{url}/Images/No_Image.png";
 
                 return noImageimgUrl;
             }
@@ -166,6 +165,7 @@ namespace Imi.Project.Api.Core.Mapping
                 var url = httpContextAccessor.HttpContext.Request.Host.Value; // example: localhost:5001, howest.be, steam.com, localhost:44785, ...
 
                 var fullImageUrl = $"{IPBaseAdress.Url}{image}";
+                //var fullImageUrl = $"{scheme}://{url}/{image}";
 
                 return fullImageUrl;
             }

@@ -74,20 +74,13 @@ namespace Imi.Project.Api.Infrastructure.Repositories
                 return oldUser;
             }
 
+
             oldUser.Birthday = user.Birthday;
-            oldUser.NormalizedEmail = user.NormalizedEmail;
+            oldUser.NormalizedEmail = user.Email.ToUpper();
             oldUser.Id = user.Id;
-            oldUser.ConcurrencyStamp = user.ConcurrencyStamp;
             oldUser.Email = user.Email;
-            oldUser.EmailConfirmed = user.EmailConfirmed;
-            oldUser.FavoriteMovies = user.FavoriteMovies;
             oldUser.FirstName = user.FirstName;
             oldUser.LastName = user.LastName;
-            oldUser.NormalizedUserName = user.NormalizedUserName;
-            oldUser.PasswordHash = user.PasswordHash;
-            oldUser.AccessFailedCount = user.AccessFailedCount;
-            oldUser.SecurityStamp = user.SecurityStamp;
-
 
             _dbContext.ApplicationUsers.Update(oldUser);
             await _dbContext.SaveChangesAsync();

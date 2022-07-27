@@ -21,15 +21,16 @@ namespace Imi.Project.Mobile
             FreshIOC.Container.Register<IApiService<UserResponseDto, UserRequestDto>>(new ApiService<UserResponseDto, UserRequestDto>());
             FreshIOC.Container.Register<IApiService<GenreResponseDto, GenreRequestDto>>(new ApiService<GenreResponseDto, GenreRequestDto>());
             FreshIOC.Container.Register<IAuthApiService>(new AuthApiService());
+            FreshIOC.Container.Register<IMeApiService>(new MeApiService());
 
-            //if (!string.IsNullOrWhiteSpace(GetJwtToken.JwtToken))
-            //{
-            //MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>()) { BarBackgroundColor = Color.DarkGoldenrod, BarTextColor = Color.White, BackgroundColor = Color.Wheat };
             var masternav = new FreshMasterDetailNavigationContainer(null);
             masternav.Init("Menu");
             masternav.AddPage<MainViewModel>("Movies");
-            masternav.AddPage<GenresViewModel>("Genres");
+            masternav.AddPage<ProfileViewModel>("Profile");
+            masternav.AddPage<FavoritesViewModel>("Favorites");
+            masternav.AddPage<WatchlistViewModel>("Watchlist");
             masternav.AddPage<ActorsViewModel>("Actors");
+            masternav.AddPage<GenresViewModel>("Genres");
             masternav.AddPage<UsersViewModel>("Users");
             MainPage = masternav;
             //}

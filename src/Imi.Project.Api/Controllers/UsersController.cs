@@ -30,7 +30,7 @@ namespace Imi.Project.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string userName)
         {
-            if (userName != null)
+            if (!string.IsNullOrWhiteSpace(userName))
             {
                 var users = await _userService.SearchByUserNameAsync(userName);
                 if (users.Any())

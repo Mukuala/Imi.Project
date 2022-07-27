@@ -2,51 +2,65 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="Imi.Project.Mobile.Pages.FavoritesPage">
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             x:Class="Imi.Project.Mobile.Pages.FavoritesPage"
+             Title="Favorites">
     <ContentPage.Content>
         <StackLayout>
             <RefreshView IsRefreshing="{Binding IsBusy}" RefreshColor="Goldenrod"
                      Command="{Binding RefreshCommand}">
-                <CollectionView SelectionMode="Single" SelectedItem="{Binding SelectedMovie}" ItemsSource= "{Binding Movies}">
+                <StackLayout>
+                    <StackLayout   IsVisible="{Binding HasNoFavorites}" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label FontFamily="{StaticResource FontAwesomeSolid}"
+                               Text="{x:Static fontawesome:FontAwesomeIcons.Frown}"
+                               FontSize="100"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"/>
+                        <Label Text="You have no favorite movie yet." FontSize="Large"/>
+                    </StackLayout>
 
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0">
-                            <GridItemsLayout.Span>
-                                <OnPlatform x:TypeArguments="x:Int32">
-                                    <On Platform="UWP" Value="5" />
-                                    <On Platform="Android" Value="3" />
-                                </OnPlatform>
-                            </GridItemsLayout.Span>
-                        </GridItemsLayout>
-                    </CollectionView.ItemsLayout>
+                    <CollectionView SelectionMode="Single" SelectedItem="{Binding SelectedMovie}" ItemsSource= "{Binding Movies}">
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid RowSpacing="0" Padding="0.5" BackgroundColor="Wheat" xct:TouchEffect.NativeAnimation="True">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0">
+                                <GridItemsLayout.Span>
+                                    <OnPlatform x:TypeArguments="x:Int32">
+                                        <On Platform="UWP" Value="5" />
+                                        <On Platform="Android" Value="3" />
+                                    </OnPlatform>
+                                </GridItemsLayout.Span>
+                            </GridItemsLayout>
+                        </CollectionView.ItemsLayout>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition  Height="*" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid RowSpacing="0" Padding="0.5" BackgroundColor="Wheat" xct:TouchEffect.NativeAnimation="True">
 
-                                <Image  Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" >
-                                    <Image.HeightRequest>
-                                        <OnPlatform x:TypeArguments="x:Double">
-                                            <On Platform="UWP" Value="500" />
-                                            <On Platform="Android" Value="180" />
-                                        </OnPlatform>
-                                    </Image.HeightRequest>
-                                </Image>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition  Height="*" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
 
-                                <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="DarkGoldenrod">
-                                    <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
-                                    <Label Text="{Binding ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" TextColor="Black"  LineBreakMode="TailTruncation"/>
-                                </StackLayout>
+                                    <Image  Aspect="AspectFill" Source="{Binding Image}"  Grid.Row="0" >
+                                        <Image.HeightRequest>
+                                            <OnPlatform x:TypeArguments="x:Double">
+                                                <On Platform="UWP" Value="500" />
+                                                <On Platform="Android" Value="180" />
+                                            </OnPlatform>
+                                        </Image.HeightRequest>
+                                    </Image>
 
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                                    <StackLayout Padding="5,0,5,5" Grid.Row="1" BackgroundColor="DarkGoldenrod">
+                                        <Label Text="{Binding Name}" TextColor="Black" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                                        <Label Text="{Binding ReleaseDate, StringFormat='{0:dd-MM-yyyy}'}" TextColor="Black"  LineBreakMode="TailTruncation"/>
+                                    </StackLayout>
+
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </StackLayout>
             </RefreshView>
         </StackLayout>
     </ContentPage.Content>

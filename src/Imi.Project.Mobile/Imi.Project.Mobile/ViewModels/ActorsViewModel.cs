@@ -2,26 +2,29 @@
 using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using Imi.Project.Mobile.Pages;
-using Imi.Project.Mobile.Utils;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Imi.Project.Mobile.ViewModels
 {
     public class ActorsViewModel : FreshBasePageModel
     {
+
         private readonly IApiService<ActorResponseDto, ActorRequestDto> _actorApiService;
         public ActorsViewModel(IApiService<ActorResponseDto, ActorRequestDto> actorApiService)
         {
             _actorApiService = actorApiService;
         }
-
+        protected override async void ViewIsAppearing(object sender, EventArgs e)
+        {
+            base.ViewIsAppearing(sender, e);
+            await FillActors();
+        }
         public override async void Init(object initData)
         {
             base.Init(initData);
@@ -33,15 +36,17 @@ namespace Imi.Project.Mobile.ViewModels
             var alert = await CoreMethods.DisplayAlert("Delete", $"Are you sure you want to delete {name}?", "Yes", "No");
             if (alert)
             {
-                await _actorApiService.DeleteCallApi(id.ToString(), GetJwtToken.JwtToken);
+                await _actorApiService.DeleteCallApi(id.ToString(), Preferences.Get("JwtToken", null));
             }
         }
 
         private async Task Search()
         {
-            var apiActors = await _actorApiService.GetAllAsync();
-            var foundActors = apiActors.Where(m => m.Name.ToUpper().Contains(SearchText.ToUpper()));
-            Actors = new ObservableCollection<ActorResponseDto>(foundActors);
+            var apiActors = await _actorApiService.GetAllAsync(SearchText);
+            if (apiActors != null)
+                Actors = new ObservableCollection<ActorResponseDto>(apiActors);
+            else
+                Actors = null;
         }
 
         private async Task FillActors()

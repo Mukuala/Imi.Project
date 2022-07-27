@@ -2,6 +2,7 @@
 using Imi.Project.Common.IPBaseUrl;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Imi.Project.Mobile.Infrastructure.Services
 {
-    public class AuthApiService: IAuthApiService
+    public class AuthApiService : IAuthApiService
     {
         private HttpClient Client { get; set; }
         public AuthApiService()
@@ -23,6 +24,8 @@ namespace Imi.Project.Mobile.Infrastructure.Services
         }
         public async Task<LoginResponseDto> LogInGetJwtToken(string username, string password)
         {
+            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
             LoginRequestDto login = new LoginRequestDto { UserName = username, Password = password };
             HttpResponseMessage response = await Client.PostAsJsonAsync("Auth/login", login);
             if (response.IsSuccessStatusCode)
@@ -45,34 +48,9 @@ namespace Imi.Project.Mobile.Infrastructure.Services
             }
             else
             {
-               return response.ReasonPhrase;
+                return response.ReasonPhrase;
             }
-
         }
-
-        public async Task<UserResponseDto> GetJwtUserProfile(string jwtToken)
-        {
-            HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-
-            HttpResponseMessage response = await httpClient.GetAsync("Me/profile");
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadAsAsync<UserResponseDto>();
-                return result;
-            }
-            else if (response.StatusCode == HttpStatusCode.Unauthorized || response.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-            else throw new Exception(response.ReasonPhrase);
-
-        }
-
     }
-
 }
 

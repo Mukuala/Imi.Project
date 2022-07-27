@@ -14,7 +14,6 @@ namespace Imi.Project.Common.Dtos
         public string Description { get; set; } = "";
         [Required]
         public int Duration { get; set; } = 0;
-        public IFormFile Image { get; set; }
         public string EmbeddedTrailerUrl { get; set; }
         [Required]
         public DateTime ReleaseDate { get; set; }

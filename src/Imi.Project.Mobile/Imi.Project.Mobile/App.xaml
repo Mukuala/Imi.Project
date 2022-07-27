@@ -9,10 +9,14 @@
             <Style TargetType="inputLayout:SfTextInputLayout">
                 <Setter Property="ContainerType" Value="Outlined" />
             </Style>
+            
             <Style TargetType="NavigationPage">
                         <Setter Property="BarBackgroundColor" Value="DarkGoldenrod"/>
                 <Setter Property="BackgroundColor" Value="Wheat"/>
                 <Setter Property="BarTextColor" Value="White"/>
+            </Style>
+            <Style TargetType="DatePicker">
+                <Setter Property="Format" Value="dd-MM-yyyy"/>
             </Style>
             <OnPlatform 
                 x:TypeArguments="x:String" 
@@ -20,7 +24,7 @@
                 <On Platform="Android" 
                     Value="FontAwesome5Brands.otf#Regular" />
                 <On Platform="UWP" 
-                    Value="/Assets/FontAwesome5Brands.otf#Font Awesome 5 Brands" />
+                    Value="/Assets/FontAwesome5Brands.otf#Font Awesome 5 Free" />
             </OnPlatform>
 
             <OnPlatform 
@@ -29,7 +33,7 @@
                 <On Platform="Android" 
                     Value="FontAwesome5Solid.otf#Regular" />
                 <On Platform="UWP" 
-                    Value="/Assets/FontAwesome5Solid.otf#Font Awesome 5 Solid" />
+                    Value="/Assets/FontAwesome5Solid.otf#Font Awesome 5 Free" />
             </OnPlatform>
 
             <OnPlatform x:TypeArguments="x:String" 
@@ -37,7 +41,7 @@
                 <On Platform="Android" 
           Value="FontAwesome5Regular.otf#Regular" />
                 <On Platform="UWP" 
-           Value="/Assets/FontAwesome5Regular.otf#Font Awesome 5 Regular" />
+           Value="/Assets/FontAwesome5Regular.otf#Font Awesome 5 Free" />
             </OnPlatform>
         </ResourceDictionary>
     </Application.Resources>

@@ -130,27 +130,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="Batman_Begins.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Christian_Bale.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="The_Dark_Knight.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="The_Dark_Knight_Rises.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Tom_Hardy.jpg">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -177,13 +157,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\FontAwesome5Brands.otf" />
+    <Content Include="Assets\FontAwesome5Brands.otf" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\FontAwesome5Regular.otf" />
+    <Content Include="Assets\FontAwesome5Regular.otf" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\FontAwesome5Solid.otf" />
+    <Content Include="Assets\FontAwesome5Solid.otf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

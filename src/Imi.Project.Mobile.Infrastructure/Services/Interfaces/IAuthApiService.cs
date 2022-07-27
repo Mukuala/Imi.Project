@@ -10,7 +10,5 @@ namespace Imi.Project.Mobile.Infrastructure.Services.Interfaces
     {
         Task<LoginResponseDto> LogInGetJwtToken(string username,string password);
         Task<string> Register(RegisterRequestDto newUser);
-        Task<UserResponseDto> GetJwtUserProfile(string jwtToken);
-
     }
 }

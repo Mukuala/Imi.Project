@@ -18,11 +18,5 @@ namespace Imi.Project.Mobile.Validators
                 .NotEmpty()
                 .WithMessage("Description is required.");
         }
-        protected override void EnsureInstanceNotNull(object instanceToValidate)
-        {
-            var nothing = "";
-
-        }
-
     }
 }

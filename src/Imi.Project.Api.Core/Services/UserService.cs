@@ -69,15 +69,13 @@ namespace Imi.Project.Api.Core.Services
         public async Task<UserResponseDto> UpdateAsync(UserRequestDto userRequestDto)
         {
             var entity = _mapper.Map<ApplicationUser>(userRequestDto);
-            passwordHasher.HashPassword(entity, userRequestDto.Password);
-            var result = await _userManager.UpdateAsync(entity);
-            if (result.Succeeded)
+            if (!string.IsNullOrWhiteSpace(userRequestDto.Password))
             {
-                var addedUser = _userRepo.GetByIdAsync(userRequestDto.Id);
-                var dto = _mapper.Map<UserResponseDto>(addedUser);
-                return dto;
+                passwordHasher.HashPassword(entity, userRequestDto.Password);
             }
-            return null;
+            var user = await _userRepo.UpdateAsync(entity);
+            var dto = _mapper.Map<UserResponseDto>(user);
+            return dto;
         }
     }
 }

@@ -5,29 +5,32 @@
              x:Class="Imi.Project.Mobile.Pages.AddActorPage"
              Title="{Binding Title, StringFormat='{0} actor'}">
     <ContentPage.Content>
-        <ScrollView>
             <StackLayout Padding="20">
                 <StackLayout>
-                    <inputLayout:SfTextInputLayout Hint="Name" HelperText="{Binding NameError}">
-                        <Entry Text="{Binding Actor.Name}"></Entry>
-                    </inputLayout:SfTextInputLayout>
+                    <ScrollView>
+                        <StackLayout>
+                            <inputLayout:SfTextInputLayout Hint="Name" HelperText="{Binding NameError}">
+                                <Entry Text="{Binding Actor.Name}"></Entry>
+                            </inputLayout:SfTextInputLayout>
 
-                    <inputLayout:SfTextInputLayout Hint="Biography" HelperText="{Binding BiographyError}">
-                        <Editor AutoSize="TextChanges" Text="{Binding Actor.Biography}"/>
-                   </inputLayout:SfTextInputLayout>
+                            <inputLayout:SfTextInputLayout Hint="Biography" HelperText="{Binding BiographyError}">
+                                <Editor AutoSize="TextChanges" Text="{Binding Actor.Biography}"/>
+                            </inputLayout:SfTextInputLayout>
 
-                    <inputLayout:SfTextInputLayout Hint="Date of birth">
-                        <DatePicker Date="{Binding Actor.DateOfBirth}"/>
-                    </inputLayout:SfTextInputLayout>
+                            <inputLayout:SfTextInputLayout Hint="Date of birth">
+                                <DatePicker Date="{Binding Actor.DateOfBirth}"/>
+                            </inputLayout:SfTextInputLayout>
 
-                    <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}">
-                        <Button Text="Image" Command="{Binding AddImage}" HorizontalOptions="Center"/>
-                    </inputLayout:SfTextInputLayout>
+                            <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}">
+                                <Button Text="Image" Command="{Binding AddImage}" HorizontalOptions="Center"/>
+                            </inputLayout:SfTextInputLayout>
 
-                    <Button Text="{Binding Title}" Command="{Binding AddOrEditCommand}" HorizontalOptions="Center"></Button>
+                            <Button Text="{Binding Title}" Command="{Binding AddOrEditCommand}" HorizontalOptions="Center"></Button>
 
+                        </StackLayout>
+
+                    </ScrollView>
                 </StackLayout>
             </StackLayout>
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

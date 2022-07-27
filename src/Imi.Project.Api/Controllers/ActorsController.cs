@@ -28,7 +28,7 @@ namespace Imi.Project.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] string name)
         {
-            if (name != null)
+            if (!string.IsNullOrWhiteSpace(name))
             {
                 var actors = await _actorService.SearchByNameAsync(name);
                 if (actors.Any())

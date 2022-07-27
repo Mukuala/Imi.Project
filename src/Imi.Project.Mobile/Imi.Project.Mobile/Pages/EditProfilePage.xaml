@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             x:Class="Imi.Project.Mobile.Pages.EditProfilePage"
+             Title="Edit profile">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Margin="20">
+                <!--<inputLayout:SfTextInputLayout Hint="Username" HelperText="{Binding UserNameError}">
+                    <Entry Text="{Binding User.UserName}" ></Entry>
+                </inputLayout:SfTextInputLayout>-->
+
+                <inputLayout:SfTextInputLayout Hint="First name"  HelperText="{Binding FirstNameError}">
+                    <Entry Text="{Binding User.FirstName}" ></Entry>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Last name" HelperText="{Binding LastNameError}">
+                    <Entry  Text="{Binding User.LastName}" ></Entry>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Birthday">
+                    <DatePicker Date="{Binding User.Birthday}"/>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Email" HelperText="{Binding EmailError}">
+                    <Entry Text="{Binding User.Email}"  Keyboard="Email"></Entry>
+                </inputLayout:SfTextInputLayout>
+
+                <inputLayout:SfTextInputLayout Hint="Image" HelperText="{Binding ImageName}">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                        <buttons:SfButton Command="{Binding AddImageByCamera}"
+                                          FontFamily="{StaticResource FontAwesomeSolid}"
+                                          Text="{x:Static fontawesome:FontAwesomeIcons.Camera}"
+                                          FontSize="Large"
+                                          BackgroundColor="Transparent"
+                                          TextColor="DarkGoldenrod"
+                                          CornerRadius="20">
+                        </buttons:SfButton>
+
+                            <buttons:SfButton Command="{Binding AddImageByGallery}"
+                                          FontFamily="{StaticResource FontAwesomeSolid}"
+                                          Text="{x:Static fontawesome:FontAwesomeIcons.Folder}"                                          
+                                          FontSize="Large"
+                                          BackgroundColor="Transparent"
+                                          TextColor="DarkGoldenrod"
+                                          CornerRadius="20">
+
+                        </buttons:SfButton>
+                    </StackLayout>
+                </inputLayout:SfTextInputLayout>
+
+                <Button Text="Update" Command="{Binding EditCommand}" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

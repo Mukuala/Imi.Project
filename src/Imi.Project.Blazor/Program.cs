@@ -23,7 +23,7 @@ namespace Imi.Project.Blazor
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder
-                    .UseUrls("http://0.0.0.0:5000", "https://0.0.0.0:5001")
+                    .UseUrls("https://0.0.0.0:5002", "http://0.0.0.0:5004")
                     .UseStartup<Startup>();
                 });
     }

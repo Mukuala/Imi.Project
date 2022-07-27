@@ -1,10 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Imi.Project.Mobile.Pages.ProfilePage">
+             xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             x:Class="Imi.Project.Mobile.Pages.ProfilePage"
+             Title="Profile"
+             x:Name="Page">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding OpenEditProfilePage}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource 
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Edit}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            
+        <StackLayout Margin="20">
+            <border:SfBorder CornerRadius="10" HasShadow="True" BorderColor="DarkGoldenrod" ShadowColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
+                <StackLayout Margin="10">
+                    <Label Text="{Binding User.UserName}"
+                   HorizontalOptions="Center"
+                   FontSize="Title"
+                   TextColor="DarkGoldenrod"
+                   />
+                    <sfavatar:SfAvatarView ImageSource="{Binding User.Image}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   HeightRequest="200"
+                                   WidthRequest="200"
+                                   CornerRadius="100"
+                                   ContentType="Custom"
+                                   BorderThickness="5"
+                                   BorderColor="LightSalmon"/>
+
+                </StackLayout>
+            </border:SfBorder >
+            <border:SfBorder CornerRadius="10" HasShadow="True" ShadowColor="DarkGoldenrod" BorderColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
+                <StackLayout Margin="10">
+                    <Label Text="{Binding User.FirstName, StringFormat='First Name: {0}'}" FontSize="Medium"></Label>
+                    <Label Text="{Binding User.LastName, StringFormat='Last Name: {0}'}" FontSize="Medium"></Label>
+                    <Label Text="{Binding User.Email, StringFormat='Emailadress: {0}'}" FontSize="Medium"></Label>
+                    <Label Text="{Binding User.Birthday, StringFormat='Birthday: {0:dd-MM-yyyy}'}" FontSize="Medium"></Label>
+                    <Label Text="{Binding AmountOfFavorites, StringFormat='Movies in favorites: {0}'}" FontSize="Medium" ></Label>
+                    <Label Text="{Binding AmountOfWatchlist,StringFormat='Movies in watchlist: {0}'}" FontSize="Medium" ></Label>
+                </StackLayout>
+            </border:SfBorder>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

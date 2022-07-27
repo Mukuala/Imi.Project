@@ -13,12 +13,14 @@ using System.Linq;
 using Imi.Project.Mobile.Utils;
 using FluentValidation;
 using Imi.Project.Mobile.Validators;
+using Xamarin.Essentials;
 
 namespace Imi.Project.Mobile.ViewModels
 {
     public class AddActorViewModel : FreshBasePageModel
     {
         private readonly IApiService<ActorResponseDto, ActorRequestDto> _apiService;
+
         private byte[] ImgByteArray { get; set; }
         private IValidator validator;
 
@@ -79,19 +81,19 @@ namespace Imi.Project.Mobile.ViewModels
                 //Add
                 if (Actor.Id == 0)
                 {
-                    var newActor = await _apiService.PostCallApi(actor, GetJwtToken.JwtToken);
+                    var newActor = await _apiService.PostCallApi(actor, Preferences.Get("JwtToken", null));
                     if (!string.IsNullOrEmpty(imageName))
                     {
-                        await _apiService.PostImageAsync(ImgByteArray, imageName, newActor.Id.ToString(), GetJwtToken.JwtToken);
+                        await _apiService.PostImageAsync(ImgByteArray, imageName, newActor.Id.ToString(), Preferences.Get("JwtToken", null));
                     }
                     await CoreMethods.PopPageModel();
                 }
                 else //Edit
                 {
-                    await _apiService.PutCallApi(actor.Id.ToString(), actor, GetJwtToken.JwtToken);
+                    await _apiService.PutCallApi(actor.Id.ToString(), actor, Preferences.Get("JwtToken", null));
                     if (!string.IsNullOrEmpty(imageName))
                     {
-                        await _apiService.PostImageAsync(ImgByteArray, imageName, actor.Id.ToString(), GetJwtToken.JwtToken);
+                        await _apiService.PostImageAsync(ImgByteArray, imageName, actor.Id.ToString(), Preferences.Get("JwtToken", null));
                     }
                     await CoreMethods.PopPageModel();
                 }
