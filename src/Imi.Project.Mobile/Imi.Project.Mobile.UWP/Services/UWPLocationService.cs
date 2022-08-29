@@ -42,7 +42,7 @@ namespace Imi.Project.Mobile.UWP.Services
             {
                 CurrentLocation currentLocation = new CurrentLocation
                 {
-                    Address = "Allow access to location to know current location"
+                    Address = "Allow access to location or enable location to know current location"
                 };
                 return currentLocation;
             }

@@ -3,6 +3,7 @@ using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using Imi.Project.Mobile.Pages;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace Imi.Project.Mobile.ViewModels
     public class MainViewModel : FreshBasePageModel
     {
         private readonly IApiService<MovieResponseDto, MovieRequestDto> _movieApiService;
-        private readonly IApiService<GenreResponseDto, GenreRequestDto> _genreApiService;
+        private readonly IGenreApiService _genreApiService;
         private readonly IMeApiService _meApiService;
 
         public MainViewModel(IApiService<MovieResponseDto, MovieRequestDto> movieApiService,
-            IApiService<GenreResponseDto, GenreRequestDto> genreApiService,
+            IGenreApiService genreApiService,
             IMeApiService meApiService)
         {
             _meApiService = meApiService;
@@ -47,7 +48,13 @@ namespace Imi.Project.Mobile.ViewModels
         //    base.Init(initData);
         //    await FillMovies();
         //}
+        private async void ShowSpecificGenreMovies(int genreId)
+        {
 
+            var movies = await _genreApiService.GetMoviesByGenreId(genreId);
+            Movies = new ObservableCollection<MovieResponseDto>(movies);
+
+        }
         private async void NavigateToMovieDetailPage(int movieId)
         {
             await CoreMethods.PushPageModel<MovieDetailViewModel>(movieId);
@@ -60,7 +67,7 @@ namespace Imi.Project.Mobile.ViewModels
                 Movies = new ObservableCollection<MovieResponseDto>(apimovies);
             else
                 Movies = null;
-            
+
         }
         private async Task FillMovies()
         {
@@ -122,6 +129,24 @@ namespace Imi.Project.Mobile.ViewModels
                 if (SelectedMovie != null)
                     NavigateToMovieDetailPage(SelectedMovie.Id);
                 RaisePropertyChanged(nameof(SelectedMovie));
+            }
+        }
+        private GenreResponseDto selectedGenre;
+        public GenreResponseDto SelectedGenre
+        {
+            get
+            {
+                return selectedGenre;
+            }
+            set
+            {
+                selectedGenre = value;
+
+                if (selectedGenre == null)
+                    FillMovies();
+                else
+                    ShowSpecificGenreMovies(selectedGenre.Id);
+                RaisePropertyChanged(nameof(SelectedGenre));
             }
         }
 

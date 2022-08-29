@@ -41,7 +41,7 @@ namespace Imi.Project.Api.Controllers
             }
             return Ok(genre);
         }
-
+        [AllowAnonymous]
         [HttpGet("{id}/movies")]
         public async Task<IActionResult> GetMoviesByGenreId(int id)
         {

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
+             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
              x:Class="Imi.Project.Mobile.Pages.MainPage"
              Title="Mini IMDB">
     <ContentPage.ToolbarItems>
@@ -13,7 +13,24 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout>
-        <SearchBar Placeholder="Search..." SearchCommand="{Binding SearchItem}" Text="{Binding SearchText}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="*" />
+                <ColumnDefinition  Width="150" />
+            </Grid.ColumnDefinitions>
+
+            <SearchBar Placeholder="Search..." 
+                       SearchCommand="{Binding SearchItem}" 
+                       Text="{Binding SearchText}"
+                       Grid.Column="0"/>
+            <combobox:SfComboBox DataSource="{Binding Genres}" 
+                                 DisplayMemberPath="Name" 
+                                 SelectedItem="{Binding SelectedGenre}" 
+                                 Grid.Column="1"
+                                 Watermark="Genre"
+                                 />
+                                 
+        </Grid>
         <RefreshView IsRefreshing="{Binding IsBusy}" RefreshColor="Goldenrod"
                      Command="{Binding RefreshCommand}">
             <CollectionView SelectionMode="Single" 

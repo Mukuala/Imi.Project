@@ -20,6 +20,12 @@ namespace Imi.Project.Mobile.Droid.Services
             var currentContext = Android.App.Application.Context;
             FusedLocationProviderClient fusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(currentContext);
             CurrentLocation currentLocation = new CurrentLocation();
+            LocationRequest mLocationRequest = LocationRequest.Create();
+            FusedLocationProviderCallback mLocationCallback = new FusedLocationProviderCallback();
+
+
+            RequestLocation(mLocationRequest);
+            fusedLocationProviderClient.RequestLocationUpdates(mLocationRequest, mLocationCallback, null);
 
             var location = await fusedLocationProviderClient.GetLastLocationAsync();
 
@@ -29,11 +35,37 @@ namespace Imi.Project.Mobile.Droid.Services
             string adress = possibleAddresses.FirstOrDefault();
             currentLocation.Address = adress;
 
-            //Geolocation testing xam essentials
-            var geoLocation = await Geocoding.GetLocationsAsync(adress);
-            var geoPlacemark = await Geocoding.GetPlacemarksAsync(geoLocation.FirstOrDefault());
+            ////Geolocation testing xam essentials
+            //var geoLocation = await Geocoding.GetLocationsAsync(adress);
+            //var geoPlacemark = await Geocoding.GetPlacemarksAsync(geoLocation.FirstOrDefault());
 
             return await Task.FromResult<CurrentLocation>(currentLocation);
         }
-    }
+        private void RequestLocation(LocationRequest mLocationRequest)
+        {
+            mLocationRequest.SetInterval(6000);
+            mLocationRequest.SetFastestInterval(5000);
+            mLocationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
+        }
+
+        public class FusedLocationProviderCallback : LocationCallback
+        {
+            public override void OnLocationAvailability(LocationAvailability locationAvailability)
+            {
+              var test = locationAvailability.IsLocationAvailable;
+            }
+
+            public override void OnLocationResult(LocationResult result)
+            {
+                if (result.Locations.Any())
+                {
+                    var location = result.Locations.First();
+                }
+                else
+                {
+                    // No locations to work with.
+                }
+            }
+        }
+    } 
 }

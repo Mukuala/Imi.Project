@@ -21,6 +21,8 @@ namespace Imi.Project.Mobile
             FreshIOC.Container.Register<IApiService<ActorResponseDto, ActorRequestDto>>(new ApiService<ActorResponseDto, ActorRequestDto>());
             FreshIOC.Container.Register<IApiService<UserResponseDto, UserRequestDto>>(new ApiService<UserResponseDto, UserRequestDto>());
             FreshIOC.Container.Register<IApiService<GenreResponseDto, GenreRequestDto>>(new ApiService<GenreResponseDto, GenreRequestDto>());
+
+            FreshIOC.Container.Register<IGenreApiService>(new GenreApiService());
             FreshIOC.Container.Register<IAuthApiService>(new AuthApiService());
             FreshIOC.Container.Register<IMeApiService>(new MeApiService());
 

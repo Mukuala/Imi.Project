@@ -25,7 +25,7 @@ namespace Imi.Project.Mobile.Infrastructure.Services
             return httpClientHandler;
         }
 
-        private HttpClient Client { get; set; }
+        protected HttpClient Client { get; set; }
         public ApiService()
         {
             Client = new HttpClient(ClientHandler());
@@ -41,14 +41,14 @@ namespace Imi.Project.Mobile.Infrastructure.Services
                 string jwtToken = Preferences.Get("JwtToken", null);
                 Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             }
-            IEnumerable<TResponseDto> movies = null;
+            IEnumerable<TResponseDto> items = null;
             using (HttpResponseMessage response = await Client.GetAsync(""))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    movies = await response.Content.ReadAsAsync<IEnumerable<TResponseDto>>();
+                    items = await response.Content.ReadAsAsync<IEnumerable<TResponseDto>>();
                 }
-                return movies;
+                return items;
             };
         }
         public async Task<IEnumerable<TResponseDto>> GetAllAsync(string search)
@@ -58,14 +58,14 @@ namespace Imi.Project.Mobile.Infrastructure.Services
                 string jwtToken = Preferences.Get("JwtToken", null);
                 Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
             }
-            IEnumerable<TResponseDto> movies = null;
+            IEnumerable<TResponseDto> items = null;
             using (HttpResponseMessage response = await Client.GetAsync("?name=" + search))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    movies = await response.Content.ReadAsAsync<IEnumerable<TResponseDto>>();
+                    items = await response.Content.ReadAsAsync<IEnumerable<TResponseDto>>();
                 }
-                return movies;
+                return items;
             };
         }
 
