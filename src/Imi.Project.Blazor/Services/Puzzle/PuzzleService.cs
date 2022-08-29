@@ -1,10 +1,7 @@
 ﻿using Imi.Project.Blazor.Models;
-using Microsoft.AspNetCore.Hosting;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Imi.Project.Blazor.Services.Puzzle
 {
@@ -27,7 +24,9 @@ namespace Imi.Project.Blazor.Services.Puzzle
         }
         public static List<string> GetImageNames()
         {
-            var directories = Directory.GetDirectories("/IMI2.0/Repo/src/Imi.Project.Blazor/wwwroot/PuzzleImages").Select(d=> new DirectoryInfo(d).Name).ToList();
+            //Directory with all maps of puzzle images
+            string puzzleImagePath = Path.GetFullPath("../Imi.Project.Blazor/wwwroot/PuzzleImages");
+            var directories = Directory.GetDirectories(puzzleImagePath).Select(d => new DirectoryInfo(d).Name).ToList();
 
             return directories;
         }

@@ -50,7 +50,6 @@ namespace Imi.Project.Blazor
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

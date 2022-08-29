@@ -59,11 +59,18 @@
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.Forms.Maps">
+      <Version>5.0.0.2515</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.GooglePlayServices.Location">
+      <Version>118.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DroidLocationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\FontAwesome5Regular.otf" />
@@ -95,6 +102,14 @@
     <AndroidResource Include="Resources\drawable\Christian_Bale.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Imi.Project.Mobile.Core\Imi.Project.Mobile.Core.csproj">
+      <Project>{9B22CC90-E0FC-4396-9F29-C51180AE7839}</Project>
+      <Name>Imi.Project.Mobile.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Imi.Project.Mobile.Infrastructure\Imi.Project.Mobile.Infrastructure.csproj">
+      <Project>{22B59AA1-AC2F-41E4-B476-F9236FBCBB0D}</Project>
+      <Name>Imi.Project.Mobile.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Imi.Project.Mobile\Imi.Project.Mobile.csproj">
       <Project>{DF2BCC13-CCEE-4582-B7DA-C6EB55D333DB}</Project>
       <Name>Imi.Project.Mobile</Name>
@@ -117,5 +132,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

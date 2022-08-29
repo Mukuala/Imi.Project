@@ -1,5 +1,6 @@
 ﻿using FreshMvvm;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Mobile.Core.Models;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
 using Imi.Project.Mobile.Utils;
 using System;
@@ -17,13 +18,16 @@ namespace Imi.Project.Mobile.ViewModels
         
 
         private readonly IMeApiService _meApiService;
-        public ProfileViewModel(IMeApiService meApiService)
+        private readonly ILocationService _locationService;
+        public ProfileViewModel(IMeApiService meApiService, ILocationService locationService)
         {
             _meApiService = meApiService;
+            _locationService = locationService;
         }
 
         protected override async void ViewIsAppearing(object sender, EventArgs e)
         {
+            CurrentLocation = await _locationService.GetCurrentLocation();
             base.ViewIsAppearing(sender, e);
             await GetUserProfile();
         }
@@ -65,6 +69,17 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 amountOfWatchlist = value;
                 RaisePropertyChanged(nameof(AmountOfWatchlist));
+            }
+        }
+
+        private CurrentLocation currentLocation;
+        public CurrentLocation CurrentLocation
+        {
+            get { return currentLocation; }
+            set
+            {
+                currentLocation = value;
+                RaisePropertyChanged(nameof(CurrentLocation));
             }
         }
         #endregion

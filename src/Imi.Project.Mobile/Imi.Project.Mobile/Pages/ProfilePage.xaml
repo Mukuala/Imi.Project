@@ -49,6 +49,11 @@
                     <Label Text="{Binding AmountOfWatchlist,StringFormat='Movies in watchlist: {0}'}" FontSize="Medium" ></Label>
                 </StackLayout>
             </border:SfBorder>
+            <border:SfBorder CornerRadius="10" HasShadow="True" ShadowColor="DarkGoldenrod" BorderColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
+                <StackLayout Margin="10">
+                    <Label Text="{Binding CurrentLocation.Address, StringFormat='Current Location: {0}'}" FontSize="Medium"></Label>
+                </StackLayout>
+            </border:SfBorder>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

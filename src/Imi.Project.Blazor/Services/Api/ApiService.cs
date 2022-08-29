@@ -1,4 +1,4 @@
-﻿ using Imi.Project.Common.Dtos;
+﻿using Imi.Project.Common.Dtos;
 using System;
 using System.Net;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Imi.Project.Common.IPBaseUrl;
 
 namespace Imi.Project.Blazor.Services.Api
 {
@@ -17,7 +18,7 @@ namespace Imi.Project.Blazor.Services.Api
         public ApiService()
         {
             Client = new HttpClient();
-            Client.BaseAddress = new Uri("https://localhost:5001/api/" + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
+            Client.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl + typeof(TResponseDto).Name.Replace("ResponseDto", "s/"));
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -27,7 +28,7 @@ namespace Imi.Project.Blazor.Services.Api
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpResponseMessage response = await httpClient.PostAsJsonAsync("https://localhost:5001/api/Auth/login", login);
+                HttpResponseMessage response = await httpClient.PostAsJsonAsync(IPBaseAdress.ApiBaseAdressUrl + "Auth/login", login);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadAsAsync<LoginResponseDto>();
@@ -115,7 +116,7 @@ namespace Imi.Project.Blazor.Services.Api
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
 
-            HttpResponseMessage response = await httpClient.GetAsync("https://localhost:5001/api/Me/profile");
+            HttpResponseMessage response = await httpClient.GetAsync(IPBaseAdress.ApiBaseAdressUrl + "Me/profile");
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsAsync<UserResponseDto>();

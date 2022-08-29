@@ -24,7 +24,7 @@
         <h3>@CurrentPuzzle/@AmountOfPuzzles</h3>
         <div id="puzzle">
             <h4 class="font-weight-bold">Time : @counter</h4>
-            <Dropzone Class="grid-container " Items="ImagePiecesList" TItem="ImagePiece" InstantReplace OnItemDrop="@((p)=>OnItemDrop(p))">
+            <Dropzone Class="grid-container" Items="ImagePiecesList" TItem="ImagePiece" InstantReplace OnItemDrop="@((p)=>OnImagePieceDrop(p))">
                 <div class="grid-item" id="puz_@context.Id">
                     <img src="@context.Url" class="img-fluid" style="max-height:fit-content" alt="@context.Name" />
                 </div>
@@ -60,7 +60,7 @@
     }
 
 
-    public async Task OnItemDrop(ImagePiece item)
+    public async Task OnImagePieceDrop(ImagePiece imagePiece)
     {
         currentPuzzleList = await JSRuntime.InvokeAsync<List<string>>("UpdateList");
         if (currentPuzzleList.SequenceEqual(correctList))
@@ -115,6 +115,7 @@
 
         await InvokeAsync(StateHasChanged);
     }
+
     public void DoStuff()
     {
         if (counter <= 0)
