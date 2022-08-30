@@ -103,7 +103,7 @@
 
                     </StackLayout>
                     <border:SfBorder Grid.Row="2" Grid.ColumnSpan="2" Margin="10" CornerRadius="10" HasShadow="True" BorderColor="DarkGoldenrod" ShadowColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
-                        <Label FontSize="Medium" Padding="10" Text="{Binding Movie.Description}"></Label>
+                        <Label FontSize="Default" Padding="10" Text="{Binding Movie.Description}"></Label>
                     </border:SfBorder>
                     <Frame Padding="0"  Grid.Row="3" Grid.ColumnSpan="2">
                         <WebView Source="{Binding Movie.EmbeddedTrailerUrl}"
