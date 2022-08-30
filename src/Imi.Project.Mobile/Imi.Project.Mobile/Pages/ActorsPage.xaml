@@ -21,7 +21,10 @@
             <SearchBar Placeholder="Search..." SearchCommand="{Binding SearchItem}" Text="{Binding SearchText}"/>
             <RefreshView IsRefreshing="{Binding IsBusy}" RefreshColor="Goldenrod"
                      Command="{Binding RefreshCommand}">
-                <CollectionView ItemsSource="{Binding Actors}" SelectionMode="None">
+                <CollectionView ItemsSource="{Binding Actors}" 
+                                SelectionMode="Single" 
+                                SelectedItem="{Binding SelectedActor}"
+                                EmptyView="No actors found">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="0" HorizontalItemSpacing="0" Span="{OnPlatform Android=3,UWP=5}">
                         </GridItemsLayout>

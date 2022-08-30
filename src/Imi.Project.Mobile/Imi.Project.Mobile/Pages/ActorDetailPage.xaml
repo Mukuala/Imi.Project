@@ -1,13 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils"
-             x:Class="Imi.Project.Mobile.Pages.ActorDetailPage">
+             xmlns:fontawesome="clr-namespace:Imi.Project.Mobile.Utils" 
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             x:Class="Imi.Project.Mobile.Pages.ActorDetailPage"
+             Title="{Binding Actor.Name}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding OpenAddActorPage}" CommandParameter="{Binding Actor.Id}" Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.Edit}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+
+        <ToolbarItem Command="{Binding DeleteAlert}" Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Glyph="{x:Static fontawesome:FontAwesomeIcons.TrashAlt}"
+                    Size="Medium"
+                    ></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            
+        <ScrollView>
+            <StackLayout>
+                <Frame Padding="0" IsClippedToBounds="True">
+                    <Image  Aspect="{OnPlatform Android=AspectFill,UWP=AspectFit}" Source="{Binding Actor.Image}"/>
+                </Frame>
+                <Button Command="{Binding OpenActorMoviesPage}" Text="Movies"/>
+                <Label HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" Text="{Binding Actor.DateOfBirth, StringFormat='Date of birth: {0:dd-MM-yyyy}'}"/>
+                    <border:SfBorder Margin="10" CornerRadius="10" HasShadow="True" BorderColor="DarkGoldenrod" ShadowColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
+                        <Label Padding="20"  FontSize="Medium" Text="{Binding Actor.Biography}"/>
+                    </border:SfBorder>
+                </StackLayout>
+        </ScrollView>
         </StackLayout>
+
     </ContentPage.Content>
 </ContentPage>

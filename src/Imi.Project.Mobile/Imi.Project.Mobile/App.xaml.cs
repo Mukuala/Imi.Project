@@ -36,7 +36,7 @@ namespace Imi.Project.Mobile
             masternav.AddPage<WatchlistViewModel>("Watchlist");
             masternav.AddPage<ActorsViewModel>("Actors");
             masternav.AddPage<GenresViewModel>("Genres");
-            masternav.AddPage<UsersViewModel>("Users");
+            //masternav.AddPage<UsersViewModel>("Users");
             MainPage = masternav;
             //}
             //else

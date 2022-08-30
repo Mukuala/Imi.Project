@@ -48,7 +48,7 @@ namespace Imi.Project.Mobile.Droid.Services
             mLocationRequest.SetPriority(LocationRequest.PriorityHighAccuracy);
         }
 
-        public class FusedLocationProviderCallback : LocationCallback
+        private class FusedLocationProviderCallback : LocationCallback
         {
             public override void OnLocationAvailability(LocationAvailability locationAvailability)
             {

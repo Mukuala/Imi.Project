@@ -29,7 +29,7 @@ namespace Imi.Project.Api.Core.Services
         }
         public async Task DeleteWatchlistAsync(string userId, int movieId)
         {
-            var entity = new Watchlist { ApplicationUserId = userId, MovieId = movieId };
+            var entity = await _watchlistRepo.GetByUserIdAndMovieIdAsync(userId, movieId);
             await _watchlistRepo.DeleteAsync(entity);
         }
 

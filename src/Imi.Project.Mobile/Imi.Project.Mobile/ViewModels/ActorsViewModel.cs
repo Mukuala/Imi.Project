@@ -25,11 +25,17 @@ namespace Imi.Project.Mobile.ViewModels
             base.ViewIsAppearing(sender, e);
             await FillActors();
         }
-        public override async void Init(object initData)
+        //public override async void Init(object initData)
+        //{
+        //    base.Init(initData);
+        //    await FillActors();
+        //}
+
+        private async void NavigateToActorDetailPage(int actorId)
         {
-            base.Init(initData);
-            await FillActors();
+            await CoreMethods.PushPageModel<ActorDetailViewModel>(actorId);
         }
+
         private async Task Delete(int id)
         {
             var name = Actors.FirstOrDefault(g => g.Id == id).Name;
@@ -102,6 +108,23 @@ namespace Imi.Project.Mobile.ViewModels
                 RaisePropertyChanged(nameof(Actors));
             }
         }
+
+        private ActorResponseDto selectedActor;
+        public ActorResponseDto SelectedActor
+        {
+            get
+            {
+                return selectedActor;
+            }
+            set
+            {
+                selectedActor = value;
+                if (SelectedActor != null)
+                    NavigateToActorDetailPage(SelectedActor.Id);
+                RaisePropertyChanged(nameof(SelectedActor));
+            }
+        }
+
         #endregion
 
         #region Command

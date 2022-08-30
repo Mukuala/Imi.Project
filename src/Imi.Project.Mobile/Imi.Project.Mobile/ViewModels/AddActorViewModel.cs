@@ -35,12 +35,12 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 string id = initData.ToString();
                 Actor = await _apiService.GetByIdAsync(id);
-                Title = "Edit";
+                Title = $"Edit{Actor.Name}";
             }
             else
             {
                 Actor = new ActorResponseDto { };
-                Title = "Add";
+                Title = "Add new actor";
             }
             base.Init(initData);
         }

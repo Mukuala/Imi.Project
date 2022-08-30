@@ -30,8 +30,10 @@ namespace Imi.Project.Mobile.ViewModels
 
             GenresListText = String.Join(", ", Movie.Genres.Select(g => g.Name));
             ActorsListText = String.Join(", ", Movie.Actors.Select(a => a.Name));
+
             var favorites = await _meApiService.GetFavoritesMovies(Preferences.Get("JwtToken", null));
             var watchlist = await _meApiService.GetWatchlistMovies(Preferences.Get("JwtToken", null));
+
             if (favorites.Any(m => m.Id == Movie.Id)) { IsFavorite = true; } else { IsFavorite = false;  }
             if (watchlist.Any(m => m.Id == Movie.Id)) { IsInWatchlist = true; } else { IsInWatchlist = false; }
         }
@@ -88,6 +90,7 @@ namespace Imi.Project.Mobile.ViewModels
             }
         }
         public bool IsNotInWatchlist { get { return !IsInWatchlist; } }
+
         private bool isFavorite;
         public bool IsFavorite
         {
