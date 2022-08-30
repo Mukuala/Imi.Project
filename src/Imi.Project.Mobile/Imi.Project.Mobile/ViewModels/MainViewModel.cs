@@ -35,7 +35,7 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 await CoreMethods.PushPageModel<LogInViewModel>(null);
             }
-            base.ViewIsAppearing(sender, e);
+            //base.ViewIsAppearing(sender, e);
             await FillMovies();
         }
         //public override async void Init(object initData)

@@ -35,7 +35,7 @@ namespace Imi.Project.Mobile.ViewModels
             {
                 string id = initData.ToString();
                 Actor = await _apiService.GetByIdAsync(id);
-                Title = $"Edit{Actor.Name}";
+                Title = $"Edit {Actor.Name}";
             }
             else
             {

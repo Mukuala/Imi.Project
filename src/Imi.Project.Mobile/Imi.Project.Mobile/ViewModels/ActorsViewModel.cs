@@ -25,11 +25,11 @@ namespace Imi.Project.Mobile.ViewModels
             base.ViewIsAppearing(sender, e);
             await FillActors();
         }
-        //public override async void Init(object initData)
-        //{
-        //    base.Init(initData);
-        //    await FillActors();
-        //}
+        public override async void Init(object initData)
+        {
+            base.Init(initData);
+            await FillActors();
+        }
 
         private async void NavigateToActorDetailPage(int actorId)
         {

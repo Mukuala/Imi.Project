@@ -35,7 +35,7 @@
                 <Frame Padding="0" IsClippedToBounds="True">
                     <Image  Aspect="{OnPlatform Android=AspectFill,UWP=AspectFit}" Source="{Binding Actor.Image}"/>
                 </Frame>
-                <Button Command="{Binding OpenActorMoviesPage}" Text="Movies"/>
+                <Button HorizontalOptions="Center" WidthRequest="100" BorderColor="DarkGoldenrod" BackgroundColor="AntiqueWhite" Command="{Binding OpenActorMoviesPage}" Text="Movies"/>
                 <Label HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" Text="{Binding Actor.DateOfBirth, StringFormat='Date of birth: {0:dd-MM-yyyy}'}"/>
                     <border:SfBorder Margin="10" CornerRadius="10" HasShadow="True" BorderColor="DarkGoldenrod" ShadowColor="DarkGoldenrod" BackgroundColor="AntiqueWhite">
                         <Label Padding="20"  FontSize="Medium" Text="{Binding Actor.Biography}"/>
