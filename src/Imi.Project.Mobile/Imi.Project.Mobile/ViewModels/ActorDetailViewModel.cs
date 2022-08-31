@@ -17,10 +17,15 @@ namespace Imi.Project.Mobile.ViewModels
         {
             _actorApiService = actorApiService;
         }
+        string actorId;
 
         public override async void Init(object initData)
         {
-            var actorId = initData.ToString();
+            actorId = initData.ToString();
+            Actor = await _actorApiService.GetByIdAsync(actorId);
+        }
+        protected override async void ViewIsAppearing(object sender, System.EventArgs e)
+        {
             Actor = await _actorApiService.GetByIdAsync(actorId);
         }
 

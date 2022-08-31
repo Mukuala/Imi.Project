@@ -2,10 +2,7 @@
 using Imi.Project.Common.Dtos;
 using Imi.Project.Mobile.Core.Models;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
-using Imi.Project.Mobile.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -15,7 +12,7 @@ namespace Imi.Project.Mobile.ViewModels
 {
     public class ProfileViewModel : FreshBasePageModel
     {
-        
+
 
         private readonly IMeApiService _meApiService;
         private readonly ILocationService _locationService;
@@ -28,6 +25,10 @@ namespace Imi.Project.Mobile.ViewModels
         protected override async void ViewIsAppearing(object sender, EventArgs e)
         {
             CurrentLocation = await _locationService.GetCurrentLocation();
+            if (CurrentLocation == null)
+            {
+                CurrentLocation = new CurrentLocation { Address = "Please allow access to location and enable location to know current location" };
+            }
             base.ViewIsAppearing(sender, e);
             await GetUserProfile();
         }

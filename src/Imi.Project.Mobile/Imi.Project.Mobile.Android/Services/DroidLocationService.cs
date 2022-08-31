@@ -28,6 +28,10 @@ namespace Imi.Project.Mobile.Droid.Services
             fusedLocationProviderClient.RequestLocationUpdates(mLocationRequest, mLocationCallback, null);
 
             var location = await fusedLocationProviderClient.GetLastLocationAsync();
+            if (location == null)
+            {
+                return null;
+            }
 
 
             Position position = new Position(location.Latitude, location.Longitude);
@@ -52,7 +56,7 @@ namespace Imi.Project.Mobile.Droid.Services
         {
             public override void OnLocationAvailability(LocationAvailability locationAvailability)
             {
-              var test = locationAvailability.IsLocationAvailable;
+                var test = locationAvailability.IsLocationAvailable;
             }
 
             public override void OnLocationResult(LocationResult result)
@@ -67,5 +71,5 @@ namespace Imi.Project.Mobile.Droid.Services
                 }
             }
         }
-    } 
+    }
 }

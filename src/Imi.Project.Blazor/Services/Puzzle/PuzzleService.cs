@@ -8,6 +8,7 @@ namespace Imi.Project.Blazor.Services.Puzzle
     public static class PuzzleService
     {
         private static List<ImagePiece> ImagePieceList = new List<ImagePiece>();
+        private static List<string> stringNumbersList = new List<string>();
         public static int PuzzleImagesAmount = GetImageNames().Count();
         public static List<ImagePiece> GetImagePieces(string imageName)
         {
@@ -29,6 +30,15 @@ namespace Imi.Project.Blazor.Services.Puzzle
             var directories = Directory.GetDirectories(puzzleImagePath).Select(d => new DirectoryInfo(d).Name).ToList();
 
             return directories;
+        }
+        public static List<string> GetStringNumbersList()
+        {
+            stringNumbersList.Clear();
+            for (int i = 1; i <= 16; i++)
+            {
+                stringNumbersList.Add(i.ToString());
+            }
+            return stringNumbersList;
         }
 
     }

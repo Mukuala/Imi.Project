@@ -36,7 +36,7 @@
 
 @code {
     Random rnd = new Random();
-    public List<string> correctList = new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+    public List<string> correctList = PuzzleService.GetStringNumbersList();/*new List<string> { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };*/
     public List<string> currentPuzzleList = new List<string>();
     public List<string> ImageNames = PuzzleService.GetImageNames().OrderBy(a => Guid.NewGuid()).ToList();
     List<ImagePiece> ImagePiecesList = new List<ImagePiece>();
