@@ -95,6 +95,7 @@ namespace Imi.Project.Wpf
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             ClearEditOrAddGrid();
+            CLearMovieDetailsGrid();
             PopulateMoviesListBox();
             lstMovies.IsEnabled = true;
         }
