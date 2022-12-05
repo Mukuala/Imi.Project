@@ -34,8 +34,8 @@ namespace Imi.Project.Api.Core.Services
             var requestDtoType = typeof(TRequestDto);
             var ImgFolderName = requestDtoType.Name.Replace("RequestDto", "") + "Img";
             int intId;
-            var canParseId = Int32.TryParse(id, out intId);
-
+            //Checks if id is an int or guid, returns false when guid
+            var canParseId = int.TryParse(id, out intId);
 
             if (image == null && !isDelete)
             {
@@ -49,7 +49,6 @@ namespace Imi.Project.Api.Core.Services
                 }
             }
 
-
             if (canParseId && intId != 0)
             {
                 oldImageName = await CheckIntIdReturnImageString(intId, requestDtoType);
@@ -58,6 +57,7 @@ namespace Imi.Project.Api.Core.Services
                     DeleteOldImage(oldImageName);
                 }
             }
+
             else if (!canParseId && !string.IsNullOrEmpty(id))
             {
                 oldImageName = await CheckStringIdReturnImageString(id);
@@ -72,6 +72,7 @@ namespace Imi.Project.Api.Core.Services
                 var oldImagePath = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwroot", eImageString);
                 File.Delete(oldImagePath);
             }
+
             if (isDelete)
             {
                 return null;

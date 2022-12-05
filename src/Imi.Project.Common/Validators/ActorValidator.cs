@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
 using Imi.Project.Common.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Imi.Project.Mobile.Validators
+namespace Imi.Project.Common.Validators
 {
     public class ActorValidator : AbstractValidator<ActorRequestDto>
     {

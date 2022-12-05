@@ -1,4 +1,5 @@
 ﻿
+
 <div class="row" id="app">
     <div class="col-sm-6 text-black">
         <div class="d-flex align-items-center ">
@@ -19,7 +20,7 @@
                     <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
                 </div>
 
-                <p>Don't have an account? <a href="https://localhost:5005/accounts/register" class="link-info">Register here</a></p>
+                <p>Don't have an account? <a href="http://localhost:5005/accounts/register" class="link-info">Register here</a></p>
 
             </form>
         </div>
@@ -30,7 +31,7 @@
 </div>
 
 <script>
-    var apiURL = 'https://localhost:5001/api/Auth/login'
+    var apiURL = 'http://192.168.151.180:5000/api/Auth/login'
     var app = new Vue({
         el: '#app',
         data: {
@@ -60,6 +61,6 @@
         window.localStorage.setItem('jwtToken', jwt);
     }
      function ReturnToMovies() {
-         window.location.href = 'https://localhost:5005/movies';
+         window.location.href = 'http://localhost:5005/movies';
     }
 </script>

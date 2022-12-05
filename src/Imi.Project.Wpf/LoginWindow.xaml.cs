@@ -1,10 +1,6 @@
 ﻿using Imi.Project.Wpf.Infrastructure;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace Imi.Project.Wpf
 {
@@ -42,9 +38,9 @@ namespace Imi.Project.Wpf
             Properties.Settings.Default.Save();
 
             webApiClient.Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", result.JwtToken);
-            var newForm = new MainWindow(); //creates your new form
-            newForm.Show(); //shows the new form
-            this.Close(); //closes this form
+            var mainWindow = new MainWindow(); //creates your new form
+            mainWindow.Show(); //shows the new form
+            Close(); //closes this form
         }
     }
 }

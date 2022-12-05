@@ -1,17 +1,12 @@
 ﻿using FluentValidation;
 using FreshMvvm;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Common.Validators;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
-using Imi.Project.Mobile.Utils;
-using Imi.Project.Mobile.Validators;
 using Plugin.Media;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -136,7 +131,6 @@ namespace Imi.Project.Mobile.ViewModels
                 movie.GenresId = genresSelected.Select(x => x.Id).ToList();
             }
 
-            var genresSelectedCast = SelectedGenres.Cast<GenreResponseDto>();
             if (Movie == null)
             {
                 Movie = new MovieResponseDto();

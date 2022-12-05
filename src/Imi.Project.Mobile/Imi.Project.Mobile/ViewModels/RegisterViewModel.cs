@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
 using FreshMvvm;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Common.Validators;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
-using Imi.Project.Mobile.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -69,12 +66,12 @@ namespace Imi.Project.Mobile.ViewModels
         {
             //try
             //{
-                if (Validate(User))
-                {
-                    await _authApiService.Register(User);
-                    await CoreMethods.DisplayAlert("Succesfully registered", "You can now log in.", "Ok");
-                    await CoreMethods.PopPageModel();
-                }
+            if (Validate(User))
+            {
+                await _authApiService.Register(User);
+                await CoreMethods.DisplayAlert("Succesfully registered", "You can now log in.", "Ok");
+                await CoreMethods.PopPageModel();
+            }
             //}
             //catch (Exception ex)
             //{

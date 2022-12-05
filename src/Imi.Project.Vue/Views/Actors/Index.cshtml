@@ -1,5 +1,5 @@
 ﻿<h1>Actors</h1>
-<a style="margin:30px" href="https://localhost:5005/Actors/create" class="btn btn-primary ">Add Actor</a>
+<a style="margin:30px" href="http://localhost:5005/Actors/create" class="btn btn-primary ">Add Actor</a>
 
 <div class=" container" id="app">
     <table class="table table-striped table-bordered text-center">
@@ -12,8 +12,8 @@
         </thead>
         <tbody>
             <tr v-for="actor in actors">
-                <td><a v-bind:href="'https://localhost:5005/Actors/Detail/'+actor.id"><img v-bind:src="actor.image" style="object-fit:cover" height="100" /></a></td>
-                <td><a v-bind:href="'https://localhost:5005/Actors/Detail/'+actor.id">{{actor.name}}</a></td>
+                <td><a v-bind:href="'http://localhost:5005/Actors/Detail/'+actor.id"><img v-bind:src="actor.image" style="object-fit:cover" height="100" /></a></td>
+                <td><a v-bind:href="'http://localhost:5005/Actors/Detail/'+actor.id">{{actor.name}}</a></td>
                 <td>{{actor.dateOfBirth.split("T")[0]}}</td>
             </tr>
         </tbody>
@@ -21,7 +21,7 @@
 </div>
 
 <script>
-    var apiURL = 'https://localhost:5001/api/Actors/'
+    var apiURL = 'http://192.168.151.180:5000/api/Actors/'
     var app = new Vue({
         el: '#app',
         data: {

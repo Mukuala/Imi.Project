@@ -1,19 +1,15 @@
-﻿using FreshMvvm;
+﻿using FluentValidation;
+using FreshMvvm;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Common.Validators;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using Plugin.Media;
 using System.IO;
 using System.Linq;
-using Imi.Project.Mobile.Utils;
-using FluentValidation;
-using Imi.Project.Mobile.Validators;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Imi.Project.Mobile.ViewModels
 {

@@ -67,7 +67,7 @@
             Authorization: `Bearer ${jwtToken}`
         }
     };
-    var apiURL = 'https://localhost:5001/api/Users/'
+    var apiURL = 'http://192.168.151.180:5000/api/Users/'
     var app = new Vue({
         el: '#app',
         data: {
@@ -122,7 +122,7 @@
     });
 
     function ReturnToUsers() {
-        window.location.href = 'https://localhost:5005/users';
+        window.location.href = 'http://localhost:5005/users';
     };
 
     function CreateGuid() {

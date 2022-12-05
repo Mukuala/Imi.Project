@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Imi.Project.Common.IPBaseUrl;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Imi.Project.Vue.Controllers
 {

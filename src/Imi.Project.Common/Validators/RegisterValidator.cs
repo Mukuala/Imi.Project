@@ -1,12 +1,8 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using Imi.Project.Common.Dtos;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace Imi.Project.Mobile.Validators
+namespace Imi.Project.Common.Validators
 {
     public class RegisterValidator : AbstractValidator<RegisterRequestDto>
     {

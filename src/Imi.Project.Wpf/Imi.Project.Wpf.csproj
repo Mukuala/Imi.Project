@@ -16,6 +16,7 @@
     </PackageReference>
     <PackageReference Include="Syncfusion.Licensing" Version="19.3.0.59" />
     <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="19.3.0.59" />
+    <PackageReference Include="Syncfusion.SfTextInputLayout.WPF" Version="19.3.0.59" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="19.3.0.59" />
   </ItemGroup>
 

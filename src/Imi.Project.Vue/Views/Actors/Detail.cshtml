@@ -15,7 +15,7 @@
                     </tr>
                     <tr>
                         <th>Movies(s)</th>
-                        <td><a :href="'https://localhost:5005/movies/detail/' + movie.id" v-for="movie in actor.movies"> {{movie.name}}<br/></a></td>
+                        <td><a :href="'http://localhost:5005/movies/detail/' + movie.id" v-for="movie in actor.movies"> {{movie.name}}<br/></a></td>
                     </tr>
 
                 </tbody>
@@ -24,7 +24,7 @@
             <p>{{actor.biography}}</p>
             <br />
             <button class="btn-danger btn-block" data-toggle="modal" data-target="#delete">Delete</button>
-            <a href="https://localhost:5005/actors/Edit/@Model" class=" btn btn-primary btn-block text-center">Edit</a>
+            <a href="http://localhost:5005/actors/Edit/@Model" class=" btn btn-primary btn-block text-center">Edit</a>
         </div>
     </div>
     <div class="col-sm-6">
@@ -62,7 +62,7 @@
     const config = {
         headers: { Authorization: `Bearer ${jwtToken}` }
     };
-    var apiActor = 'https://localhost:5001/api/Actors/@Model'
+    var apiActor = 'http://192.168.151.180:5000/api/Actors/@Model'
     var app = new Vue({
         el: '#app',
         data: {
@@ -83,7 +83,7 @@
     })
 
     function ReturnToActors() {
-        window.location.href = 'https://localhost:5005/actors';
+        window.location.href = 'http://localhost:5005/actors';
     }
 
 

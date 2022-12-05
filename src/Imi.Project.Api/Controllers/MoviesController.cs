@@ -57,10 +57,6 @@ namespace Imi.Project.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MovieRequestDto movieRequestDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var movieResponseDto = await _movieService.AddAsync(movieRequestDto);
 
             return CreatedAtAction(nameof(Get), new { id = movieResponseDto.Id }, movieResponseDto);
@@ -68,10 +64,6 @@ namespace Imi.Project.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(MovieRequestDto movieRequestDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
             var movieResponseDto = await _movieService.UpdateAsync(movieRequestDto);
             return Ok(movieResponseDto);

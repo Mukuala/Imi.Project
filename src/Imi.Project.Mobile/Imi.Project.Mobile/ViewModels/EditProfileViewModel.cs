@@ -1,15 +1,12 @@
 ﻿using FluentValidation;
 using FreshMvvm;
 using Imi.Project.Common.Dtos;
+using Imi.Project.Common.Validators;
 using Imi.Project.Mobile.Infrastructure.Services.Interfaces;
-using Imi.Project.Mobile.Validators;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -75,7 +72,7 @@ namespace Imi.Project.Mobile.ViewModels
                 LastName = User.LastName,
                 UserName = User.UserName,
                 Id = User.Id,
-                
+
             };
             if (Validate(user))
             {

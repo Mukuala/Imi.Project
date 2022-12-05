@@ -1,5 +1,5 @@
 ﻿<h1>Movies</h1>
-<a style="margin:30px" href="https://localhost:5005/Movies/create" class="btn btn-primary ">Add Movie</a>
+<a style="margin:30px" href="http://localhost:5005/Movies/create" class="btn btn-primary ">Add Movie</a>
 
 <div class=" container" id="app">
     <table class="table table-striped table-bordered text-center">
@@ -14,11 +14,11 @@
         <tbody>
             <tr v-for="movie in movies">
                 <td>
-                    <a v-bind:href="'https://localhost:5005/Movies/Detail/'+movie.id">
+                    <a v-bind:href="'http://localhost:5005/Movies/Detail/'+movie.id">
                         <img v-bind:src="movie.image" style="object-fit:cover" height="100" />
                     </a>
                 </td>
-                <td><a v-bind:href="'https://localhost:5005/Movies/Detail/'+movie.id">{{movie.name}}</a></td>
+                <td><a v-bind:href="'http://localhost:5005/Movies/Detail/'+movie.id">{{movie.name}}</a></td>
                 <td>{{movie.averageRating}}/10</td>
                 <td>{{movie.releaseDate.split("T")[0]}}</td>
             </tr>
@@ -28,7 +28,7 @@
 
 
 <script>
-    var apiURL = 'https://localhost:5001/api/Movies/'
+    var apiURL = 'http://192.168.151.180:5000/api/Movies/'
     var app = new Vue({
         el: '#app',
         data: {

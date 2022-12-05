@@ -1,4 +1,5 @@
 ﻿using Imi.Project.Common.Dtos;
+using Imi.Project.Common.IPBaseUrl;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -17,7 +18,7 @@ namespace Imi.Project.Wpf.Infrastructure
         public WebApiClient()
         {
             Client = new HttpClient();
-            Client.BaseAddress = new Uri("https://localhost:5001/api/");
+            Client.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl);
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
@@ -86,18 +87,20 @@ namespace Imi.Project.Wpf.Infrastructure
                 return editedMovie;
             }
         }
-        public async Task PostImageAsync(string filePath, int movieId)
+        public async Task PostImageAsync(byte[] imgByteArray, string imgName, string id, string jwtToken)
         {
-            FileStream fileStream = new FileStream(filePath, FileMode.Open);
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(IPBaseAdress.ApiBaseAdressUrl);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+
             using (var form = new MultipartFormDataContent())
             {
-                form.Add(new StreamContent(fileStream), "Image", Path.GetFileName(filePath));
-                using (HttpResponseMessage response = await Client.PostAsync("Movies/" + movieId + "/image", form))
+                using (var stream = new MemoryStream(imgByteArray))
                 {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string m = "hello";
-                    }
+                    form.Add(new StreamContent(stream), "Image", imgName);
+                    var test = await httpClient.PostAsync($"Movies/{id}/image", form);
                 }
             }
         }
@@ -160,24 +163,24 @@ namespace Imi.Project.Wpf.Infrastructure
 
         public async Task PutCallApi(string id, MovieRequestDto entity, string jwtToken)
         {
-            await CallApi(id, entity, HttpMethod.Put, jwtToken, null);
+            await CallApi(id, entity, HttpMethod.Put, jwtToken);
         }
 
-        public async Task<MovieResponseDto> PostCallApi(MovieRequestDto entity, string jwtToken, string t)
+        public async Task<MovieResponseDto> PostCallApi(MovieRequestDto entity, string jwtToken)
         {
-            return await CallApi(null, entity, HttpMethod.Post, jwtToken, t);
+            return await CallApi(null, entity, HttpMethod.Post, jwtToken);
         }
 
         public async Task<MovieResponseDto> DeleteCallApi(string id, string jwtToken)
         {
-           return await CallApi(id, null, HttpMethod.Delete, jwtToken, null);
+            return await CallApi(id, null, HttpMethod.Delete, jwtToken);
         }
 
 
-        private async Task<MovieResponseDto> CallApi(string id, MovieRequestDto entity, HttpMethod httpMethod, string jwtToken, string filepath)
+        private async Task<MovieResponseDto> CallApi(string id, MovieRequestDto entity, HttpMethod httpMethod, string jwtToken)
         {
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://localhost:5001/api/Movies/");
+            httpClient.BaseAddress = new Uri($"{IPBaseAdress.ApiBaseAdressUrl}Movies/");
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -186,23 +189,12 @@ namespace Imi.Project.Wpf.Infrastructure
                 HttpResponseMessage response;
                 if (httpMethod == HttpMethod.Post)
                 {
-                    //FileStream fileStream = new FileStream(filepath, FileMode.Open);
-                    using (var form = new MultipartFormDataContent())
-                    {
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.Id)), "Id");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.Name)), "Name");
-                        ////form.Add(new StringContent(JsonConvert.SerializeObject(entity.ActorsId)), "ActorsId");
-                        ////form.Add(new StringContent(JsonConvert.SerializeObject(entity.GenresId)), "GenresId");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.Description)), "Description");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.Duration)), "Duration");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.AverageRating)), "AverageRating");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.EmbeddedTrailerUrl)), "EmbeddedTrailerUrl");
-                        //form.Add(new StringContent(JsonConvert.SerializeObject(entity.ReleaseDate)), "ReleaseDate");
-                        //form.Add(new StreamContent(fileStream), "Image",Path.GetFileName(filepath));
-                    }
                     response = await httpClient.PostAsJsonAsync("", entity);
                     var movie = await response.Content.ReadAsAsync<MovieResponseDto>();
                     return movie;
+
+                    //    var errorResponseResult = response.Content.ReadAsStringAsync().Result;
+                    //    return null;
 
                 }
                 else if (httpMethod == HttpMethod.Put)

@@ -35,7 +35,7 @@
             Authorization: `Bearer ${jwtToken}`
         }
     };
-    var apiURL = 'https://localhost:5001/api/Actors/'
+    var apiURL = 'http://192.168.151.180:5000/api/Actors/'
     var app = new Vue({
         el: '#app',
         data: {
@@ -94,6 +94,6 @@
         }
     });
     function ReturnToActor(actorId) {
-        window.location.href = 'https://localhost:5005/actors/detail/' + actorId;
+        window.location.href = 'http://localhost:5005/actors/detail/' + actorId;
     }
 </script>
