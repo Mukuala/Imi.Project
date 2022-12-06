@@ -95,8 +95,6 @@ namespace Imi.Project.Wpf
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             ClearEditOrAddGrid();
-            CLearMovieDetailsGrid();
-            PopulateMoviesListBox();
             lstMovies.IsEnabled = true;
         }
         private void btnAddImage_Click(object sender, RoutedEventArgs e)
@@ -140,7 +138,7 @@ namespace Imi.Project.Wpf
             lblGenres.Content = genres;
             lblActors.Content = actors;
             lblDuration.Content = movie.Duration + " min";
-            lblReleaseDate.Content = movie.ReleaseDate.Date;
+            lblReleaseDate.Content = movie.ReleaseDate.Date.ToString("d");
             EmbedYoutubeTrailer(movie.EmbeddedTrailerUrl);
 
             BitmapImage bitmap = new BitmapImage();
@@ -246,7 +244,7 @@ namespace Imi.Project.Wpf
                   "<html>"
                 + "<head><meta http-equiv='X-UA-Compatible' content='IE=11' /></head>"
                 + "<body>" + "\r\n"
-                + "<iframe src=\"" + embedUrl + "\" frameborder=\"0\" allowfullscreen></iframe>"
+                + "<iframe src=\"" + embedUrl + "\" frameborder=\"0\" width=\"100%\" height=\"auto\" allowfullscreen></iframe>"
                 + "</body></html>";
 
                 webEmbbedTrailer.NavigateToString(page);
@@ -312,6 +310,7 @@ namespace Imi.Project.Wpf
                 }
                 CLearMovieDetailsGrid();
                 ClearEditOrAddGrid();
+                PopulateMoviesListBox();
             }
         }
 

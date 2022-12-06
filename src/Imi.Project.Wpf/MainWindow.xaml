@@ -62,7 +62,7 @@
                 <Label Grid.Row="6" Grid.Column="1" x:Name="lblActors"/>
                 <Label Grid.Row="7" Grid.Column="1" x:Name="lblGenres"/>
                 <Image Margin="0,10,0,10" Grid.Row="8" Grid.Column="1" x:Name="imgImage" MaxWidth="150"/>
-                <WebBrowser Margin="0,0,0,0" Grid.Row="9" Grid.Column="1" Name="webEmbbedTrailer"/>
+                <WebBrowser Margin="2" Grid.Row="9" Grid.Column="1" Name="webEmbbedTrailer"/>
                 <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left"   Width="43" Grid.Column="1"  Grid.Row="0" Click="btnEdit_Click"/>
                 <Button x:Name="btnDeleteMovie" Content="Delete" HorizontalAlignment="Center"  Width="42" Grid.Column="1"  Grid.Row="0" Click="btnDeleteMovie_Click"/>
 
